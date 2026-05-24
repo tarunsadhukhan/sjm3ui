@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
     '*.127.0.0.1.nip.io',
     '13.126.47.172',
     '*.13.126.47.172.nip.io',
+    // Remote dev server IP — without this, Next dev blocks /_next/* (HMR + RSC
+    // payloads) for this origin, and failed RSC fetches make the App Router do a
+    // hard reload. Add any other host/IP you reach the dev server from here.
+    '103.154.234.213',
+    '*.103.154.234.213.nip.io',
   ],
   images: {
     // Allow image optimization for localhost subdomains
