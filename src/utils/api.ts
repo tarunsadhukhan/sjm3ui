@@ -41,6 +41,13 @@ const apiRoutes ={
     PORTAL_MENU_PERMISSIONS: `${API_URL}/admin/PortalData/portal_menu_permissions`,
     PORTAL_MENU_PERMISSION_CHECK: `${API_URL}/admin/PortalData/portal_menu_permissions/check`,
 
+    // App role <-> menu mapping (tables: role_mst, menus, role_app_menu_map)
+    ROLES_APP: `${API_URL}/admin/PortalData/get_roles_app`,
+    APP_MENU_FULL: `${API_URL}/admin/PortalData/app_menu_full`,
+    GET_APP_MENU_BY_ROLEID: `${API_URL}/admin/PortalData/app_menu_by_roleid`,
+    CREATE_ROLE_APP: `${API_URL}/admin/PortalData/create_role_app`,
+    EDIT_ROLE_APP: `${API_URL}/admin/PortalData/edit_role_app`,
+
 
     ROLES_CONSOLE_CONSOLE: `${API_URL}/consoleAdmin/roles_console_admin`,
 };
@@ -291,6 +298,13 @@ const apiRoutesPortalMasters = {
     YARN_TYPE_CREATE: `${API_URL}/yarnTypeMaster/yarn_type_create`,
     YARN_TYPE_EDIT: `${API_URL}/yarnTypeMaster/yarn_type_edit`,
 
+    // Jute Mukam Master endpoints (jute_mukam_mst - global, not company-specific)
+    JUTE_MUKAM_TABLE: `${API_URL}/juteMukamMaster/get_jute_mukam_table`,
+    JUTE_MUKAM_BY_ID: `${API_URL}/juteMukamMaster/get_jute_mukam_by_id`,
+    JUTE_MUKAM_EDIT_SETUP: `${API_URL}/juteMukamMaster/jute_mukam_edit_setup`,
+    JUTE_MUKAM_CREATE: `${API_URL}/juteMukamMaster/jute_mukam_create`,
+    JUTE_MUKAM_EDIT: `${API_URL}/juteMukamMaster/jute_mukam_edit`,
+
     // Yarn Master endpoints (jute_yarn_mst)
     YARN_TABLE: `${API_URL}/yarnMaster/get_yarn_table`,
     YARN_BY_ID: `${API_URL}/yarnMaster/get_yarn_by_id`,
@@ -413,6 +427,7 @@ const apiRoutesPortalMasters = {
     SPINNING_REPORT_EMP_DATE: `${API_URL}/spinningReports/emp-date`,
     SPINNING_REPORT_FRAME_RUNNING: `${API_URL}/spinningReports/frame-running`,
     SPINNING_REPORT_RUNNING_HOURS_EFF: `${API_URL}/spinningReports/running-hours-eff`,
+    SPINNING_EMP_BRK_REPORT_DETAIL: `${API_URL}/spinningEmpBrkReports/detail`,
 
     // Winding (Production) Reports
     WINDING_REPORT_DAY_WISE: `${API_URL}/windingReports/day-wise`,
