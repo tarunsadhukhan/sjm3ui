@@ -8,7 +8,7 @@
 import * as React from "react";
 import type { JutePOLineItem, MuiFormMode, Option } from "../types/jutePOTypes";
 import { createBlankLine, lineHasAnyData } from "../utils/jutePOFactories";
-import { calculateWeight, calculateAmount, formatNumber } from "../utils/jutePOCalculations";
+import { calculateAmount, formatNumber } from "../utils/jutePOCalculations";
 import { useLineItems } from "@/components/ui/transaction";
 
 export type UseJutePOLineItemsParams = {
@@ -30,9 +30,6 @@ type UseJutePOLineItemsReturn = {
 
 export function useJutePOLineItems({
   mode,
-  juteUnit,
-  vehicleCapacity,
-  vehicleQty,
 }: UseJutePOLineItemsParams): UseJutePOLineItemsReturn {
   const {
     items: lineItems,
@@ -47,36 +44,34 @@ export function useJutePOLineItems({
   });
 
   /**
-   * Recalculate weight and amount for a single line item.
+   * Recalculate the line amount from the directly-entered weight and rate.
+   * Weight is entered in quintals and rate is per quintal, so amount = weight * rate.
    */
-  const recalculateLineWeightAmount = React.useCallback(
+  const recalculateLineAmount = React.useCallback(
     (line: JutePOLineItem): JutePOLineItem => {
-      const qty = Number(line.quantity);
+      const weight = Number(line.weight);
       const rate = Number(line.rate);
 
-      if (!Number.isFinite(qty) || qty <= 0) {
-        return { ...line, weight: "", amount: "" };
+      if (!Number.isFinite(weight) || weight <= 0) {
+        return { ...line, amount: "" };
       }
 
-      const weight = calculateWeight(qty, vehicleCapacity, vehicleQty, juteUnit);
       const amount = calculateAmount(weight, rate);
 
       return {
         ...line,
-        weight: formatNumber(weight, 2),
         amount: Number.isFinite(amount) && amount > 0 ? formatNumber(amount, 2) : "",
       };
     },
-    [juteUnit, vehicleCapacity, vehicleQty]
+    []
   );
 
   /**
-   * Recalculate weights/amounts for all line items.
-   * Called when vehicle type, vehicle qty, or unit type changes.
+   * Recalculate amounts for all line items.
    */
   const recalculateAllWeights = React.useCallback(() => {
-    setLineItems((prev) => prev.map(recalculateLineWeightAmount));
-  }, [recalculateLineWeightAmount, setLineItems]);
+    setLineItems((prev) => prev.map(recalculateLineAmount));
+  }, [recalculateLineAmount, setLineItems]);
 
   /**
    * Handle field change on a line item.
@@ -96,13 +91,13 @@ export function useJutePOLineItems({
         return;
       }
 
-      // Quantity or rate change: recalculate weight and amount
-      if (field === "quantity" || field === "rate") {
+      // Weight or rate change: recalculate amount (amount = weight * rate)
+      if (field === "weight" || field === "rate") {
         setLineItems((prev) =>
           prev.map((item) => {
             if (item.id !== id) return item;
             const updated = { ...item, [field]: rawValue };
-            return recalculateLineWeightAmount(updated);
+            return recalculateLineAmount(updated);
           })
         );
         return;
@@ -113,7 +108,7 @@ export function useJutePOLineItems({
         prev.map((item) => (item.id === id ? { ...item, [field]: rawValue } : item))
       );
     },
-    [mode, setLineItems, recalculateLineWeightAmount]
+    [mode, setLineItems, recalculateLineAmount]
   );
 
   return {

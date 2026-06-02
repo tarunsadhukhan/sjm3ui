@@ -3,7 +3,7 @@
 /**
  * @component JutePOLineItemsTable
  * @description Line items table for Jute PO with editable columns.
- * Columns: Item, Quality, Crop Year, Marka, Qty, Rate, Moisture, Weight (calculated), Amount (calculated)
+ * Columns: Item, Quality, Crop Year, Marka, Weight (editable), Rate, Moisture, Amount (calculated)
  */
 
 import * as React from "react";
@@ -11,7 +11,7 @@ import { TransactionLineColumn, SearchableSelect } from "@/components/ui/transac
 import { Input } from "@/components/ui/input";
 import type { JutePOLineItem, Option, JutePOLabelResolvers } from "../types/jutePOTypes";
 import { CROP_YEAR_OPTIONS } from "../utils/jutePOConstants";
-import { formatWeight, formatAmount } from "../utils/jutePOCalculations";
+import { formatAmount } from "../utils/jutePOCalculations";
 
 type UseJutePOLineItemColumnsParams = {
   canEdit: boolean;
@@ -126,19 +126,19 @@ export function useJutePOLineItemColumns({
         },
       },
       {
-        id: "quantity",
-        header: "Qty",
-        width: "0.7fr",
+        id: "weight",
+        header: "Weight (Qtl)",
+        width: "0.9fr",
         renderCell: ({ item }: { item: JutePOLineItem }) => {
           if (!canEdit) {
-            return <span className="text-xs text-right">{item.quantity || "-"}</span>;
+            return <span className="text-xs text-right font-medium">{item.weight || "-"}</span>;
           }
           return (
             <Input
               type="number"
-              value={item.quantity ?? ""}
-              onChange={(e) => handleLineFieldChange(item.id, "quantity", e.target.value)}
-              placeholder="0"
+              value={item.weight ?? ""}
+              onChange={(e) => handleLineFieldChange(item.id, "weight", e.target.value)}
+              placeholder="0.00"
               disabled={!canEdit}
               className="h-8 text-xs text-right"
             />
@@ -184,15 +184,6 @@ export function useJutePOLineItemColumns({
             />
           );
         },
-      },
-      {
-        id: "weight",
-        header: "Weight (Qtl)",
-        width: "0.9fr",
-        renderCell: ({ item }: { item: JutePOLineItem }) => (
-          <span className="text-xs text-right font-medium">{formatWeight(parseFloat(item.weight) || 0)}</span>
-        ),
-        getTooltip: ({ item }: { item: JutePOLineItem }) => `Calculated weight: ${formatWeight(parseFloat(item.weight) || 0)} Qtl`,
       },
       {
         id: "amount",

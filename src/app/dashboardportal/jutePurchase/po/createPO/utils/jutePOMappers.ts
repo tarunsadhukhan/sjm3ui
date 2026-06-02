@@ -9,6 +9,7 @@ import type {
   VehicleTypeRecord,
   JuteSupplierRecord,
   JutePartyRecord,
+  JuteBrokerRecord,
   JuteItemRecord,
   JuteQualityRecord,
   JutePOSetupData,
@@ -19,7 +20,7 @@ import type {
   Option,
 } from "../types/jutePOTypes";
 import { buildDefaultFormValues, generateLineId } from "./jutePOFactories";
-import { calculateWeight, formatNumber } from "./jutePOCalculations";
+import { formatNumber } from "./jutePOCalculations";
 
 // =============================================================================
 // RECORD MAPPERS (API -> UI Types)
@@ -97,6 +98,19 @@ export const mapJutePartyRecords = (records: unknown[]): JutePartyRecord[] =>
     })
     .filter(Boolean) as JutePartyRecord[];
 
+export const mapJuteBrokerRecords = (records: unknown[]): JuteBrokerRecord[] =>
+  (records || [])
+    .map((row) => {
+      const data = row as Record<string, unknown>;
+      const id = data?.broker_id ?? data?.party_id;
+      if (!id) return null;
+      return {
+        broker_id: Number(id),
+        broker_name: String(data?.broker_name ?? data?.supp_name ?? id),
+      } satisfies JuteBrokerRecord;
+    })
+    .filter(Boolean) as JuteBrokerRecord[];
+
 export const mapJuteItemRecords = (records: unknown[]): JuteItemRecord[] =>
   (records || [])
     .map((row) => {
@@ -142,6 +156,7 @@ export const mapJutePOSetupResponse = (response: unknown): JutePOSetupData => {
     vehicle_types: mapVehicleTypeRecords((data?.vehicle_types as unknown[]) ?? []),
     jute_items: mapJuteItemRecords((data?.jute_groups as unknown[]) ?? (data?.jute_items as unknown[]) ?? []),
     suppliers: mapJuteSupplierRecords((data?.suppliers as unknown[]) ?? []),
+    brokers: mapJuteBrokerRecords((data?.brokers as unknown[]) ?? []),
     channel_options: (data?.channel_options as JutePOSetupData["channel_options"]) ?? [],
     unit_options: (data?.unit_options as JutePOSetupData["unit_options"]) ?? [],
     crop_year_options: (data?.crop_year_options as JutePOSetupData["crop_year_options"]) ?? [],
@@ -169,6 +184,9 @@ export const buildSupplierOptions = (suppliers: JuteSupplierRecord[]): Option[] 
 
 export const buildPartyOptions = (parties: JutePartyRecord[]): Option[] =>
   parties.map((p) => ({ label: p.party_name, value: String(p.party_id) }));
+
+export const buildBrokerOptions = (brokers: JuteBrokerRecord[]): Option[] =>
+  brokers.map((b) => ({ label: b.broker_name, value: String(b.broker_id) }));
 
 export const buildJuteItemOptions = (items: JuteItemRecord[]): Option[] =>
   items.map((i) => ({ label: i.item_desc, value: String(i.item_id) }));
@@ -213,6 +231,8 @@ export const mapPODetailsToFormValues = (
   juteUnit: details.jute_unit || defaults.juteUnit,
   supplier: details.supplier_id ? String(details.supplier_id) : defaults.supplier,
   partyName: details.party_id ? String(details.party_id) : defaults.partyName,
+  brokerName: details.broker_id ? String(details.broker_id) : defaults.brokerName,
+  payTo: details.pay_to_id ? String(details.pay_to_id) : defaults.payTo,
   vehicleType: details.vehicle_type_id ? String(details.vehicle_type_id) : defaults.vehicleType,
   vehicleQty: details.vehicle_qty ? String(details.vehicle_qty) : defaults.vehicleQty,
   channelType: details.channel_code || defaults.channelType,
@@ -231,22 +251,12 @@ export type WeightCalcParams = {
 
 export const mapLineItemDetailsToLineItem = (
   details: JutePOLineItemDetails,
-  calcParams?: WeightCalcParams
+  _calcParams?: WeightCalcParams
 ): JutePOLineItem => {
-  const quantity = details.quantity ?? 0;
+  // Weight is entered/stored directly (in quintals) in the quantity column.
+  const weight = details.quantity ?? 0;
   const rate = details.rate ?? 0;
-  
-  // Calculate weight if params provided, otherwise use 0
-  let weight = 0;
-  if (calcParams) {
-    weight = calculateWeight(
-      quantity,
-      calcParams.vehicleCapacity,
-      calcParams.vehicleQty,
-      calcParams.juteUnit
-    );
-  }
-  
+
   return {
     id: generateLineId(),
     itemId: String(details.item_grp_id ?? details.item_id),
@@ -255,7 +265,7 @@ export const mapLineItemDetailsToLineItem = (
     qualityName: details.quality_name || undefined,
     cropYear: details.crop_year ? `${details.crop_year}-${(details.crop_year % 100) + 1}` : "",
     marka: details.marka || "",
-    quantity: String(quantity),
+    quantity: "",
     uom: details.uom || "",
     rate: String(rate),
     allowableMoisture: details.allowable_moisture
@@ -282,6 +292,8 @@ export const mapFormValuesToCreatePayload = (
   jute_unit: formValues.juteUnit,
   supplier_id: Number(formValues.supplier),
   party_id: formValues.partyName ? Number(formValues.partyName) : null,
+  broker_id: formValues.brokerName ? Number(formValues.brokerName) : null,
+  pay_to_id: formValues.payTo ? Number(formValues.payTo) : null,
   vehicle_type_id: Number(formValues.vehicleType),
   vehicle_quantity: Number(formValues.vehicleQty),
   channel_code: formValues.channelType,
@@ -290,13 +302,14 @@ export const mapFormValuesToCreatePayload = (
   freight_charge: formValues.freightCharge ? Number(formValues.freightCharge) : null,
   remarks: formValues.remarks || null,
   line_items: lineItems
-    .filter((li) => li.itemId && Number(li.quantity) > 0)
+    .filter((li) => li.itemId && Number(li.weight) > 0)
     .map((li) => ({
       item_grp_id: Number(li.itemId),
       item_id: li.quality ? Number(li.quality) : null,
       crop_year: li.cropYear || null,
       marka: li.marka || null,
-      quantity: Number(li.quantity),
+      // Weight (in quintals) is entered directly and stored in the quantity column.
+      weight: Number(li.weight),
       rate: Number(li.rate),
       allowable_moisture: li.allowableMoisture
         ? Number(li.allowableMoisture)
@@ -322,6 +335,8 @@ export const mapFormToUpdatePayload = (
   jute_unit: formValues.juteUnit,
   supplier_id: Number(formValues.supplier),
   party_id: formValues.partyName ? Number(formValues.partyName) : null,
+  broker_id: formValues.brokerName ? Number(formValues.brokerName) : null,
+  pay_to_id: formValues.payTo ? Number(formValues.payTo) : null,
   vehicle_type_id: Number(formValues.vehicleType),
   vehicle_quantity: Number(formValues.vehicleQty),
   channel_code: formValues.channelType,
@@ -330,13 +345,14 @@ export const mapFormToUpdatePayload = (
   freight_charge: formValues.freightCharge ? Number(formValues.freightCharge) : null,
   remarks: formValues.remarks || null,
   line_items: lineItems
-    .filter((li) => li.itemId && Number(li.quantity) > 0)
+    .filter((li) => li.itemId && Number(li.weight) > 0)
     .map((li) => ({
       item_grp_id: Number(li.itemId),
       item_id: li.quality ? Number(li.quality) : null,
       crop_year: li.cropYear || null,
       marka: li.marka || null,
-      quantity: Number(li.quantity),
+      // Weight (in quintals) is entered directly and stored in the quantity column.
+      weight: Number(li.weight),
       rate: Number(li.rate),
       allowable_moisture: li.allowableMoisture
         ? Number(li.allowableMoisture)
@@ -363,6 +379,8 @@ export const mapJutePODetailsResponse = (data: unknown): JutePODetails => {
     supp_code: String(raw?.supp_code ?? ""),
     supplier_name: raw?.supplier_name ? String(raw.supplier_name) : undefined,
     party_id: raw?.party_id ? Number(raw.party_id) : undefined,
+    broker_id: raw?.broker_id ? Number(raw.broker_id) : undefined,
+    pay_to_id: raw?.pay_to_id ? Number(raw.pay_to_id) : undefined,
     vehicle_type_id: Number(raw?.vehicle_type_id ?? 0),
     vehicle_capacity: raw?.vehicle_capacity ? Number(raw.vehicle_capacity) : undefined,
     vehicle_qty: Number(raw?.vehicle_qty ?? 1),

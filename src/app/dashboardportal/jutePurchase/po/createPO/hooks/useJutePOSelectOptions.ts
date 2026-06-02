@@ -34,6 +34,7 @@ type UseJutePOSelectOptionsParams = {
   juteItems: JuteItemRecord[];
   suppliers: JuteSupplierRecord[];
   parties: Option[];
+  brokers: Option[];
   qualitiesByItem: Record<string, Option[]>;
 };
 
@@ -44,6 +45,7 @@ type UseJutePOSelectOptionsReturn = {
   vehicleTypeOptions: Option[];
   supplierOptions: Option[];
   partyOptions: Option[];
+  brokerOptions: Option[];
   juteItemOptions: Option[];
   channelOptions: Option[];
   unitOptions: Option[];
@@ -66,6 +68,7 @@ export function useJutePOSelectOptions({
   juteItems,
   suppliers,
   parties,
+  brokers,
   qualitiesByItem,
 }: UseJutePOSelectOptionsParams): UseJutePOSelectOptionsReturn {
   // Build options
@@ -76,9 +79,10 @@ export function useJutePOSelectOptions({
   // Build supplier options from JuteSupplierRecord[]
   const supplierOptions = React.useMemo(() => buildSupplierOptions(suppliers), [suppliers]);
   
-  // Parties are already Option[]
+  // Parties and brokers are already Option[]
   const partyOptions = parties;
-  
+  const brokerOptions = brokers;
+
   const juteItemOptions = React.useMemo(() => buildJuteItemOptions(juteItems), [juteItems]);
 
   // Static options
@@ -115,6 +119,10 @@ export function useJutePOSelectOptions({
   const partyLabelMap = React.useMemo(
     () => buildLabelMap(parties, (p) => p.value, (p) => p.label),
     [parties]
+  );
+  const brokerLabelMap = React.useMemo(
+    () => buildLabelMap(brokers, (b) => b.value, (b) => b.label),
+    [brokers]
   );
   const itemLabelMap = React.useMemo(
     () => buildLabelMap(juteItems, (i) => i.item_id, (i) => i.item_desc),
@@ -160,6 +168,8 @@ export function useJutePOSelectOptions({
       mukam: createLabelResolver(mukamLabelMap),
       supplier: createLabelResolver(supplierLabelMap),
       party: createLabelResolver(partyLabelMap),
+      broker: createLabelResolver(brokerLabelMap),
+      payTo: createLabelResolver(brokerLabelMap),
       vehicleType: createLabelResolver(vehicleTypeLabelMap),
       item: createLabelResolver(itemLabelMap),
       quality: (itemId: string, qualityId: string) => {
@@ -167,7 +177,7 @@ export function useJutePOSelectOptions({
         return itemQualityMap?.[qualityId] ?? qualityId;
       },
     }),
-    [branchLabelMap, mukamLabelMap, supplierLabelMap, partyLabelMap, vehicleTypeLabelMap, itemLabelMap, qualityLabelMap]
+    [branchLabelMap, mukamLabelMap, supplierLabelMap, partyLabelMap, brokerLabelMap, vehicleTypeLabelMap, itemLabelMap, qualityLabelMap]
   );
 
   return {
@@ -176,6 +186,7 @@ export function useJutePOSelectOptions({
     vehicleTypeOptions,
     supplierOptions,
     partyOptions,
+    brokerOptions,
     juteItemOptions,
     channelOptions,
     unitOptions,

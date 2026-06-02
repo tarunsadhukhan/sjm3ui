@@ -40,7 +40,7 @@ import {
   UNIT_OPTIONS,
 } from "./utils/jutePOConstants";
 import { createBlankLine, lineHasAnyData, lineIsComplete } from "./utils/jutePOFactories";
-import { calculateTotals, validateVehicleWeight } from "./utils/jutePOCalculations";
+import { calculateTotals } from "./utils/jutePOCalculations";
 import {
   mapJutePOSetupResponse,
   mapJutePODetailsResponse,
@@ -109,6 +109,16 @@ function JutePOCreatePageContent() {
     [setupData]
   );
 
+  // Derived broker options from setup data (brokers are parties from party_mst)
+  const brokerOptions = React.useMemo(
+    () =>
+      (setupData?.brokers ?? []).map((b) => ({
+        label: b.broker_name,
+        value: String(b.broker_id),
+      })),
+    [setupData]
+  );
+
   // Form state hook
   const {
     initialValues,
@@ -136,6 +146,29 @@ function JutePOCreatePageContent() {
     const fallbackLabel = setupBranch?.branch_name ?? branchValue;
     return [...sidebarBranchOptions, { label: fallbackLabel, value: branchValue }];
   }, [sidebarBranchOptions, formValues.branch, setupData?.branches]);
+
+  // In create mode, if exactly one branch is selected in the sidebar, default the
+  // branch field to that branch automatically (applied once).
+  const singleBranchDefaultedRef = React.useRef(false);
+  React.useEffect(() => {
+    if (mode !== "create") {
+      singleBranchDefaultedRef.current = false;
+      return;
+    }
+    if (singleBranchDefaultedRef.current) return;
+    if (sidebarBranchOptions.length !== 1) return;
+
+    const onlyBranch = sidebarBranchOptions[0]?.value;
+    if (!onlyBranch) return;
+
+    singleBranchDefaultedRef.current = true;
+    if (formValues.branch === onlyBranch) return;
+
+    setInitialValues((prev) => ({ ...prev, branch: onlyBranch }));
+    setFormValues((prev) => ({ ...prev, branch: onlyBranch }));
+    formRef.current?.setValue("branch", onlyBranch);
+    bumpFormKey();
+  }, [mode, sidebarBranchOptions, formValues.branch, setInitialValues, setFormValues, bumpFormKey, formRef]);
 
   // Early status-based edit check (before hooks that need mode)
   // This allows us to treat non-editable statuses as "view" mode
@@ -179,6 +212,7 @@ function JutePOCreatePageContent() {
     juteItems: setupData?.jute_items ?? [],
     suppliers: setupData?.suppliers ?? [],
     parties,
+    brokers: brokerOptions,
     qualitiesByItem,
   });
 
@@ -189,6 +223,8 @@ function JutePOCreatePageContent() {
     mukamOptions: (setupData?.mukams ?? []).map((m) => ({ label: m.mukam_name, value: String(m.mukam_id) })),
     supplierOptions,
     partyOptions: parties,
+    brokerOptions,
+    payToOptions: brokerOptions,
     vehicleTypeOptions: (setupData?.vehicle_types ?? []).map((v) => ({
       label: `${v.vehicle_type} (${v.capacity_weight} Qtl)`,
       value: String(v.vehicle_type_id),
@@ -463,37 +499,22 @@ function JutePOCreatePageContent() {
           return;
         }
 
-        // Check for invalid line items (qty or rate <= 0)
+        // Check for invalid line items (weight or rate <= 0)
         const invalidLines = linesWithData.filter((line) => {
-          const qty = Number(line.quantity);
+          const weight = Number(line.weight);
           const rate = Number(line.rate);
-          return !Number.isFinite(qty) || qty <= 0 || !Number.isFinite(rate) || rate <= 0;
+          return !Number.isFinite(weight) || weight <= 0 || !Number.isFinite(rate) || rate <= 0;
         });
 
         if (invalidLines.length > 0) {
-          setPageError("Line items must have Quantity and Rate greater than 0");
+          setPageError("Line items must have Weight and Rate greater than 0");
           setSaving(false);
           return;
         }
 
         const validLines = lineItems.filter(lineIsComplete);
         if (validLines.length === 0) {
-          setPageError("Please complete at least one line item (Item, Quantity, Rate required)");
-          setSaving(false);
-          return;
-        }
-
-        // Validate vehicle weight tolerance (±5%)
-        const vehicleCapacityQtl = parseFloat(
-          (setupData?.vehicle_types ?? []).find(
-            (v) => String(v.vehicle_type_id) === (values as JutePOFormValues).vehicleType
-          )?.capacity_weight?.toString() ?? "0"
-        );
-        const vehicleQty = parseInt((values as JutePOFormValues).vehicleQty, 10) || 1;
-        const weightValidation = validateVehicleWeight(totalWeight, vehicleCapacityQtl, vehicleQty);
-        
-        if (!weightValidation.isValid) {
-          setPageError(weightValidation.message);
+          setPageError("Please complete at least one line item (Item, Weight, Rate required)");
           setSaving(false);
           return;
         }
@@ -627,12 +648,6 @@ function JutePOCreatePageContent() {
               totalWeight={totalWeight}
               totalAmount={totalAmount}
               lineCount={validLineCount}
-              vehicleCapacityQtl={parseFloat(
-                (setupData?.vehicle_types ?? []).find(
-                  (v) => String(v.vehicle_type_id) === formValues.vehicleType
-                )?.capacity_weight?.toString() ?? "0"
-              )}
-              vehicleQty={parseInt(formValues.vehicleQty, 10) || 1}
             />
           </>
         }

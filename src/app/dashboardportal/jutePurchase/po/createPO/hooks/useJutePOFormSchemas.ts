@@ -31,6 +31,8 @@ type UseJutePOFormSchemasParams = {
   vehicleTypeOptions: Option[];
   supplierOptions: Option[];
   partyOptions: Option[];
+  brokerOptions: Option[];
+  payToOptions: Option[];
   channelOptions: Option[];
   unitOptions: Option[];
   hasSupplierSelected: boolean;
@@ -43,6 +45,8 @@ export function useJutePOFormSchemas({
   vehicleTypeOptions,
   supplierOptions,
   partyOptions,
+  brokerOptions,
+  payToOptions,
   channelOptions,
   unitOptions,
   hasSupplierSelected,
@@ -126,6 +130,24 @@ export function useJutePOFormSchemas({
         options: partyOptions,
         grid: { xs: 12, sm: 6, md: 3 },
         placeholder: hasSupplierSelected ? "Select party" : "Select supplier first",
+      },
+      {
+        name: "brokerName",
+        label: "Broker Name",
+        type: "select",
+        disabled: isViewMode,
+        options: brokerOptions,
+        grid: { xs: 12, sm: 6, md: 3 },
+        placeholder: "Select broker",
+      },
+      {
+        name: "payTo",
+        label: "Pay To",
+        type: "select",
+        disabled: isViewMode,
+        options: payToOptions,
+        grid: { xs: 12, sm: 6, md: 3 },
+        placeholder: "Select pay to",
       },
 
       // Row 3: Vehicle Type, Vehicle Qty, Channel Type, Credit Term
@@ -215,6 +237,8 @@ export function useJutePOFormSchemas({
     vehicleTypeOptions,
     supplierOptions,
     partyOptions,
+    brokerOptions,
+    payToOptions,
     channelOptions,
     unitOptions,
     hasSupplierSelected,

@@ -184,7 +184,7 @@ export const calculateExpectedDate = (
  * @returns Object with totalWeight, totalAmount, and validLineCount
  */
 export const calculateTotals = (
-  lineItems: Array<{ weight: string; amount: string; itemId?: string; quantity?: string }>
+  lineItems: Array<{ weight: string; amount: string; itemId?: string }>
 ): { totalWeight: number; totalAmount: number; validLineCount: number } => {
   let totalWeight = 0;
   let totalAmount = 0;
@@ -193,7 +193,6 @@ export const calculateTotals = (
   for (const line of lineItems) {
     const weight = Number(line.weight);
     const amount = Number(line.amount);
-    const qty = Number(line.quantity);
 
     if (Number.isFinite(weight) && weight > 0) {
       totalWeight += weight;
@@ -201,7 +200,7 @@ export const calculateTotals = (
     if (Number.isFinite(amount) && amount > 0) {
       totalAmount += amount;
     }
-    if (line.itemId && Number.isFinite(qty) && qty > 0) {
+    if (line.itemId && Number.isFinite(weight) && weight > 0) {
       validLineCount += 1;
     }
   }

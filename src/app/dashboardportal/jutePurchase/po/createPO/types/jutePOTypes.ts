@@ -47,6 +47,11 @@ export type JutePartyRecord = {
   party_name: string;
 };
 
+export type JuteBrokerRecord = {
+  broker_id: number;
+  broker_name: string;
+};
+
 export type JuteItemRecord = {
   item_id: number;
   item_code: string;
@@ -115,6 +120,8 @@ export type JutePOFormValues = {
   juteUnit: string; // "LOOSE" or "BALE"
   supplier: string;
   partyName: string; // Optional, only shows after supplier selected
+  brokerName: string; // Optional broker (party_mst) -> stored as broker_id
+  payTo: string; // Optional pay-to party (party_mst) -> stored as pay_to_id
   vehicleType: string;
   vehicleQty: string;
   channelType: string;
@@ -135,6 +142,7 @@ export type JutePOSetupData = {
   vehicle_types: VehicleTypeRecord[];
   jute_items: JuteItemRecord[];
   suppliers: JuteSupplierRecord[]; // All suppliers for the company
+  brokers: JuteBrokerRecord[]; // All brokers (parties) for the company
   channel_options: ChannelOption[];
   unit_options: UnitOption[];
   crop_year_options: CropYearOption[];
@@ -156,6 +164,8 @@ export type JutePODetails = {
   supp_code: string;
   supplier_name?: string;
   party_id?: number;
+  broker_id?: number;
+  pay_to_id?: number;
   vehicle_type_id: number;
   vehicle_capacity?: number; // From jute_lorry_mst.weight
   vehicle_qty: number;
@@ -222,6 +232,8 @@ export type JutePOLabelResolvers = {
   mukam: (id: string) => string;
   supplier: (id: string) => string;
   party: (id: string) => string;
+  broker: (id: string) => string;
+  payTo: (id: string) => string;
   vehicleType: (id: string) => string;
   item: (id: string) => string;
   quality: (itemGrpId: string, qualityId: string) => string;

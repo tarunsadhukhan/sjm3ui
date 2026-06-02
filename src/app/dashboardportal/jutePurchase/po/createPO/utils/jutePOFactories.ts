@@ -50,20 +50,21 @@ export const lineHasAnyData = (line: JutePOLineItem): boolean =>
   Boolean(
     line.itemId ||
     line.quality ||
-    line.quantity ||
+    line.weight ||
     line.rate ||
     line.marka
   );
 
 /**
  * Check if a line item is complete (has all required fields).
+ * Weight is entered directly (in quintals) and must be > 0 along with rate.
  */
 export const lineIsComplete = (line: JutePOLineItem): boolean => {
-  const qty = Number(line.quantity);
+  const weight = Number(line.weight);
   const rate = Number(line.rate);
   return Boolean(
     line.itemId &&
-    Number.isFinite(qty) && qty > 0 &&
+    Number.isFinite(weight) && weight > 0 &&
     Number.isFinite(rate) && rate > 0
   );
 };
@@ -84,6 +85,8 @@ export const buildDefaultFormValues = (): JutePOFormValues => ({
   juteUnit: "LOOSE", // Default to loose
   supplier: "",
   partyName: "",
+  brokerName: "",
+  payTo: "",
   vehicleType: "",
   vehicleQty: "",
   channelType: "",

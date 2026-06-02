@@ -72,7 +72,7 @@ export function JutePOPreview({
   };
 
   // Filter out blank lines
-  const validLines = lineItems.filter((line) => line.itemId && parseFloat(line.quantity) > 0);
+  const validLines = lineItems.filter((line) => line.itemId && parseFloat(line.weight) > 0);
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
@@ -127,6 +127,18 @@ export function JutePOPreview({
                 <span>{labelResolvers.party(formValues.partyName)}</span>
               </div>
             )}
+            {formValues.brokerName && (
+              <div className="flex gap-2">
+                <span className="font-semibold">Broker:</span>
+                <span>{labelResolvers.broker(formValues.brokerName)}</span>
+              </div>
+            )}
+            {formValues.payTo && (
+              <div className="flex gap-2">
+                <span className="font-semibold">Pay To:</span>
+                <span>{labelResolvers.payTo(formValues.payTo)}</span>
+              </div>
+            )}
             <div className="flex gap-2">
               <span className="font-semibold">Vehicle Type:</span>
               <span>{labelResolvers.vehicleType(formValues.vehicleType)}</span>
@@ -161,10 +173,9 @@ export function JutePOPreview({
                 <th className="border p-2 text-left">Quality</th>
                 <th className="border p-2 text-left">Crop Year</th>
                 <th className="border p-2 text-left">Marka</th>
-                <th className="border p-2 text-right">Qty</th>
+                <th className="border p-2 text-right">Weight (Qtl)</th>
                 <th className="border p-2 text-right">Rate</th>
                 <th className="border p-2 text-right">Moisture %</th>
-                <th className="border p-2 text-right">Weight (Kg)</th>
                 <th className="border p-2 text-right">Amount</th>
               </tr>
             </thead>
@@ -175,10 +186,9 @@ export function JutePOPreview({
                   <td className="border p-2">{labelResolvers.quality(line.itemId, line.quality)}</td>
                   <td className="border p-2">{line.cropYear}</td>
                   <td className="border p-2">{line.marka || "-"}</td>
-                  <td className="border p-2 text-right">{line.quantity}</td>
+                  <td className="border p-2 text-right">{formatWeight(parseFloat(line.weight) || 0)}</td>
                   <td className="border p-2 text-right">{formatAmount(parseFloat(line.rate) || 0)}</td>
                   <td className="border p-2 text-right">{line.allowableMoisture || "-"}</td>
-                  <td className="border p-2 text-right">{formatWeight(parseFloat(line.weight) || 0)}</td>
                   <td className="border p-2 text-right">{formatAmount(parseFloat(line.amount) || 0)}</td>
                 </tr>
               ))}
