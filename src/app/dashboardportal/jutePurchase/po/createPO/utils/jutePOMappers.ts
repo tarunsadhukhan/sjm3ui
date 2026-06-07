@@ -240,6 +240,7 @@ export const mapPODetailsToFormValues = (
   deliveryTimeline: details.delivery_timeline || defaults.deliveryTimeline,
   expectedDate: defaults.expectedDate, // Will be calculated
   freightCharge: details.frieght_charge ? String(details.frieght_charge) : defaults.freightCharge,
+  daltaPc: details.dalta_pc != null ? String(details.dalta_pc) : defaults.daltaPc,
   remarks: details.remarks || defaults.remarks,
 });
 
@@ -300,6 +301,7 @@ export const mapFormValuesToCreatePayload = (
   credit_term: formValues.creditTerm ? Number(formValues.creditTerm) : null,
   delivery_timeline: formValues.deliveryTimeline ? Number(formValues.deliveryTimeline) : null,
   freight_charge: formValues.freightCharge ? Number(formValues.freightCharge) : null,
+  dalta_pc: formValues.daltaPc ? Number(formValues.daltaPc) : null,
   remarks: formValues.remarks || null,
   line_items: lineItems
     .filter((li) => li.itemId && Number(li.weight) > 0)
@@ -343,6 +345,7 @@ export const mapFormToUpdatePayload = (
   credit_term: formValues.creditTerm ? Number(formValues.creditTerm) : null,
   delivery_timeline: formValues.deliveryTimeline ? Number(formValues.deliveryTimeline) : null,
   freight_charge: formValues.freightCharge ? Number(formValues.freightCharge) : null,
+  dalta_pc: formValues.daltaPc ? Number(formValues.daltaPc) : null,
   remarks: formValues.remarks || null,
   line_items: lineItems
     .filter((li) => li.itemId && Number(li.weight) > 0)
@@ -388,6 +391,7 @@ export const mapJutePODetailsResponse = (data: unknown): JutePODetails => {
     credit_term: raw?.credit_term ? String(raw.credit_term) : undefined,
     delivery_timeline: raw?.delivery_timeline ? String(raw.delivery_timeline) : undefined,
     frieght_charge: raw?.frieght_charge ? Number(raw.frieght_charge) : undefined,
+    dalta_pc: raw?.dalta_pc != null ? Number(raw.dalta_pc) : undefined,
     remarks: raw?.remarks ? String(raw.remarks) : undefined,
     status_id: Number(raw?.status_id ?? 21),
     status: raw?.status ? String(raw.status) : undefined,

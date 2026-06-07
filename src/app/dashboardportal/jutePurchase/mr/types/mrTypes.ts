@@ -46,6 +46,25 @@ export type JuteMRHeader = {
 	co_zipcode: number | null;
 };
 
+// Open PO option type (MR PO dropdown)
+export type MRPoOption = {
+	jute_po_id: number;
+	po_num: string | number | null;
+	po_date: string | null;
+};
+
+// Supplier option type (MR Supplier dropdown)
+export type MRSupplierOption = {
+	supplier_id: number;
+	supplier_name: string | null;
+};
+
+// Party option type (MR Party dropdown)
+export type MRPartyOption = {
+	party_id: number;
+	party_name: string | null;
+};
+
 // Party branch option type
 export type PartyBranchOption = {
 	party_mst_branch_id: number;

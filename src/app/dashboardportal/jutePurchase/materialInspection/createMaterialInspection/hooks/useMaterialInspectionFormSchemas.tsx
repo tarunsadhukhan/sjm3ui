@@ -163,7 +163,7 @@ export function useGateEntryFormSchemas({
 				// Row 6: Weights - Challan, Gross, Tare, Net (auto), Variable Shortage, Actual (auto)
 				{
 					name: "challanWeight",
-					label: "Challan Weight (Kg)",
+					label: "Challan Weight (Qtl)",
 					type: "number" as const,
 					required: false,
 					disabled: isViewMode,
@@ -171,7 +171,7 @@ export function useGateEntryFormSchemas({
 				},
 				{
 					name: "grossWeight",
-					label: "Gross Weight (Kg)",
+					label: "Gross Weight (Qtl)",
 					type: "number" as const,
 					required: true,
 					disabled: isViewMode,
@@ -179,7 +179,7 @@ export function useGateEntryFormSchemas({
 				},
 				{
 					name: "tareWeight",
-					label: "Tare Weight (Kg)",
+					label: "Tare Weight (Qtl)",
 					type: "number" as const,
 					required: false,
 					disabled: true, // Always disabled - set from gate entry
@@ -206,7 +206,7 @@ export function useGateEntryFormSchemas({
 						const net = gross > 0 && tare > 0 && gross > tare ? calculateNetWeight(gross, tare) : 0;
 						return (
 							<TextField
-								label="Net Weight (Kg)"
+								label="Net Weight (Qtl)"
 								value={net > 0 ? Math.round(net) : ""}
 								disabled
 								fullWidth
@@ -218,7 +218,7 @@ export function useGateEntryFormSchemas({
 				},
 				{
 					name: "variableShortage",
-					label: "Variable Shortage (Kg)",
+					label: "Variable Shortage (Qtl)",
 					type: "number" as const,
 					required: false,
 					disabled: true, // Always disabled - set from gate entry
@@ -239,7 +239,7 @@ export function useGateEntryFormSchemas({
 						const actual = net > 0 ? calculateActualWeight(net, shortage) : 0;
 						return (
 							<TextField
-								label="Actual Weight (Kg)"
+								label="Actual Weight (Qtl)"
 								value={actual > 0 ? Math.round(actual) : ""}
 								disabled
 								fullWidth

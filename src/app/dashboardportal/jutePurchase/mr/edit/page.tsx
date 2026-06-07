@@ -15,144 +15,17 @@ import { MRPreview } from "../components/MRPreview";
 import { useMRLineItems } from "../hooks/useMRLineItems";
 import { useMRApproval } from "../hooks/useMRApproval";
 import { MR_STATUS_IDS } from "../utils/mrConstants";
-import type { JuteMRHeader, JuteMRLineItemAPI, MRLineItem, MuiFormMode, PartyBranchOption } from "../types/mrTypes";
+import {
+	round2,
+	calculateShortageAndAcceptedWeight,
+	distributeActualWeightToLineItems,
+} from "./weightDistribution";
+import type { JuteMRHeader, JuteMRLineItemAPI, MRLineItem, MRPoOption, MRSupplierOption, MRPartyOption, MuiFormMode, PartyBranchOption } from "../types/mrTypes";
 
 type JuteMRDetailsResponse = {
 	header: JuteMRHeader;
 	line_items: JuteMRLineItemAPI[];
 };
-
-/**
- * Calculate shortage_kgs and accepted_weight based on formulas:
- * shortage_kgs = actual_weight * (difference of allowable moisture and actual moisture % + claim_dust%)
- * accepted_weight = actual_weight - shortage_kgs
- * All values are rounded to 0 decimal places (whole kg).
- */
-function calculateShortageAndAcceptedWeight(
-	actualWeight: number | null,
-	allowableMoisture: number | null,
-	actualMoisture: number | null,
-	claimDust: number | null
-): { shortageKgs: number | null; acceptedWeight: number | null } {
-	if (actualWeight == null || actualWeight <= 0) {
-		return { shortageKgs: null, acceptedWeight: null };
-	}
-
-	const roundedWeight = Math.round(actualWeight);
-	const allowable = allowableMoisture ?? 0;
-	const actual = actualMoisture ?? 0;
-	const dust = claimDust ?? 0;
-
-	// Calculate moisture difference (only if actual > allowable)
-	const moistureDiff = actual > allowable ? actual - allowable : 0;
-
-	// Total deduction percentage
-	const deductionPercentage = moistureDiff + dust;
-
-	if (deductionPercentage <= 0) {
-		return { shortageKgs: 0, acceptedWeight: roundedWeight };
-	}
-
-	// Formula: shortage_kgs = actual_weight * (moisture diff % + claim_dust%)
-	const shortageKgs = Math.round(roundedWeight * deductionPercentage / 100.0);
-
-	// Formula: accepted_weight = actual_weight - shortage_kgs (both integers, result is integer)
-	const acceptedWeight = Math.max(0, roundedWeight - shortageKgs);
-
-	return { shortageKgs, acceptedWeight };
-}
-
-/**
- * Distribute header actual weight to line items proportionally based on actualQty.
- * Uses the largest-remainder method to ensure the sum of line weights
- * equals the header weight exactly (no rounding loss).
- * Also recalculates shortage_kgs and accepted_weight for each line.
- */
-function distributeActualWeightToLineItems(
-	lineItems: MRLineItem[],
-	headerActualWeight: number
-): MRLineItem[] {
-	if (headerActualWeight <= 0 || lineItems.length === 0) {
-		return lineItems;
-	}
-
-	const roundedHeaderWeight = Math.round(headerActualWeight);
-
-	// Calculate total actual quantity
-	const totalActualQty = lineItems.reduce((sum, li) => sum + (li.actualQty ?? 0), 0);
-
-	if (totalActualQty <= 0) {
-		// If no quantities, assign all to first item (single item case)
-		if (lineItems.length === 1) {
-			const li = lineItems[0];
-			const { shortageKgs, acceptedWeight } = calculateShortageAndAcceptedWeight(
-				roundedHeaderWeight,
-				li.allowableMoisture,
-				li.actualMoisture,
-				li.claimDust
-			);
-			return [{
-				...li,
-				actualWeight: roundedHeaderWeight,
-				shortageKgs,
-				acceptedWeight,
-			}];
-		}
-		return lineItems;
-	}
-
-	// --- Largest-remainder method for fair integer distribution ---
-	// 1. Compute exact proportional weights (float) and floor them
-	const withQty = lineItems.map((li) => {
-		const lineActualQty = li.actualQty ?? 0;
-		const exactWeight = lineActualQty > 0
-			? (roundedHeaderWeight * lineActualQty) / totalActualQty
-			: 0;
-		const flooredWeight = Math.floor(exactWeight);
-		const fractionalPart = exactWeight - flooredWeight;
-		return { li, lineActualQty, flooredWeight, fractionalPart };
-	});
-
-	// 2. Calculate remainder to distribute (should be a small integer, 0 to N-1)
-	const flooredSum = withQty.reduce((sum, entry) => sum + entry.flooredWeight, 0);
-	let remainder = roundedHeaderWeight - flooredSum;
-
-	// 3. Sort by fractional part descending — give +1 kg to lines with highest fractions
-	const sortedIndices = withQty
-		.map((_, idx) => idx)
-		.filter((idx) => withQty[idx].lineActualQty > 0)
-		.sort((a, b) => withQty[b].fractionalPart - withQty[a].fractionalPart);
-
-	const finalWeights = withQty.map((entry) => entry.flooredWeight);
-	for (const idx of sortedIndices) {
-		if (remainder <= 0) break;
-		finalWeights[idx] += 1;
-		remainder -= 1;
-	}
-
-	// 4. Apply distributed weights and recalculate shortage/accepted per line
-	return lineItems.map((li, idx) => {
-		const lineActualQty = li.actualQty ?? 0;
-		if (lineActualQty <= 0) {
-			return li;
-		}
-
-		const distributedWeight = finalWeights[idx];
-		const { shortageKgs, acceptedWeight } = calculateShortageAndAcceptedWeight(
-			distributedWeight,
-			li.allowableMoisture,
-			li.actualMoisture,
-			li.claimDust
-		);
-
-		return {
-			...li,
-			actualWeight: distributedWeight,
-			shortageKgs,
-			acceptedWeight,
-		};
-	});
-}
 
 function JuteMREditPageContent() {
 	const searchParams = useSearchParams();
@@ -172,6 +45,9 @@ function JuteMREditPageContent() {
 	const [partyBranchOptions, setPartyBranchOptions] = React.useState<PartyBranchOption[]>([]);
 	const [partyBranchLoading, setPartyBranchLoading] = React.useState(false);
 	const [partyBranchesLoaded, setPartyBranchesLoaded] = React.useState(false);
+	const [poOptions, setPoOptions] = React.useState<MRPoOption[]>([]);
+	const [supplierOptions, setSupplierOptions] = React.useState<MRSupplierOption[]>([]);
+	const [partyOptions, setPartyOptions] = React.useState<MRPartyOption[]>([]);
 	// Tracks unsaved user edits. Approval actions (Pending/Open/Approve/etc.)
 	// are hidden until isDirty === false to prevent sending stale data to
 	// the approval workflow before Save has persisted the latest changes.
@@ -199,6 +75,26 @@ function JuteMREditPageContent() {
 					}
 				}
 
+				// Supplier change cascades: reset party, party branch and PO
+				if (field === "jute_supplier_id") {
+					updated.party_id = null;
+					updated.party_branch_id = null;
+					updated.party_branch_name = null;
+					updated.party_address = null;
+					updated.party_gst_no = null;
+					updated.po_id = null;
+					updated.po_no = null;
+					updated.po_date = null;
+				}
+
+				// Party change cascades: reset party branch (branches depend on party)
+				if (field === "party_id") {
+					updated.party_branch_id = null;
+					updated.party_branch_name = null;
+					updated.party_address = null;
+					updated.party_gst_no = null;
+				}
+
 				return updated;
 			});
 		},
@@ -213,9 +109,9 @@ function JuteMREditPageContent() {
 				prev.map((li) => {
 					if (li.id !== id) return li;
 
-					// Round actualWeight to 0 decimals when edited manually
+					// Round actualWeight to 2 decimals when edited manually
 					const finalValue = field === "actualWeight" && typeof value === "number"
-						? Math.round(value)
+						? round2(value)
 						: value;
 
 					const updated = { ...li, [field]: finalValue };
@@ -250,9 +146,9 @@ function JuteMREditPageContent() {
 		warehouseOptions,
 	});
 
-	// Calculate total accepted weight (MR weight) - round as safety net
+	// Calculate total accepted weight (MR weight) - 2 dp, matches line items
 	const totalAcceptedWeight = React.useMemo(() => {
-		return Math.round(lineItems.reduce((sum, li) => sum + (li.acceptedWeight ?? 0), 0));
+		return round2(lineItems.reduce((sum, li) => sum + (li.acceptedWeight ?? 0), 0));
 	}, [lineItems]);
 
 	// Update header MR weight when total changes
@@ -325,6 +221,52 @@ function JuteMREditPageContent() {
 			setPartyBranchesLoaded(true);
 		} finally {
 			setPartyBranchLoading(false);
+		}
+	}, []);
+
+	/**
+	 * Load approved (open) POs for the MR's supplier, optionally filtered by party.
+	 * Used to populate the PO dropdown on the header.
+	 */
+	const loadOpenPos = React.useCallback(async (supplierId: number, partyId: string | null) => {
+		if (!coId) return;
+		try {
+			const partyParam = partyId ? `&party_id=${partyId}` : "";
+			const url = `${apiRoutesPortalMasters.JUTE_MR_OPEN_POS}/${supplierId}?co_id=${coId}${partyParam}`;
+			const { data, error } = await fetchWithCookie<{ pos: MRPoOption[] }>(url, "GET");
+			if (error || !data) return;
+			setPoOptions(data.pos ?? []);
+		} catch (err) {
+			console.error("Error loading open POs:", err);
+		}
+	}, [coId]);
+
+	/** Load all jute suppliers for the Supplier dropdown. */
+	const loadSuppliers = React.useCallback(async () => {
+		if (!coId) return;
+		try {
+			const url = `${apiRoutesPortalMasters.JUTE_MR_SUPPLIERS}?co_id=${coId}`;
+			const { data, error } = await fetchWithCookie<{ suppliers: MRSupplierOption[] }>(url, "GET");
+			if (error || !data) return;
+			setSupplierOptions(data.suppliers ?? []);
+		} catch (err) {
+			console.error("Error loading suppliers:", err);
+		}
+	}, [coId]);
+
+	/** Load parties mapped to a supplier for the Party dropdown. */
+	const loadParties = React.useCallback(async (supplierId: number) => {
+		try {
+			const url = `${apiRoutesPortalMasters.JUTE_MR_PARTIES}/${supplierId}`;
+			const { data, error } = await fetchWithCookie<{ parties: MRPartyOption[] }>(url, "GET");
+			if (error || !data) {
+				setPartyOptions([]);
+				return;
+			}
+			setPartyOptions(data.parties ?? []);
+		} catch (err) {
+			console.error("Error loading parties:", err);
+			setPartyOptions([]);
 		}
 	}, []);
 
@@ -426,6 +368,27 @@ function JuteMREditPageContent() {
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [header?.party_id, loadPartyBranches]);
+
+	// Load open POs for the MR's supplier/party (for the PO dropdown)
+	React.useEffect(() => {
+		if (header?.jute_supplier_id) {
+			void loadOpenPos(header.jute_supplier_id, header.party_id);
+		}
+	}, [header?.jute_supplier_id, header?.party_id, loadOpenPos]);
+
+	// Load supplier options once company is known (for the Supplier dropdown)
+	React.useEffect(() => {
+		void loadSuppliers();
+	}, [loadSuppliers]);
+
+	// Load party options whenever the supplier changes (for the Party dropdown)
+	React.useEffect(() => {
+		if (header?.jute_supplier_id) {
+			void loadParties(header.jute_supplier_id);
+		} else {
+			setPartyOptions([]);
+		}
+	}, [header?.jute_supplier_id, loadParties]);
 	// Note: We intentionally don't include party_branch_id in deps to avoid re-fetching on selection
 
 	// Approval workflow hook
@@ -474,20 +437,23 @@ function JuteMREditPageContent() {
 
 		try {
 			const payload = {
-				mr_weight: Math.round(header.mr_weight ?? 0),
+				mr_weight: round2(header.mr_weight ?? 0),
+				jute_supplier_id: header.jute_supplier_id,
+				party_id: header.party_id != null ? Number(header.party_id) : null,
 				party_branch_id: header.party_branch_id,
+				po_id: header.po_id,
 				remarks: header.remarks,
 				line_items: lineItems.map((li) => ({
 					jute_mr_li_id: li.juteMrLiId,
 					actual_item_grp_id: li.actualItemId,
 					actual_item_id: li.actualQualityId,
 					actual_qty: li.actualQty,
-					actual_weight: Math.round(li.actualWeight ?? 0),
+					actual_weight: round2(li.actualWeight ?? 0),
 					allowable_moisture: li.allowableMoisture,
 					actual_moisture: li.actualMoisture != null ? li.actualMoisture.toFixed(2) : null,
 					claim_dust: li.claimDust,
-					shortage_kgs: Math.round(li.shortageKgs ?? 0),
-					accepted_weight: Math.round(li.acceptedWeight ?? 0),
+					shortage_kgs: round2(li.shortageKgs ?? 0),
+					accepted_weight: round2(li.acceptedWeight ?? 0),
 					rate: li.rate,
 					claim_rate: li.claimRate,
 					claim_quality: li.claimQuality,
@@ -618,6 +584,9 @@ function JuteMREditPageContent() {
 					partyBranchOptions={partyBranchOptions}
 					partyBranchLoading={partyBranchLoading}
 					partyBranchesLoaded={partyBranchesLoaded}
+						poOptions={poOptions}
+						supplierOptions={supplierOptions}
+						partyOptions={partyOptions}
 					totalAcceptedWeight={totalAcceptedWeight}
 				/>
 			</Box>

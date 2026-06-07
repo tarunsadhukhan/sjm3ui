@@ -23,6 +23,7 @@ export function useMRLineItems({
 				id: "actualItemName",
 				header: "Item",
 				width: "1.4fr",
+				minWidth: "90px",
 				renderCell: ({ item }) => (
 					<span className="text-xs">{item.actualItemName || "-"}</span>
 				),
@@ -32,6 +33,7 @@ export function useMRLineItems({
 				id: "actualQualityName",
 				header: "Actual Quality",
 				width: "1.2fr",
+				minWidth: "130px",
 				renderCell: ({ item }) => (
 					<span className="text-xs">{item.actualQualityName || "-"}</span>
 				),
@@ -41,6 +43,7 @@ export function useMRLineItems({
 				id: "unitConversion",
 				header: "UOM",
 				width: "0.6fr",
+				minWidth: "70px",
 				renderCell: ({ item }) => (
 					<span className="text-xs">{item.unitConversion || "-"}</span>
 				),
@@ -48,8 +51,9 @@ export function useMRLineItems({
 			},
 			{
 				id: "actualQty",
-				header: "Actual Qty",
+				header: "Qty(%)",
 				width: "0.9fr",
+				minWidth: "80px",
 				renderCell: ({ item }) => {
 					if (!canEdit) {
 						return (
@@ -77,12 +81,13 @@ export function useMRLineItems({
 					);
 				},
 				getTooltip: ({ item }) =>
-					item.actualQty != null ? `Actual Qty: ${item.actualQty.toFixed(2)}` : undefined,
+					item.actualQty != null ? `Qty(%): ${item.actualQty.toFixed(2)}` : undefined,
 			},
 			{
 				id: "actualWeight",
 				header: "Actual Weight",
 				width: "1fr",
+				minWidth: "120px",
 				renderCell: ({ item }) => {
 					if (!canEdit) {
 						return (
@@ -116,6 +121,7 @@ export function useMRLineItems({
 				id: "allowableMoisture",
 				header: "Allowable Moisture (%)",
 				width: "1.1fr",
+				minWidth: "150px",
 				renderCell: ({ item }) => {
 					if (!canEdit) {
 						return (
@@ -151,6 +157,7 @@ export function useMRLineItems({
 				id: "actualMoisture",
 				header: "Actual Moisture (%)",
 				width: "1.1fr",
+				minWidth: "140px",
 				renderCell: ({ item }) => {
 					if (!canEdit) {
 						return (
@@ -184,6 +191,7 @@ export function useMRLineItems({
 				id: "claimDust",
 				header: "Claim Dust (%)",
 				width: "1fr",
+				minWidth: "110px",
 				renderCell: ({ item }) => {
 					if (!canEdit) {
 						return (
@@ -217,11 +225,12 @@ export function useMRLineItems({
 				id: "shortageKgs",
 				header: "Shortage (kgs)",
 				width: "1fr",
+				minWidth: "110px",
 				renderCell: ({ item }) => {
 					if (!canEdit) {
 						return (
 							<span className="text-xs">
-								{item.shortageKgs != null ? item.shortageKgs.toFixed(0) : "-"}
+								{item.shortageKgs != null ? item.shortageKgs.toFixed(2) : "-"}
 							</span>
 						);
 					}
@@ -244,12 +253,13 @@ export function useMRLineItems({
 					);
 				},
 				getTooltip: ({ item }) =>
-					item.shortageKgs != null ? `Shortage: ${item.shortageKgs.toFixed(0)} kgs` : undefined,
+					item.shortageKgs != null ? `Shortage: ${item.shortageKgs.toFixed(2)} kgs` : undefined,
 			},
 			{
 				id: "acceptedWeight",
 				header: "Accepted Weight",
 				width: "1.1fr",
+				minWidth: "130px",
 				renderCell: ({ item }) => (
 					<span className="text-xs font-semibold">
 						{item.acceptedWeight != null ? item.acceptedWeight.toFixed(2) : "-"}
@@ -262,6 +272,7 @@ export function useMRLineItems({
 				id: "rate",
 				header: "Rate",
 				width: "0.9fr",
+				minWidth: "90px",
 				renderCell: ({ item }) => {
 					if (!canEdit) {
 						return (
@@ -294,6 +305,7 @@ export function useMRLineItems({
 				id: "claimRate",
 				header: "Claim Rate",
 				width: "1fr",
+				minWidth: "110px",
 				renderCell: ({ item }) => {
 					if (!canEdit) {
 						return (
@@ -327,6 +339,7 @@ export function useMRLineItems({
 				id: "claimQuality",
 				header: "Claim Quality",
 				width: "1.2fr",
+				minWidth: "130px",
 				renderCell: ({ item }) => {
 					if (!canEdit) {
 						return <span className="text-xs">{item.claimQuality || "-"}</span>;
@@ -348,6 +361,7 @@ export function useMRLineItems({
 				id: "waterDamageAmount",
 				header: "Water Damage Amount",
 				width: "1.2fr",
+				minWidth: "150px",
 				renderCell: ({ item }) => {
 					if (!canEdit) {
 						return (
@@ -383,6 +397,7 @@ export function useMRLineItems({
 				id: "premiumAmount",
 				header: "Premium Amount",
 				width: "1.1fr",
+				minWidth: "130px",
 				renderCell: ({ item }) => {
 					if (!canEdit) {
 						return (
@@ -416,6 +431,7 @@ export function useMRLineItems({
 				id: "warehouse",
 				header: "Warehouse",
 				width: "1.4fr",
+				minWidth: "130px",
 				renderCell: ({ item }) => {
 					if (!canEdit) {
 						return (

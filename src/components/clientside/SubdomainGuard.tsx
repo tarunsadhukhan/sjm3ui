@@ -9,9 +9,19 @@ import { apiRoutes } from '@/utils/api';
  * backend DB (con_org_master). If the subdomain is not an active org,
  * triggers Next.js's 404 Not Found page.
  *
- * Runs once on mount — extracts subdomain from window.location.hostname,
- * calls GET /authRoutes/validate-subdomain, and shows 404 if invalid.
+ * Validation runs at most once per browser session and is skipped entirely
+ * once the user is logged in. The subdomain only needs to be validated at
+ * login time — after that the result is cached (sessionStorage) so navigating
+ * between pages never re-calls GET /authRoutes/validate-subdomain.
  */
+const VALIDATION_CACHE_KEY = 'subdomain_validated';
+
+/** True when an auth session cookie is present (i.e. the user is logged in). */
+function hasActiveSession(): boolean {
+  if (typeof document === 'undefined') return false;
+  return document.cookie.split(';').some((c) => c.trim().startsWith('access_token='));
+}
+
 export default function SubdomainGuard() {
   const [checked, setChecked] = React.useState(false);
   const [invalid, setInvalid] = React.useState(false);
@@ -19,6 +29,19 @@ export default function SubdomainGuard() {
   React.useEffect(() => {
     const validateSubdomain = async () => {
       try {
+        // Skip validation once logged in — the subdomain was already validated
+        // at login, so we must not keep hitting the API on every page load.
+        if (hasActiveSession()) {
+          setChecked(true);
+          return;
+        }
+
+        // Skip if already validated earlier in this browser session.
+        if (sessionStorage.getItem(VALIDATION_CACHE_KEY) === '1') {
+          setChecked(true);
+          return;
+        }
+
         const hostname = window.location.hostname;
         let subdomain: string;
 
@@ -52,6 +75,8 @@ export default function SubdomainGuard() {
             setInvalid(true);
             return;
           }
+          // Cache success so we don't re-validate on subsequent page loads.
+          sessionStorage.setItem(VALIDATION_CACHE_KEY, '1');
         } else {
           // API returned an error — fail closed
           setInvalid(true);

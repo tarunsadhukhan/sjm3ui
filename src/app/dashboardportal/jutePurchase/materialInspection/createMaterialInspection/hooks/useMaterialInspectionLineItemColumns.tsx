@@ -108,22 +108,22 @@ export function useGateEntryLineItemColumns({
 				getTooltip: ({ item }) => getQualityLabel(item.challanQuality) || undefined,
 			},
 			{
-				id: "challanQty",
-				header: "Challan Qty",
+				id: "actualQty",
+				header: "Qty (%)",
 				width: "0.8fr",
 				renderCell: ({ item }) => {
 					if (!canEdit) {
-						return <span className="text-xs">{item.challanQty || "-"}</span>;
+						return <span className="text-xs">{item.actualQty || "-"}</span>;
 					}
 					return (
 						<TextField
 							type="number"
 							size="small"
-							value={item.challanQty}
+							value={item.actualQty}
 							onChange={(e) =>
-								handleLineFieldChange(item.id, "challanQty", e.target.value)
+								handleLineFieldChange(item.id, "actualQty", e.target.value)
 							}
-							placeholder="Qty"
+							placeholder="%"
 							inputProps={{ min: 0, step: 0.01 }}
 							sx={{ "& .MuiInputBase-input": { fontSize: "0.75rem", py: 0.5 } }}
 							fullWidth
@@ -135,11 +135,30 @@ export function useGateEntryLineItemColumns({
 				id: "challanWeight",
 				header: "Challan Wt",
 				width: "0.8fr",
-				renderCell: ({ item }) => (
-					<span className="text-xs text-slate-600">
-						{item.challanWeight ? Math.round(parseFloat(item.challanWeight)) : "-"}
-					</span>
-				),
+				renderCell: ({ item }) => {
+					if (!canEdit) {
+						return (
+							<span className="text-xs text-slate-600">
+								{item.challanWeight ? parseFloat(item.challanWeight).toFixed(2) : "-"}
+							</span>
+						);
+					}
+					return (
+						<TextField
+							type="number"
+							size="small"
+							value={item.challanWeight}
+							onChange={(e) =>
+								handleLineFieldChange(item.id, "challanWeight", e.target.value)
+							}
+							placeholder="Wt"
+							inputProps={{ min: 0, step: 0.01 }}
+							disabled={(parseFloat(item.actualQty) || 0) > 0}
+							sx={{ "& .MuiInputBase-input": { fontSize: "0.75rem", py: 0.5 } }}
+							fullWidth
+						/>
+					);
+				},
 			},
 
 			// Actual columns
@@ -194,38 +213,33 @@ export function useGateEntryLineItemColumns({
 				getTooltip: ({ item }) => getQualityLabel(item.actualQuality) || undefined,
 			},
 			{
-				id: "actualQty",
-				header: "Actual Qty",
+				id: "actualWeight",
+				header: "Actual Wt",
 				width: "0.8fr",
 				renderCell: ({ item }) => {
 					if (!canEdit) {
-						return <span className="text-xs">{item.actualQty || "-"}</span>;
+						return (
+							<span className="text-xs text-slate-600">
+								{item.actualWeight ? parseFloat(item.actualWeight).toFixed(2) : "-"}
+							</span>
+						);
 					}
 					return (
 						<TextField
 							type="number"
 							size="small"
-							value={item.actualQty}
+							value={item.actualWeight}
 							onChange={(e) =>
-								handleLineFieldChange(item.id, "actualQty", e.target.value)
+								handleLineFieldChange(item.id, "actualWeight", e.target.value)
 							}
-							placeholder="Qty"
+							placeholder="Wt"
 							inputProps={{ min: 0, step: 0.01 }}
+							disabled={(parseFloat(item.actualQty) || 0) > 0}
 							sx={{ "& .MuiInputBase-input": { fontSize: "0.75rem", py: 0.5 } }}
 							fullWidth
 						/>
 					);
 				},
-			},
-			{
-				id: "actualWeight",
-				header: "Actual Wt",
-				width: "0.8fr",
-				renderCell: ({ item }) => (
-					<span className="text-xs text-slate-600">
-						{item.actualWeight ? Math.round(parseFloat(item.actualWeight)) : "-"}
-					</span>
-				),
 			},
 			// UOM column
 			{

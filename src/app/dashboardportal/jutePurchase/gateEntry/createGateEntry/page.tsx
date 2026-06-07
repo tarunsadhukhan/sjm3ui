@@ -48,6 +48,7 @@ import {
 } from "@mui/material";
 import { ArrowLeft, LogIn, Save, LogOut } from "lucide-react";
 import useSelectedCompanyCoId from "@/hooks/use-selected-company-coid";
+import { useSidebarContextSafe } from "@/components/dashboard/sidebarContext";
 import { fetchWithCookie } from "@/utils/apiClient2";
 import { apiRoutesPortalMasters } from "@/utils/api";
 
@@ -219,6 +220,9 @@ function JuteGateEntryCreatePageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { coId } = useSelectedCompanyCoId();
+  // Sidebar-selected branches (first one is the default in create mode)
+  const sidebar = useSidebarContextSafe();
+  const selectedBranches = sidebar?.selectedBranches;
 
   // Derive mode and ID from URL
   const modeParam = searchParams?.get("mode") ?? "create";
@@ -262,10 +266,25 @@ function JuteGateEntryCreatePageContent() {
     }));
   }, [setupData]);
 
+  // Default the branch (create mode only) to the sidebar-selected branch.
+  // If multiple branches are selected, the first one is used as the default.
+  React.useEffect(() => {
+    if (!isCreateMode) return;
+    if (formValues.branch) return; // don't override an existing/user-chosen value
+    if (branchOptions.length === 0) return;
+    if (!selectedBranches || selectedBranches.length === 0) return;
+
+    const defaultBranchValue = String(selectedBranches[0]);
+    // Only apply if the selected branch actually exists in the available options
+    if (branchOptions.some((opt) => opt.value === defaultBranchValue)) {
+      setFormValues((prev) => ({ ...prev, branch: defaultBranchValue }));
+    }
+  }, [isCreateMode, formValues.branch, branchOptions, selectedBranches]);
+
   // Calculate weights whenever gross/tare/shortage changes (only in create/edit mode)
   React.useEffect(() => {
     if (isViewMode) return;
-    
+
     const gross = parseFloat(formValues.grossWeight) || 0;
     const tare = parseFloat(formValues.tareWeight) || 0;
     const shortage = parseFloat(formValues.variableShortage) || 0;
@@ -762,7 +781,7 @@ function JuteGateEntryCreatePageContent() {
           >
             {/* Challan Weight */}
             <TextField
-              label="Challan Weight (Kg)"
+              label="Challan Weight (Qtl)"
               type="number"
               fullWidth
               value={formValues.challanWeight}
@@ -773,7 +792,7 @@ function JuteGateEntryCreatePageContent() {
 
             {/* Gross Weight */}
             <TextField
-              label="Gross Weight (Kg)"
+              label="Gross Weight (Qtl)"
               type="number"
               required
               fullWidth
@@ -795,7 +814,7 @@ function JuteGateEntryCreatePageContent() {
           >
             {/* Tare Weight - locked until QC is complete */}
             <TextField
-              label="Tare Weight (Kg)"
+              label="Tare Weight (Qtl)"
               type="number"
               fullWidth
               value={formValues.tareWeight}
@@ -807,7 +826,7 @@ function JuteGateEntryCreatePageContent() {
 
             {/* Net Weight - Calculated/Disabled */}
             <TextField
-              label="Net Weight (Kg)"
+              label="Net Weight (Qtl)"
               type="number"
               fullWidth
               value={formValues.netWeight}
@@ -817,7 +836,7 @@ function JuteGateEntryCreatePageContent() {
 
             {/* Variable Shortage - locked until QC is complete */}
             <TextField
-              label="Variable Shortage (Kg)"
+              label="Variable Shortage (Qtl)"
               type="number"
               fullWidth
               value={formValues.variableShortage}
@@ -829,7 +848,7 @@ function JuteGateEntryCreatePageContent() {
 
             {/* Actual Weight - Calculated/Disabled */}
             <TextField
-              label="Actual Weight (Kg)"
+              label="Actual Weight (Qtl)"
               type="number"
               fullWidth
               value={formValues.actualWeight}

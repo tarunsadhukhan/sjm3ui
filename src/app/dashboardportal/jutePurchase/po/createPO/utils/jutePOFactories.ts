@@ -94,5 +94,6 @@ export const buildDefaultFormValues = (): JutePOFormValues => ({
   deliveryTimeline: "",
   expectedDate: "",
   freightCharge: "",
+  daltaPc: "",
   remarks: "",
 });

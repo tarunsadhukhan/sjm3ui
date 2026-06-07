@@ -214,7 +214,7 @@ export const mapLineItemsFromAPI = (lineItems: GateEntryLineItemAPI[]): GateEntr
 		challanQty: li.challan_quantity ? String(li.challan_quantity) : "",
 		challanWeight: li.challan_weight ? String(li.challan_weight) : "",
 		actualItem: li.actual_item_grp_id ? String(li.actual_item_grp_id) : "",
-		actualQuality: li.actual_item_id ? String(li.actual_item_id) : "",
+		actualQuality: li.actual_quality_id ? String(li.actual_quality_id) : "",
 		actualQty: li.actual_qty ? String(li.actual_qty) : "",
 		actualWeight: li.actual_weight ? String(li.actual_weight) : "",
 		juteUom: li.unit_conversion ?? "",

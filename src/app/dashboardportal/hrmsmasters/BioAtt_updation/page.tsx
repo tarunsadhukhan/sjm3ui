@@ -19,6 +19,7 @@ import BioAttProcessDialog from "./BioAttProcessDialog";
 import BioAttFinalProcessDialog from "./BioAttFinalProcessDialog";
 import BioAttEtrackDialog from "./BioAttEtrackDialog";
 import BioAttEtrackProcessDialog from "./BioAttEtrackProcessDialog";
+import BioAttEtrackProcessDDialog from "./BioAttEtrackProcessDDialog";
 import BioAttBprocessDialog from "./BioAttBprocessDialog";
 import BioAttBAttenDialog from "./BioAttBAttenDialog";
 import BioAttFilterDialog, {
@@ -134,6 +135,7 @@ export default function BioAttUpdationListPage() {
 	const [finalProcessOpen, setFinalProcessOpen] = useState(false);
 	const [etrackOpen, setEtrackOpen] = useState(false);
 	const [etrackProcessOpen, setEtrackProcessOpen] = useState(false);
+	const [etrackProcessDOpen, setEtrackProcessDOpen] = useState(false);
 	const [bprocessOpen, setBprocessOpen] = useState(false);
 	const [bAttenOpen, setBAttenOpen] = useState(false);
 
@@ -286,6 +288,8 @@ export default function BioAttUpdationListPage() {
 	const handleEtrackClose = useCallback(() => setEtrackOpen(false), []);
 	const handleEtrackProcessClick = useCallback(() => setEtrackProcessOpen(true), []);
 	const handleEtrackProcessClose = useCallback(() => setEtrackProcessOpen(false), []);
+	const handleEtrackProcessDClick = useCallback(() => setEtrackProcessDOpen(true), []);
+	const handleEtrackProcessDClose = useCallback(() => setEtrackProcessDOpen(false), []);
 	const handleBprocessClick = useCallback(() => setBprocessOpen(true), []);
 	const handleBprocessClose = useCallback(() => setBprocessOpen(false), []);
 	const handleBAttenClick = useCallback(() => setBAttenOpen(true), []);
@@ -555,6 +559,9 @@ export default function BioAttUpdationListPage() {
 							<Button variant="contained" color="secondary" onClick={handleEtrackProcessClick}>
 								Etrack Process
 							</Button>
+							<Button variant="contained" color="secondary" onClick={handleEtrackProcessDClick}>
+								Etrack Process (D)
+							</Button>
 							<Button variant="contained" color="secondary" onClick={handleBprocessClick}>
 								Bprocess
 							</Button>
@@ -602,6 +609,11 @@ export default function BioAttUpdationListPage() {
 					<BioAttEtrackProcessDialog
 						open={etrackProcessOpen}
 						onClose={handleEtrackProcessClose}
+						onSuccess={handleProcessSuccess}
+					/>
+					<BioAttEtrackProcessDDialog
+						open={etrackProcessDOpen}
+						onClose={handleEtrackProcessDClose}
 						onSuccess={handleProcessSuccess}
 					/>
 					<BioAttBprocessDialog

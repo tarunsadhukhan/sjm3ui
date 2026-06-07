@@ -195,7 +195,7 @@ export type GateEntryLineItemAPI = {
 	challan_weight: number | null;
 	actual_item_grp_id: number | null;
 	actual_group_name: string | null;
-	actual_item_id: number | null;
+	actual_quality_id: number | null;  // Backend aliases jute_mr_li.actual_item_id AS actual_quality_id
 	actual_quality_name: string | null;
 	actual_qty: number | null;  // Backend returns actual_qty (not actual_quantity)
 	actual_weight: number | null;

@@ -156,8 +156,8 @@ describe("MRPreview", () => {
 
 	it("renders shortageKgs in Claim in Kgs column", () => {
 		render(<MRPreview header={mockHeader} lineItems={mockLineItems} totalAcceptedWeight={16550} />);
-		// li-2 has shortageKgs = 100, appears in both data row and totals
-		const matches = screen.getAllByText("100");
+		// li-2 has shortageKgs = 100, appears in both data row and totals (2 dp)
+		const matches = screen.getAllByText("100.00");
 		expect(matches.length).toBeGreaterThanOrEqual(1);
 	});
 

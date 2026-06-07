@@ -12,14 +12,14 @@ import { recalculateLineItemWeights } from "../utils/MaterialInspectionCalculati
 type UseGateEntryLineItemsParams = {
 	mode: MuiFormMode;
 	headerChallanWeight: number;
-	headerActualWeight: number;
+	headerTareWeight: number;
 	getQualityOptions: (itemId: string) => Option[];
 };
 
 export function useGateEntryLineItems({
 	mode,
 	headerChallanWeight,
-	headerActualWeight,
+	headerTareWeight,
 	getQualityOptions,
 }: UseGateEntryLineItemsParams) {
 	const {
@@ -37,14 +37,14 @@ export function useGateEntryLineItems({
 	// Recalculate weights when header values change
 	React.useEffect(() => {
 		if (mode === "view") return;
-		if (headerChallanWeight <= 0 && headerActualWeight <= 0) return;
+		if (headerChallanWeight <= 0 && headerTareWeight <= 0) return;
 
 		setLineItems((prev) => {
 			if (prev.length === 0) return prev;
 
-			return recalculateLineItemWeights(prev, headerChallanWeight, headerActualWeight);
+			return recalculateLineItemWeights(prev, headerChallanWeight, headerTareWeight);
 		});
-	}, [headerChallanWeight, headerActualWeight, mode, setLineItems]);
+	}, [headerChallanWeight, headerTareWeight, mode, setLineItems]);
 
 	/**
 	 * Handle field changes with cascading logic.
@@ -77,14 +77,15 @@ export function useGateEntryLineItems({
 				return;
 			}
 
-			// Handle quantity changes -> trigger weight recalculation
-			if (field === "challanQty" || field === "actualQty") {
+			// Qty (%) change, or a manual weight entry on a 0% row -> recalculate.
+			// Recalc distributes weights for % > 0 rows and rebalances the last
+			// % > 0 row so each column ties out to the header total.
+			if (field === "actualQty" || field === "challanWeight" || field === "actualWeight") {
 				setLineItems((prev) => {
 					const updated = prev.map((item) =>
 						item.id === id ? { ...item, [field]: rawValue } : item
 					);
-					// Recalculate weights after qty change
-					return recalculateLineItemWeights(updated, headerChallanWeight, headerActualWeight);
+					return recalculateLineItemWeights(updated, headerChallanWeight, headerTareWeight);
 				});
 				return;
 			}
@@ -94,7 +95,7 @@ export function useGateEntryLineItems({
 				prev.map((item) => (item.id === id ? { ...item, [field]: rawValue } : item))
 			);
 		},
-		[mode, setLineItems, headerChallanWeight, headerActualWeight]
+		[mode, setLineItems, headerChallanWeight, headerTareWeight]
 	);
 
 	return {

@@ -218,6 +218,14 @@ export function useJutePOFormSchemas({
         placeholder: "Optional",
       },
       {
+        name: "daltaPc",
+        label: "Less (%)",
+        type: "number",
+        disabled: isViewMode,
+        grid: { xs: 12, sm: 6, md: 3 },
+        placeholder: "Optional",
+      },
+      {
         name: "remarks",
         label: "Remarks",
         type: "text",

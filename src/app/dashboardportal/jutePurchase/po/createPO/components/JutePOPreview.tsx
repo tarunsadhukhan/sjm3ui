@@ -163,6 +163,12 @@ export function JutePOPreview({
               <span className="font-semibold">Freight Charge:</span>
               <span>₹ {formatAmount(parseFloat(formValues.freightCharge) || 0)}</span>
             </div>
+            {formValues.daltaPc && (
+              <div className="flex gap-2">
+                <span className="font-semibold">Less (%):</span>
+                <span>{formValues.daltaPc}</span>
+              </div>
+            )}
           </div>
 
           {/* Line Items Table */}

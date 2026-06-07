@@ -73,48 +73,145 @@ export const getTotalActualWeight = (lineItems: GateEntryLineItem[]): number =>
 	lineItems.reduce((sum, li) => sum + (parseFloat(li.actualWeight) || 0), 0);
 
 /**
- * Recalculate all line item weights based on header values and quantities.
- * Line item actual weight is based on header actual_weight (net - variable_shortage)
- * distributed proportionally by actual quantity.
+ * Distribute a header total across line items based on the per-line Qty (%) value.
+ *
+ * Rules:
+ * - Lines with % = 0 keep their manually entered weight (preserved as-is).
+ * - The amount distributed across the % > 0 lines is the header total MINUS the
+ *   sum of the 0% manual weights (the "distributable" amount):
+ *     distributable = total - sum(weights where % = 0)
+ * - Lines with % > 0 are auto-calculated against the distributable amount:
+ *     weight = ROUND((% / 100) * distributable, 2)
+ *   e.g. =+ROUND((C3-G5)*F3, 2) where C3 = header total, G5 = 0% row weight.
+ * - The LAST line with % > 0 is the balancing row so the column total ties out to
+ *   the header total exactly:
+ *     lastWeight = total - sum(weights where % = 0) - sum(other % > 0 weights)
+ *
+ * @param lineItems  the line items
+ * @param total      the header total to distribute (challan wt or tare wt)
+ * @param field      which weight field to populate
+ */
+const distributeWeightsByPercent = (
+	lineItems: GateEntryLineItem[],
+	total: number,
+	field: "challanWeight" | "actualWeight"
+): string[] => {
+	const pctOf = (li: GateEntryLineItem) => parseFloat(li.actualQty) || 0;
+
+	// Start from the existing values (so % = 0 rows keep their manual weight)
+	const result = lineItems.map((li) => li[field] ?? "");
+
+	const pctIndices = lineItems
+		.map((li, idx) => ({ idx, pct: pctOf(li) }))
+		.filter((x) => x.pct > 0)
+		.map((x) => x.idx);
+
+	if (pctIndices.length === 0 || total <= 0) {
+		return result;
+	}
+
+	// Sum of manually given weights on the 0% rows
+	const zeroPctSum = lineItems.reduce(
+		(sum, li) => (pctOf(li) === 0 ? sum + (parseFloat(li[field]) || 0) : sum),
+		0
+	);
+
+	// Percentages are applied to the amount left after the 0% manual weights,
+	// not the full header total: distributable = total - zeroPctSum.
+	const distributable = total - zeroPctSum;
+
+	const lastPctIdx = pctIndices[pctIndices.length - 1];
+	let otherPctSum = 0;
+
+	for (const idx of pctIndices) {
+		if (idx === lastPctIdx) continue;
+		const weight = Number(((pctOf(lineItems[idx]) / 100) * distributable).toFixed(2));
+		result[idx] = weight.toFixed(2);
+		otherPctSum += weight;
+	}
+
+	// Last % > 0 row balances the column so it ties out to the header total
+	const lastWeight = total - zeroPctSum - otherPctSum;
+	result[lastPctIdx] = lastWeight.toFixed(2);
+
+	return result;
+};
+
+/**
+ * Recalculate line item weights from the per-line Qty (%) input.
+ * - challan weight is distributed against the header challan weight
+ * - actual weight is distributed against the header tare weight
  */
 export const recalculateLineItemWeights = (
 	lineItems: GateEntryLineItem[],
 	headerChallanWeight: number,
-	headerActualWeight: number
+	headerTareWeight: number
 ): GateEntryLineItem[] => {
-	const totalChallanQty = getTotalChallanQty(lineItems);
-	const totalActualQty = getTotalActualQty(lineItems);
+	const challanWeights = distributeWeightsByPercent(lineItems, headerChallanWeight, "challanWeight");
+	const actualWeights = distributeWeightsByPercent(lineItems, headerTareWeight, "actualWeight");
 
-	return lineItems.map((li, index) => {
-		const lineChallanQty = parseFloat(li.challanQty) || 0;
-		const lineActualQty = parseFloat(li.actualQty) || 0;
+	return lineItems.map((li, i) => ({
+		...li,
+		challanWeight: challanWeights[i],
+		actualWeight: actualWeights[i],
+	}));
+};
 
-		let challanWeightValue = "";
-		if (totalChallanQty > 0) {
-			if (lineChallanQty > 0) {
-				challanWeightValue = String(calculateChallanWeight(headerChallanWeight, totalChallanQty, lineChallanQty).toFixed(2));
-			}
-		} else if (index === 0 && lineItems.length === 1 && headerChallanWeight > 0) {
-			// If only one line exists and no qty yet, assign full weight
-			challanWeightValue = String(headerChallanWeight.toFixed(2));
+/** Tolerance for floating-point percent/weight tie-out comparisons. */
+const TIE_TOLERANCE = 0.01;
+
+/**
+ * Validate the line-item distribution before a save/complete action.
+ *
+ * Rules (per the challan-weight distribution spec):
+ * - The challan weight column must tie out to the header challan weight.
+ * - The actual weight column must tie out to the header tare weight.
+ *
+ * A line "participates" if it carries a percentage or a weight (so blank
+ * trailing rows are ignored). Returns null when there is nothing to validate or
+ * everything ties out; otherwise returns a human-readable error message.
+ *
+ * @param lineItems            the line items
+ * @param headerChallanWeight  header challan weight (challan column should equal this)
+ * @param headerTareWeight     header tare weight (actual column should equal this)
+ */
+export const validateLineItemDistribution = (
+	lineItems: GateEntryLineItem[],
+	headerChallanWeight: number,
+	headerTareWeight: number
+): string | null => {
+	const participating = lineItems.filter(
+		(li) =>
+			(parseFloat(li.actualQty) || 0) > 0 ||
+			(parseFloat(li.challanWeight) || 0) > 0 ||
+			(parseFloat(li.actualWeight) || 0) > 0
+	);
+
+	if (participating.length === 0) return null;
+
+	// Challan weight column must tie out to the header challan weight.
+	if (headerChallanWeight > 0) {
+		const totalChallanWeight = participating.reduce(
+			(sum, li) => sum + (parseFloat(li.challanWeight) || 0),
+			0
+		);
+		if (Math.abs(totalChallanWeight - headerChallanWeight) > TIE_TOLERANCE) {
+			return `Total challan weight (${totalChallanWeight.toFixed(2)}) must equal the header challan weight (${headerChallanWeight.toFixed(2)}).`;
 		}
+	}
 
-		let actualWeightValue = "";
-		if (totalActualQty > 0) {
-			if (lineActualQty > 0) {
-				actualWeightValue = String(Math.round(calculateLineActualWeight(headerActualWeight, totalActualQty, lineActualQty)));
-			}
-		} else if (index === 0 && lineItems.length === 1 && headerActualWeight > 0) {
-			// If only one line exists and no qty yet, assign full weight
-			actualWeightValue = String(Math.round(headerActualWeight));
+	// Actual weight column must tie out to the header tare weight.
+	if (headerTareWeight > 0) {
+		const totalActualWeight = participating.reduce(
+			(sum, li) => sum + (parseFloat(li.actualWeight) || 0),
+			0
+		);
+		if (Math.abs(totalActualWeight - headerTareWeight) > TIE_TOLERANCE) {
+			return `Total actual weight (${totalActualWeight.toFixed(2)}) must equal the tare weight (${headerTareWeight.toFixed(2)}).`;
 		}
+	}
 
-		return {
-			...li,
-			challanWeight: challanWeightValue,
-			actualWeight: actualWeightValue,
-		};
-	});
+	return null;
 };
 
 /**

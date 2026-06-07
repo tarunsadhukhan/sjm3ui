@@ -146,7 +146,7 @@ export function TransactionLineItems<TItem>({
                     </div>
                   ) : null}
             {columns.map((column) => (
-              <span key={column.id} className="truncate">
+              <span key={column.id} className="whitespace-normal break-words leading-tight">
                 {column.header}
               </span>
             ))}

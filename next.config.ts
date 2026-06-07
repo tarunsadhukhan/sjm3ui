@@ -2,18 +2,21 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   allowedDevOrigins: [
-    '127.0.0.1',
     'localhost',
-    '192.168.0.223',
     '*.localhost',
+    // Catch-all for ANY IPv4 address (e.g. 192.168.0.133, 192.168.3.225,
+    // 103.154.234.213, ...). Next matches allowedDevOrigins per dot-separated
+    // segment, and every IPv4 is exactly 4 segments, so `*.*.*.*` matches them
+    // all. Without an allow-listed origin, Next dev blocks /_next/* (HMR + RSC),
+    // and the failed fetches make the App Router hard-reload the page
+    // ("page auto-refreshing every few minutes"). This is a dev-only setting.
+    '*.*.*.*',
     '*.127.0.0.1.nip.io',
-    '13.126.47.172',
     '*.13.126.47.172.nip.io',
-    // Remote dev server IP — without this, Next dev blocks /_next/* (HMR + RSC
-    // payloads) for this origin, and failed RSC fetches make the App Router do a
-    // hard reload. Add any other host/IP you reach the dev server from here.
-    '103.154.234.213',
     '*.103.154.234.213.nip.io',
+    // Production-style tenant domains used in dev (sls, dev3, admin, ...).
+    'vowerp.co.in',
+    '*.vowerp.co.in',
   ],
   images: {
     // Allow image optimization for localhost subdomains
@@ -84,10 +87,7 @@ const nextConfig: NextConfig = {
     const backendUrl = backendHost.includes('http')
       ? `${backendHost}/api`
       : `http://${backendHost}/api`;
-  
-    console.log('USE_NEXT_PROXY:', useProxy);
-    console.log('Backend proxy target:', backendUrl);
-  
+
     if (!useProxy) {
       return [];
     }

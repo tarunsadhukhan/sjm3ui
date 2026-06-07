@@ -39,7 +39,7 @@ import {
 	GATE_ENTRY_STATUS_LABELS,
 	UOM_OPTIONS,
 } from "./utils/MaterialInspectionConstants";
-import { calculateNetWeight, calculateLineItemTotals, recalculateLineItemWeights } from "./utils/MaterialInspectionCalculations";
+import { calculateNetWeight, calculateLineItemTotals, recalculateLineItemWeights, validateLineItemDistribution } from "./utils/MaterialInspectionCalculations";
 import {
 	mapGateEntrySetupResponse,
 	buildBranchOptions,
@@ -138,19 +138,11 @@ function JuteGateEntryCreatePageContent() {
 		return buildPOOptions(filteredPOs);
 	}, [setupData, formValues.branch]);
 
-	// Calculate header weights:
-	// net_weight = gross_weight - tare_weight
-	// actual_weight = net_weight - variable_shortage (used for line item distribution)
+	// Header weights used for line-item distribution:
+	// - challan weight column is distributed against header challan weight
+	// - actual weight column is distributed against header tare weight
 	const headerChallanWeight = parseFloat(formValues.challanWeight) || 0;
-	const grossWeight = parseFloat(formValues.grossWeight) || 0;
 	const tareWeight = parseFloat(formValues.tareWeight) || 0;
-	const variableShortage = parseFloat(formValues.variableShortage) || 0;
-	const headerNetWeight = grossWeight > 0 && tareWeight > 0 && grossWeight > tareWeight 
-		? calculateNetWeight(grossWeight, tareWeight) 
-		: 0;
-	const headerActualWeight = headerNetWeight > 0 
-		? Math.max(0, headerNetWeight - variableShortage)
-		: 0;
 
 	// Line items hook
 	const {
@@ -162,7 +154,7 @@ function JuteGateEntryCreatePageContent() {
 	} = useGateEntryLineItems({
 		mode,
 		headerChallanWeight,
-		headerActualWeight,
+		headerTareWeight: tareWeight,
 		getQualityOptions: (itemId) =>
 			(qualitiesByItem[itemId] ?? []).map((q) => ({
 				label: q.quality_name,
@@ -573,6 +565,17 @@ function JuteGateEntryCreatePageContent() {
 			return;
 		}
 
+		// Validate line-item % distribution and weight tie-outs:
+		// total Qty (%) must be 100, challan weights must equal header challan
+		// weight, and actual weights must equal tare weight. Skips automatically
+		// when there are no participating lines (e.g. IN with no line items).
+		const challanWeight = parseFloat(formValues.challanWeight) || 0;
+		const distributionError = validateLineItemDistribution(lineItems, challanWeight, tareWeight);
+		if (distributionError) {
+			setPageError(distributionError);
+			return;
+		}
+
 		// Line items are optional for IN action
 
 		setSaving(true);
@@ -691,17 +694,30 @@ function JuteGateEntryCreatePageContent() {
 		// We check both existing database records and new records
 		const filledLines = lineItems.filter((li) => li.actualItem);
 		
-		// Validate that filled lines have quality and qty (weights are optional)
-		const incompleteLines = filledLines.filter(
-			(li) => !li.actualQuality || !li.actualQty
-		);
+		// Validate that filled lines have a quality (qty/weights are optional)
+		const incompleteLines = filledLines.filter((li) => !li.actualQuality);
 		if (incompleteLines.length > 0) {
-			setPageError("Please fill in Actual Quality and Actual Qty for all line items");
+			setPageError("Please fill in Actual Quality for all line items");
 			return;
 		}
 
 		if (filledLines.length === 0) {
 			setPageError("Please fill in at least one line item with actual data before completing QC");
+			return;
+		}
+
+		// Validate line-item % distribution and weight tie-outs before completing QC:
+		// total Qty (%) must be 100, challan weights must equal header challan weight,
+		// and actual weights must equal tare weight.
+		const challanWeightForQc = parseFloat(formValues.challanWeight) || 0;
+		const tareWeightForQc = parseFloat(formValues.tareWeight) || 0;
+		const qcDistributionError = validateLineItemDistribution(
+			lineItems,
+			challanWeightForQc,
+			tareWeightForQc
+		);
+		if (qcDistributionError) {
+			setPageError(qcDistributionError);
 			return;
 		}
 
@@ -917,7 +933,7 @@ function JuteGateEntryCreatePageContent() {
 				canEdit: mode !== "view",
 				onRemoveSelected: removeLineItems,
 				title: "Line Items",
-				subtitle: `${lineItemTotals.validLineCount} items | Challan Qty: ${lineItemTotals.totalChallanQty.toFixed(2)} | Actual Qty: ${lineItemTotals.totalActualQty.toFixed(2)}`,
+				subtitle: `${lineItemTotals.validLineCount} items | Challan Qty: ${lineItemTotals.totalChallanQty.toFixed(2)} | Qty(%): ${lineItemTotals.totalActualQty.toFixed(2)}`,
 			}}
 			alerts={
 				pageError ? (

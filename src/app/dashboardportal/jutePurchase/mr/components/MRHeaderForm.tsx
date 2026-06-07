@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Card, CardContent, Grid, TextField, Typography, MenuItem, FormControl, InputLabel, Select, FormHelperText, Alert } from "@mui/material";
-import type { JuteMRHeader, PartyBranchOption } from "../types/mrTypes";
+import type { JuteMRHeader, MRPoOption, MRSupplierOption, MRPartyOption, PartyBranchOption } from "../types/mrTypes";
 
 type MRHeaderFormProps = {
 	header: JuteMRHeader;
@@ -10,13 +10,48 @@ type MRHeaderFormProps = {
 	partyBranchLoading?: boolean;
 	/** True once party branches have been fetched (to distinguish empty from loading) */
 	partyBranchesLoaded?: boolean;
+	/** Open POs for the supplier/party, for the PO dropdown */
+	poOptions?: MRPoOption[];
+	/** All suppliers, for the Supplier dropdown */
+	supplierOptions?: MRSupplierOption[];
+	/** Parties for the selected supplier, for the Party dropdown */
+	partyOptions?: MRPartyOption[];
 	/** Total accepted weight calculated from line items */
 	totalAcceptedWeight?: number;
 };
 
-export function MRHeaderForm({ header, mode, onHeaderChange, partyBranchOptions = [], partyBranchLoading = false, partyBranchesLoaded = false, totalAcceptedWeight }: MRHeaderFormProps) {
+export function MRHeaderForm({ header, mode, onHeaderChange, partyBranchOptions = [], partyBranchLoading = false, partyBranchesLoaded = false, poOptions = [], supplierOptions = [], partyOptions = [], totalAcceptedWeight }: MRHeaderFormProps) {
 	const showGateEntryDate = header.src_com_id != null;
 	const readOnly = mode === "view";
+
+	// PO dropdown options: ensure the already-saved PO is always present/selectable.
+	const poOpts = React.useMemo(() => {
+		const list = [...poOptions];
+		if (header.po_id != null && !list.some((o) => o.jute_po_id === header.po_id)) {
+			list.unshift({ jute_po_id: header.po_id, po_num: header.po_no, po_date: header.po_date });
+		}
+		return list;
+	}, [poOptions, header.po_id, header.po_no, header.po_date]);
+	const selectedPo = poOpts.find((o) => o.jute_po_id === header.po_id) ?? null;
+
+	// Supplier options: ensure the saved supplier is always present/selectable.
+	const supplierOpts = React.useMemo(() => {
+		const list = [...supplierOptions];
+		if (header.jute_supplier_id != null && !list.some((o) => o.supplier_id === header.jute_supplier_id)) {
+			list.unshift({ supplier_id: header.jute_supplier_id, supplier_name: header.supplier_name });
+		}
+		return list;
+	}, [supplierOptions, header.jute_supplier_id, header.supplier_name]);
+
+	// Party options: ensure the saved party is always present/selectable.
+	const savedPartyId = header.party_id != null ? Number(header.party_id) : null;
+	const partyOpts = React.useMemo(() => {
+		const list = [...partyOptions];
+		if (savedPartyId != null && !list.some((o) => o.party_id === savedPartyId)) {
+			list.unshift({ party_id: savedPartyId, party_name: header.party_name });
+		}
+		return list;
+	}, [partyOptions, savedPartyId, header.party_name]);
 	
 	// Use prop if provided, otherwise fall back to header value
 	const displayMRWeight = totalAcceptedWeight ?? header.mr_weight ?? 0;
@@ -48,20 +83,57 @@ export function MRHeaderForm({ header, mode, onHeaderChange, partyBranchOptions 
 						/>
 					</Grid>
 					<Grid size={{ xs: 12, md: 4 }}>
-						<TextField
-							label="Supplier"
-							fullWidth
-							value={header.supplier_name ?? ""}
-							InputProps={{ readOnly: true }}
-						/>
+						{readOnly ? (
+							<TextField
+								label="Supplier"
+								fullWidth
+								value={header.supplier_name ?? ""}
+								InputProps={{ readOnly: true }}
+							/>
+						) : (
+							<FormControl fullWidth>
+								<InputLabel id="supplier-label">Supplier</InputLabel>
+								<Select
+									labelId="supplier-label"
+									label="Supplier"
+									value={header.jute_supplier_id ?? ""}
+									onChange={(e) => onHeaderChange?.("jute_supplier_id", e.target.value ? Number(e.target.value) : null)}
+								>
+									{supplierOpts.map((s) => (
+										<MenuItem key={s.supplier_id} value={s.supplier_id}>
+											{s.supplier_name ?? s.supplier_id}
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
+						)}
 					</Grid>
 					<Grid size={{ xs: 12, md: 4 }}>
-						<TextField
-							label="Party"
-							fullWidth
-							value={header.party_name ?? ""}
-							InputProps={{ readOnly: true }}
-						/>
+						{readOnly ? (
+							<TextField
+								label="Party"
+								fullWidth
+								value={header.party_name ?? ""}
+								InputProps={{ readOnly: true }}
+							/>
+						) : (
+							<FormControl fullWidth>
+								<InputLabel id="party-label">Party</InputLabel>
+								<Select
+									labelId="party-label"
+									label="Party"
+									value={savedPartyId ?? ""}
+									onChange={(e) => onHeaderChange?.("party_id", e.target.value ? String(e.target.value) : null)}
+									disabled={!header.jute_supplier_id}
+								>
+									{partyOpts.map((p) => (
+										<MenuItem key={p.party_id} value={p.party_id}>
+											{p.party_name ?? p.party_id}
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
+						)}
 					</Grid>
 					<Grid size={{ xs: 12, md: 4 }}>
 						{readOnly || partyBranchOptions.length <= 1 ? (
@@ -94,18 +166,36 @@ export function MRHeaderForm({ header, mode, onHeaderChange, partyBranchOptions 
 						)}
 					</Grid>
 					<Grid size={{ xs: 12, md: 4 }}>
-						<TextField
-							label="PO No"
-							fullWidth
-							value={header.po_no ?? ""}
-							InputProps={{ readOnly: true }}
-						/>
+						{readOnly ? (
+							<TextField
+								label="PO No"
+								fullWidth
+								value={selectedPo?.po_num ?? header.po_no ?? ""}
+								InputProps={{ readOnly: true }}
+							/>
+						) : (
+							<FormControl fullWidth>
+								<InputLabel id="po-no-label">PO No</InputLabel>
+								<Select
+									labelId="po-no-label"
+									label="PO No"
+									value={header.po_id ?? ""}
+									onChange={(e) => onHeaderChange?.("po_id", e.target.value ? Number(e.target.value) : null)}
+								>
+									{poOpts.map((po) => (
+										<MenuItem key={po.jute_po_id} value={po.jute_po_id}>
+											{po.po_num ?? po.jute_po_id}
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
+						)}
 					</Grid>
 					<Grid size={{ xs: 12, md: 4 }}>
 						<TextField
 							label="PO Date"
 							fullWidth
-							value={header.po_date ?? ""}
+							value={selectedPo?.po_date ?? header.po_date ?? ""}
 							InputProps={{ readOnly: true }}
 						/>
 					</Grid>

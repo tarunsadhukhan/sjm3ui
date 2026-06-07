@@ -129,6 +129,7 @@ export type JutePOFormValues = {
   deliveryTimeline: string;
   expectedDate: string; // Auto-calculated: poDate + deliveryTimeline
   freightCharge: string;
+  daltaPc: string; // "Less (%)" deduction percentage -> stored as dalta_pc
   remarks: string;
 };
 
@@ -173,6 +174,7 @@ export type JutePODetails = {
   credit_term?: string;
   delivery_timeline?: string;
   frieght_charge?: number;
+  dalta_pc?: number;
   remarks?: string;
   status_id: number;
   status?: string;

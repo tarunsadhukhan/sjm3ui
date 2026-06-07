@@ -303,7 +303,7 @@ export const MRPreview: React.FC<MRPreviewProps> = ({ header, lineItems, totalAc
 								</td>
 								<td style={tdRight}>{fmt(li.challanWeight, 2)}</td>
 								<td style={tdRight}>{fmt(li.actualWeight, 2)}</td>
-								<td style={tdRight}>{li.shortageKgs ? fmt(li.shortageKgs) : ""}</td>
+								<td style={tdRight}>{li.shortageKgs ? fmt(li.shortageKgs, 2) : ""}</td>
 								<td style={tdRight}>{fmt(li.acceptedWeight, 2)}</td>
 								<td style={tdRight}>{fmt(li.rate, 2)}</td>
 								<td style={tdStyle}>{formatClaimQuality(li.claimQuality, li.claimRate, li.claimDust)}</td>
@@ -318,7 +318,7 @@ export const MRPreview: React.FC<MRPreviewProps> = ({ header, lineItems, totalAc
 							<td style={tdStyle} />
 							<td style={tdRight}><strong>{fmt(totals.challan, 2)}</strong></td>
 							<td style={tdRight}><strong>{fmt(totals.mill, 2)}</strong></td>
-							<td style={tdRight}><strong>{totals.claimKgs ? fmt(totals.claimKgs) : ""}</strong></td>
+							<td style={tdRight}><strong>{totals.claimKgs ? fmt(totals.claimKgs, 2) : ""}</strong></td>
 							<td style={tdRight}><strong>{fmt(totals.approved, 2)}</strong></td>
 							<td style={tdRight} />
 							<td style={tdStyle} />
