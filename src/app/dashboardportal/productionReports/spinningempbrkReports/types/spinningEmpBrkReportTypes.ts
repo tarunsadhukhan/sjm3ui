@@ -15,6 +15,8 @@ export interface SpinningEmpBrkRow {
   loss_i: number;
   total_loss: number;
   actual_run: number;
+  /** Run minutes as recorded in the VVFD transaction (mc_runs_time). */
+  As_per_VVfd: number | null;
   machine_doff: number;
   doff_wt: number;
   rpm: number;

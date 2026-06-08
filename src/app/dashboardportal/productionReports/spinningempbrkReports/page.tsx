@@ -210,11 +210,12 @@ export default function SpinningEmpBrkReportsPage() {
 			`<th rowspan="2">Employee's Name</th>` +
 			`<th rowspan="2">Frame No</th>` +
 			`<th rowspan="2">Count</th>` +
-			`<th rowspan="2">Power Min</th>` +
-			`<th colspan="4">Loss Min</th>` +
-			`<th rowspan="2">Total Loss Min</th>` +
-			`<th rowspan="2">Actual Run Min</th>` +
-			`<th rowspan="2">Machine Doff</th>` +
+			`<th rowspan="2">W.Hours</th>` +
+			`<th colspan="4">Loss Hrs</th>` +
+			`<th rowspan="2">Total Loss Hrs</th>` +
+			`<th rowspan="2">Actual Run Hrs</th>` +
+			`<th rowspan="2">As per VVFD Hrs</th>` +
+			`<th rowspan="2">No of Doff</th>` +
 			`<th rowspan="2">Doff Wt</th>` +
 			`<th rowspan="2">RPM</th>` +
 			`<th rowspan="2">Effcy 100%</th>` +
@@ -238,6 +239,7 @@ export default function SpinningEmpBrkReportsPage() {
 				`<td>${fmtNum(r.loss_i)}</td>` +
 				`<td>${fmtNum(r.total_loss)}</td>` +
 				`<td>${fmtNum(r.actual_run)}</td>` +
+				`<td>${fmtNum(r.As_per_VVfd)}</td>` +
 				`<td>${fmtNum(r.machine_doff)}</td>` +
 				`<td>${fmtNum(r.doff_wt)}</td>` +
 				`<td>${fmtNum(r.rpm)}</td>` +
@@ -269,14 +271,15 @@ export default function SpinningEmpBrkReportsPage() {
 			{ header: "Employee's Name", key: "emp_name", text: true, width: 24 },
 			{ header: "Frame No", key: "frame_no", text: true, width: 11 },
 			{ header: "Count", key: "count", fmt: "0.00", width: 9 },
-			{ header: "Power Min", key: "power_min", width: 10 },
+			{ header: "W. Hours", key: "power_min", width: 10 },
 			{ header: "D", key: "loss_d", width: 7, group: "Loss Min" },
 			{ header: "M", key: "loss_m", width: 7, group: "Loss Min" },
 			{ header: "E", key: "loss_e", width: 7, group: "Loss Min" },
 			{ header: "I", key: "loss_i", width: 7, group: "Loss Min" },
-			{ header: "Total Loss Min", key: "total_loss", width: 13 },
-			{ header: "Actual Run Min", key: "actual_run", width: 13 },
-			{ header: "Machine Doff", key: "machine_doff", width: 12 },
+			{ header: "Total Loss Hrs", key: "total_loss", width: 13 },
+			{ header: "Actual Run Hrs", key: "actual_run", width: 13 },
+			{ header: "As per VVFD Hrs", key: "As_per_VVfd", width: 12 },
+			{ header: "No of Doff", key: "machine_doff", width: 12 },
 			{ header: "Doff Wt", key: "doff_wt", fmt: "0.00", width: 10 },
 			{ header: "RPM", key: "rpm", width: 9 },
 			{ header: "Effcy 100%", key: "eff_100", width: 11 },
@@ -429,14 +432,15 @@ export default function SpinningEmpBrkReportsPage() {
 				sortable: false,
 			},
 			num("count", "Count", 75),
-			num("power_min", "Power Min", 90),
+			num("power_min", "Work Hours", 90),
 			num("loss_d", "D", 60),
 			num("loss_m", "M", 60),
 			num("loss_e", "E", 60),
 			num("loss_i", "I", 60),
-			num("total_loss", "Total Loss Min", 110),
-			num("actual_run", "Actual Run Min", 110),
-			num("machine_doff", "Machine Doff", 100),
+			num("total_loss", "Total Loss Hrs", 110),
+			num("actual_run", "Actual Run Hrs", 110),
+			num("As_per_VVfd", "As per VVFD Hrs", 100),
+			num("machine_doff", "No of Doff", 100),
 			num("doff_wt", "Doff Wt", 85),
 			num("rpm", "RPM", 80),
 			num("eff_100", "Effcy 100%", 95),
