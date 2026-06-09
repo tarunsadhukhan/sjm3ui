@@ -41,6 +41,8 @@ const mockHeader: JuteMRHeader = {
 	status: "Open",
 	src_com_id: null,
 	jute_gate_entry_date: null,
+	jute_gate_entry_no: null,
+	po_dalta_pc: null,
 	updated_by: null,
 	updated_date_time: null,
 	co_name: null,

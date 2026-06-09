@@ -13,6 +13,8 @@ export type TransactionLineColumn<TItem> = {
   /** Minimum width for the column (e.g. "130px"). Prevents the column from shrinking below this when the viewport is narrow or zoomed in. */
   minWidth?: string;
   className?: string;
+  /** Horizontal alignment for the header and cell content (e.g. "right" for numeric columns). */
+  align?: "left" | "center" | "right";
   renderCell: (context: { item: TItem; index: number; canEdit: boolean }) => React.ReactNode;
   getTooltip?: (context: { item: TItem; index: number; canEdit: boolean }) => string | undefined;
 };
@@ -146,7 +148,11 @@ export function TransactionLineItems<TItem>({
                     </div>
                   ) : null}
             {columns.map((column) => (
-              <span key={column.id} className="whitespace-normal break-words leading-tight">
+              <span
+                key={column.id}
+                className="whitespace-normal break-words leading-tight"
+                style={column.align ? { textAlign: column.align } : undefined}
+              >
                 {column.header}
               </span>
             ))}
@@ -199,7 +205,23 @@ export function TransactionLineItems<TItem>({
                     );
 
                     return (
-                      <div key={column.id} className={column.className ?? "transaction-grid-cell"}>
+                      <div
+                        key={column.id}
+                        className={column.className ?? "transaction-grid-cell"}
+                        style={
+                          column.align
+                            ? {
+                                textAlign: column.align,
+                                alignItems:
+                                  column.align === "right"
+                                    ? "flex-end"
+                                    : column.align === "center"
+                                      ? "center"
+                                      : "flex-start",
+                              }
+                            : undefined
+                        }
+                      >
                         {wrapped}
                       </div>
                     );

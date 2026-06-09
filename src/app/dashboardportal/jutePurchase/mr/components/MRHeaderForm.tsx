@@ -28,11 +28,14 @@ export function MRHeaderForm({ header, mode, onHeaderChange, partyBranchOptions 
 	const poOpts = React.useMemo(() => {
 		const list = [...poOptions];
 		if (header.po_id != null && !list.some((o) => o.jute_po_id === header.po_id)) {
-			list.unshift({ jute_po_id: header.po_id, po_num: header.po_no, po_date: header.po_date });
+			list.unshift({ jute_po_id: header.po_id, po_num: header.po_no, po_date: header.po_date, dalta_pc: header.po_dalta_pc });
 		}
 		return list;
-	}, [poOptions, header.po_id, header.po_no, header.po_date]);
+	}, [poOptions, header.po_id, header.po_no, header.po_date, header.po_dalta_pc]);
 	const selectedPo = poOpts.find((o) => o.jute_po_id === header.po_id) ?? null;
+
+	// Less (%) is read-only and sourced from the linked PO's dalta_pc.
+	const lessPc = selectedPo?.dalta_pc ?? header.po_dalta_pc;
 
 	// Supplier options: ensure the saved supplier is always present/selectable.
 	const supplierOpts = React.useMemo(() => {
@@ -285,6 +288,25 @@ export function MRHeaderForm({ header, mode, onHeaderChange, partyBranchOptions 
 							/>
 						</Grid>
 					)}
+					{showGateEntryDate && (
+						<Grid size={{ xs: 12, md: 4 }}>
+							<TextField
+								label="Gate Entry No"
+								fullWidth
+								value={header.jute_gate_entry_no ?? ""}
+								InputProps={{ readOnly: true }}
+							/>
+						</Grid>
+					)}
+					<Grid size={{ xs: 12, md: 4 }}>
+						<TextField
+							label="Less (%)"
+							fullWidth
+							value={lessPc ?? ""}
+							InputProps={{ readOnly: true }}
+							helperText="From the linked PO"
+						/>
+					</Grid>
 					<Grid size={{ xs: 12 }}>
 						<TextField
 							label="Remarks"

@@ -37,6 +37,9 @@ export type JuteMRHeader = {
 	status: string | null;
 	src_com_id: number | null;
 	jute_gate_entry_date: string | null;
+	jute_gate_entry_no: number | null;
+	/** Less (%) copied from the linked PO's dalta_pc (read-only on the MR). */
+	po_dalta_pc: number | null;
 	updated_by: number | null;
 	updated_date_time: string | null;
 	co_name: string | null;
@@ -51,6 +54,8 @@ export type MRPoOption = {
 	jute_po_id: number;
 	po_num: string | number | null;
 	po_date: string | null;
+	/** Less (%) on the PO, shown read-only on the MR header. */
+	dalta_pc?: number | null;
 };
 
 // Supplier option type (MR Supplier dropdown)

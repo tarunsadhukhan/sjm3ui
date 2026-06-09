@@ -140,10 +140,17 @@ function JuteMREditPageContent() {
 		[]
 	);
 
+	// Less (%) from the selected PO (falls back to the saved value on the header).
+	const lessPc = React.useMemo(() => {
+		const selected = poOptions.find((o) => o.jute_po_id === header?.po_id);
+		return selected?.dalta_pc ?? header?.po_dalta_pc ?? null;
+	}, [poOptions, header?.po_id, header?.po_dalta_pc]);
+
 	const lineItemColumns = useMRLineItems({
 		canEdit: mode !== "view",
 		handleLineFieldChange,
 		warehouseOptions,
+		lessPc,
 	});
 
 	// Calculate total accepted weight (MR weight) - 2 dp, matches line items

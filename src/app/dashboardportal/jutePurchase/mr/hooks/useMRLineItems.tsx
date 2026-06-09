@@ -10,12 +10,15 @@ type UseMRLineItemsParams = {
 	canEdit: boolean;
 	handleLineFieldChange: (id: string, field: keyof MRLineItem, value: string | number | null) => void;
 	warehouseOptions: WarehouseOption[];
+	/** Less (%) from the linked PO; used to compute the read-only Less Weight column. */
+	lessPc?: number | null;
 };
 
 export function useMRLineItems({
 	canEdit,
 	handleLineFieldChange,
 	warehouseOptions,
+	lessPc = null,
 }: UseMRLineItemsParams): TransactionLineColumn<MRLineItem>[] {
 	return React.useMemo(
 		(): TransactionLineColumn<MRLineItem>[] => [
@@ -51,6 +54,7 @@ export function useMRLineItems({
 			},
 			{
 				id: "actualQty",
+				align: "right",
 				header: "Qty(%)",
 				width: "0.9fr",
 				minWidth: "80px",
@@ -85,6 +89,7 @@ export function useMRLineItems({
 			},
 			{
 				id: "actualWeight",
+				align: "right",
 				header: "Actual Weight",
 				width: "1fr",
 				minWidth: "120px",
@@ -118,7 +123,29 @@ export function useMRLineItems({
 					item.actualWeight != null ? `Actual Weight: ${item.actualWeight.toFixed(2)}` : undefined,
 			},
 			{
+				id: "lessWeight",
+				align: "right",
+				header: "Less Weight",
+				width: "1fr",
+				minWidth: "110px",
+				renderCell: ({ item }) => {
+					const lw =
+						item.actualWeight != null && lessPc != null
+							? (item.actualWeight * lessPc) / 100
+							: null;
+					return <span className="text-xs">{lw != null ? lw.toFixed(2) : "-"}</span>;
+				},
+				getTooltip: ({ item }) => {
+					const lw =
+						item.actualWeight != null && lessPc != null
+							? (item.actualWeight * lessPc) / 100
+							: null;
+					return lw != null ? `Less Weight: ${lw.toFixed(2)}` : undefined;
+				},
+			},
+			{
 				id: "allowableMoisture",
+				align: "right",
 				header: "Allowable Moisture (%)",
 				width: "1.1fr",
 				minWidth: "150px",
@@ -155,6 +182,7 @@ export function useMRLineItems({
 			},
 			{
 				id: "actualMoisture",
+				align: "right",
 				header: "Actual Moisture (%)",
 				width: "1.1fr",
 				minWidth: "140px",
@@ -189,6 +217,7 @@ export function useMRLineItems({
 			},
 			{
 				id: "claimDust",
+				align: "right",
 				header: "Claim Dust (%)",
 				width: "1fr",
 				minWidth: "110px",
@@ -223,6 +252,7 @@ export function useMRLineItems({
 			},
 			{
 				id: "shortageKgs",
+				align: "right",
 				header: "Shortage (kgs)",
 				width: "1fr",
 				minWidth: "110px",
@@ -257,6 +287,7 @@ export function useMRLineItems({
 			},
 			{
 				id: "acceptedWeight",
+				align: "right",
 				header: "Accepted Weight",
 				width: "1.1fr",
 				minWidth: "130px",
@@ -270,6 +301,7 @@ export function useMRLineItems({
 			},
 			{
 				id: "rate",
+				align: "right",
 				header: "Rate",
 				width: "0.9fr",
 				minWidth: "90px",
@@ -303,6 +335,7 @@ export function useMRLineItems({
 			},
 			{
 				id: "claimRate",
+				align: "right",
 				header: "Claim Rate",
 				width: "1fr",
 				minWidth: "110px",
@@ -359,6 +392,7 @@ export function useMRLineItems({
 			},
 			{
 				id: "waterDamageAmount",
+				align: "right",
 				header: "Water Damage Amount",
 				width: "1.2fr",
 				minWidth: "150px",
@@ -395,6 +429,7 @@ export function useMRLineItems({
 			},
 			{
 				id: "premiumAmount",
+				align: "right",
 				header: "Premium Amount",
 				width: "1.1fr",
 				minWidth: "130px",
@@ -454,6 +489,6 @@ export function useMRLineItems({
 				getTooltip: ({ item }) => item.warehousePath || undefined,
 			},
 		],
-		[canEdit, handleLineFieldChange, warehouseOptions]
+		[canEdit, handleLineFieldChange, warehouseOptions, lessPc]
 	);
 }
