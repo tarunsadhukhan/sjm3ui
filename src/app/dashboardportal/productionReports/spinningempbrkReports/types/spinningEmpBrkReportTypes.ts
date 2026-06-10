@@ -12,7 +12,10 @@ export interface SpinningEmpBrkRow {
   loss_d: number;
   loss_m: number;
   loss_e: number;
+  /** "Other" loss minutes — displayed as the "O" column. */
   loss_i: number;
+  /** Idle loss minutes — displayed as the "IDLE" column. */
+  loss_idle: number;
   total_loss: number;
   actual_run: number;
   /** Run minutes as recorded in the VVFD transaction (mc_runs_time). */

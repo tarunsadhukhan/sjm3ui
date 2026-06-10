@@ -96,6 +96,8 @@ type GateEntryDetails = {
   jute_mr_id: number;
   jute_gate_entry_no: number | null;
   branch_id: number | null;
+  po_id: number | null;
+  po_dalta_pc: number | null;
   jute_gate_entry_date: string | null;
   in_time: string | null;
   out_date: string | null;
@@ -256,6 +258,10 @@ function JuteGateEntryCreatePageContent() {
   const isOutComplete = Boolean(details?.out_time);
   // QC checkpoint: qc_check=1 means QC is complete
   const isQcComplete = details?.qc_check === 1;
+  // PO-driven shortage: when a PO is linked and it carries a "Less (%)" (dalta_pc),
+  // Variable Shortage is auto-derived from Net Weight instead of being entered manually.
+  const poDaltaPc = details?.po_dalta_pc ?? 0;
+  const isShortageAuto = Boolean(details?.po_id) && poDaltaPc > 0;
 
   // Build branch options
   const branchOptions = React.useMemo<Option[]>(() => {
@@ -281,23 +287,44 @@ function JuteGateEntryCreatePageContent() {
     }
   }, [isCreateMode, formValues.branch, branchOptions, selectedBranches]);
 
-  // Calculate weights whenever gross/tare/shortage changes (only in create/edit mode)
+  // Calculate weights whenever gross/tare/shortage/challan changes (only in create/edit mode).
+  // Business rules:
+  //  - Net Weight is capped at Challan Weight: if (gross - tare) < challan then net = gross - tare,
+  //    else net = challan. When challan is blank/0, net falls back to gross - tare.
+  //  - When a PO is linked and carries a "Less (%)" (dalta_pc > 0), Variable Shortage is
+  //    auto-derived: round(net * dalta_pc / 100, 2). Otherwise the manually entered value is used.
+  //  - Actual Weight = net - variable shortage.
   React.useEffect(() => {
     if (isViewMode) return;
 
     const gross = parseFloat(formValues.grossWeight) || 0;
     const tare = parseFloat(formValues.tareWeight) || 0;
-    const shortage = parseFloat(formValues.variableShortage) || 0;
+    const challan = parseFloat(formValues.challanWeight) || 0;
 
-    const net = gross - tare;
+    const grossMinusTare = gross - tare;
+    const net = challan > 0 ? Math.min(grossMinusTare, challan) : grossMinusTare;
+
+    const shortage = isShortageAuto
+      ? Math.round(Math.max(0, net) * poDaltaPc) / 100 // net * (dalta_pc / 100), rounded to 2 dp
+      : parseFloat(formValues.variableShortage) || 0;
     const actual = net - shortage;
 
     setFormValues((prev) => ({
       ...prev,
       netWeight: net > 0 ? net.toFixed(2) : "",
+      // Only overwrite shortage when it is PO-derived; otherwise keep the user's manual entry.
+      ...(isShortageAuto ? { variableShortage: shortage > 0 ? shortage.toFixed(2) : "" } : {}),
       actualWeight: actual > 0 ? actual.toFixed(2) : "",
     }));
-  }, [formValues.grossWeight, formValues.tareWeight, formValues.variableShortage, isViewMode]);
+  }, [
+    formValues.grossWeight,
+    formValues.tareWeight,
+    formValues.challanWeight,
+    formValues.variableShortage,
+    isViewMode,
+    isShortageAuto,
+    poDaltaPc,
+  ]);
 
   // Fetch setup data and entry details on mount
   React.useEffect(() => {
@@ -834,7 +861,7 @@ function JuteGateEntryCreatePageContent() {
               InputProps={{ inputProps: { min: 0, step: 0.01 } }}
             />
 
-            {/* Variable Shortage - locked until QC is complete */}
+            {/* Variable Shortage - locked until QC is complete; auto-derived from PO "Less (%)" when linked */}
             <TextField
               label="Variable Shortage (Qtl)"
               type="number"
@@ -842,8 +869,14 @@ function JuteGateEntryCreatePageContent() {
               value={formValues.variableShortage}
               onChange={(e) => handleFieldChange("variableShortage", e.target.value)}
               InputProps={{ inputProps: { min: 0, step: 0.01 } }}
-              disabled={isViewMode || (isEditMode && !isQcComplete)}
-              helperText={isEditMode && !isQcComplete && !isViewMode ? "QC must be completed first" : undefined}
+              disabled={isViewMode || isShortageAuto || (isEditMode && !isQcComplete)}
+              helperText={
+                isShortageAuto && !isViewMode
+                  ? `Auto-calculated from PO Less (${poDaltaPc}%)`
+                  : isEditMode && !isQcComplete && !isViewMode
+                  ? "QC must be completed first"
+                  : undefined
+              }
             />
 
             {/* Actual Weight - Calculated/Disabled */}
