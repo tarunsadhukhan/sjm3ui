@@ -108,10 +108,8 @@ export const MRPreview: React.FC<MRPreviewProps> = ({ header, lineItems, totalAc
 			.text-right { text-align: right; }
 			.text-center { text-align: center; }
 			.print-hidden { display: none !important; }
-			.co-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
-			.co-left, .co-right { min-width: 200px; max-width: 25%; }
-			.co-center { flex: 1; text-align: center; }
-			.co-logo { max-height: 56px; max-width: 180px; object-fit: contain; margin-bottom: 4px; }
+			.co-header { text-align: center; margin-bottom: 12px; }
+			.co-logo { display: block; margin: 0 auto 4px; max-height: 56px; max-width: 180px; object-fit: contain; }
 		`;
 		win.document.head.appendChild(s);
 
@@ -146,60 +144,59 @@ export const MRPreview: React.FC<MRPreviewProps> = ({ header, lineItems, totalAc
 			</Stack>
 
 			<Box ref={previewRef} sx={{ p: 2, fontFamily: "Arial, sans-serif", fontSize: "12px" }}>
-				{/* ── Header: Company Logo & Details + Title + Spacer ── */}
-				<Stack direction="row" justifyContent="space-between" alignItems="center" className="co-header" sx={{ mb: 2 }}>
-					{/* Left: Company Details */}
-					<Box className="co-left" sx={{ textAlign: "left" }}>
-						{header.co_logo && (
-							<Box
-								component="img"
-								src={header.co_logo}
-								alt="Company Logo"
-								className="co-logo"
-								sx={{ maxHeight: 56, maxWidth: 180, objectFit: "contain", mb: 0.5 }}
-							/>
-						)}
-						{header.co_name && (
-							<Typography variant="body2" fontWeight={700} sx={{ mb: 0.5 }}>
-								{header.co_name}
-							</Typography>
-						)}
-						{header.co_address1 && (
-							<Typography variant="caption" display="block" sx={{ mb: 0.25 }}>
-								{header.co_address1}
-							</Typography>
-						)}
-						{header.co_address2 && (
-							<Typography variant="caption" display="block" sx={{ mb: 0.25 }}>
-								{header.co_address2}
-							</Typography>
-						)}
-						{header.co_zipcode && (
-							<Typography variant="caption" display="block" sx={{ mb: 0.5 }}>
-								{String(header.co_zipcode)}
-							</Typography>
-						)}
-						{header.branch_name && (
-							<Typography
-								variant="caption"
-								display="block"
-								sx={{ fontStyle: "italic", color: "text.secondary", mt: 0.5 }}
-							>
-								{header.branch_name}
-							</Typography>
-						)}
-					</Box>
-
-					{/* Center: Title */}
-					<Box className="co-center" sx={{ flex: 1 }}>
-						<Typography variant="h5" fontWeight={700} textAlign="center">
-							Material Receipt
+				{/* ── Centered Company Letterhead + Title ── */}
+				<Box className="co-header" sx={{ textAlign: "center", mb: 2 }}>
+					{header.co_logo && (
+						<Box
+							component="img"
+							src={header.co_logo}
+							alt="Company Logo"
+							className="co-logo"
+							sx={{ maxHeight: 56, maxWidth: 180, objectFit: "contain", mb: 0.5, mx: "auto", display: "block" }}
+						/>
+					)}
+					{header.co_name && (
+						<Typography variant="h6" fontWeight={700} sx={{ mb: 0.5 }}>
+							{header.co_name}
 						</Typography>
-					</Box>
+					)}
+					{header.co_address1 && (
+						<Typography variant="caption" display="block" sx={{ mb: 0.25 }}>
+							{header.co_address1}
+						</Typography>
+					)}
+					{header.co_address2 && (
+						<Typography variant="caption" display="block" sx={{ mb: 0.25 }}>
+							{header.co_address2}
+						</Typography>
+					)}
+					{header.co_zipcode && (
+						<Typography variant="caption" display="block" sx={{ mb: 0.25 }}>
+							{String(header.co_zipcode)}
+						</Typography>
+					)}
+					{(header.branch_contact_no || header.branch_email) && (
+						<Typography variant="caption" display="block" sx={{ mb: 0.25 }}>
+							{header.branch_contact_no && <>Phone: {String(header.branch_contact_no)}</>}
+							{header.branch_contact_no && header.branch_email && <>{"  |  "}</>}
+							{header.branch_email && <>Email: {header.branch_email}</>}
+						</Typography>
+					)}
+					{header.branch_name && (
+						<Typography
+							variant="caption"
+							display="block"
+							sx={{ fontStyle: "italic", color: "text.secondary", mt: 0.5 }}
+						>
+							{header.branch_name}
+						</Typography>
+					)}
 
-					{/* Right: Spacer */}
-					<Box className="co-right" />
-				</Stack>
+					{/* Document Title */}
+					<Typography variant="h5" fontWeight={700} sx={{ mt: 1.5 }}>
+						Material Receipt
+					</Typography>
+				</Box>
 
 				{/* ── Header Fields (two-column key:value pairs) ── */}
 				<Box

@@ -50,6 +50,8 @@ const mockHeader: JuteMRHeader = {
 	co_address1: null,
 	co_address2: null,
 	co_zipcode: null,
+	branch_contact_no: null,
+	branch_email: null,
 };
 
 const mockLineItems: MRLineItem[] = [
@@ -119,9 +121,10 @@ describe("MRPreview", () => {
 		expect(screen.getByText("23/05/2025")).toBeInTheDocument();
 	});
 
-	it("renders supplier (M/S), PO, challan, lorry fields", () => {
+	it("renders party (M/S), PO, challan, lorry fields", () => {
 		render(<MRPreview header={mockHeader} lineItems={[]} totalAcceptedWeight={0} />);
-		expect(screen.getByText("SHIVAM ENTERPRISES")).toBeInTheDocument();
+		// M/S shows party_name when present, falling back to supplier_name.
+		expect(screen.getByText("XYZ Traders")).toBeInTheDocument();
 		expect(screen.getByText("37")).toBeInTheDocument();
 		expect(screen.getByText("24/25-26")).toBeInTheDocument();
 		expect(screen.getByText("WB/57B/0592")).toBeInTheDocument();

@@ -47,6 +47,10 @@ export type JuteMRHeader = {
 	co_address1: string | null;
 	co_address2: string | null;
 	co_zipcode: number | null;
+	/** Branch contact number, shown as the phone on the print header. */
+	branch_contact_no: number | string | null;
+	/** Branch email, shown on the print header. */
+	branch_email: string | null;
 };
 
 // Open PO option type (MR PO dropdown)

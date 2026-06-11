@@ -123,27 +123,6 @@ export function useMRLineItems({
 					item.actualWeight != null ? `Actual Weight: ${item.actualWeight.toFixed(2)}` : undefined,
 			},
 			{
-				id: "lessWeight",
-				align: "right",
-				header: "Less Weight",
-				width: "1fr",
-				minWidth: "110px",
-				renderCell: ({ item }) => {
-					const lw =
-						item.actualWeight != null && lessPc != null
-							? (item.actualWeight * lessPc) / 100
-							: null;
-					return <span className="text-xs">{lw != null ? lw.toFixed(2) : "-"}</span>;
-				},
-				getTooltip: ({ item }) => {
-					const lw =
-						item.actualWeight != null && lessPc != null
-							? (item.actualWeight * lessPc) / 100
-							: null;
-					return lw != null ? `Less Weight: ${lw.toFixed(2)}` : undefined;
-				},
-			},
-			{
 				id: "allowableMoisture",
 				align: "right",
 				header: "Allowable Moisture (%)",
