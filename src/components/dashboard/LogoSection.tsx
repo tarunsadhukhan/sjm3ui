@@ -21,10 +21,10 @@ const LogoSection = ({ isCollapsed, onToggle, isMobile, onClose }: LogoSectionPr
         {!isCollapsed && (
           <div className="logoBlock">
                 <Image src="/app-icons/android-192.png"
-                height={60}
-                width={150}
+                height={40}
+                width={40}
                 alt="Logo"
-                className="w-auto h-auto"
+                className="h-10 w-auto"
                 unoptimized
                 loading="eager"
                 priority
@@ -34,10 +34,10 @@ const LogoSection = ({ isCollapsed, onToggle, isMobile, onClose }: LogoSectionPr
         {isCollapsed && (
           <div className="logoBlock mx-auto">
                 <Image src="/app-icons/android-192.png"
-                height={40}
-                width={40}
+                height={32}
+                width={32}
                 alt="Logo"
-                className="w-auto h-auto"
+                className="h-8 w-8"
                 unoptimized
                 loading="eager"
                 priority
