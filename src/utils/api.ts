@@ -360,6 +360,11 @@ const apiRoutesPortalMasters = {
     JUTE_MATERIAL_INSPECTION_SAVE_MOISTURE: `${API_URL}/juteMaterialInspection/save_moisture_readings`,
 
     // Jute MR endpoints
+    JUTE_MUKAM_RECVD_SETUP: `${API_URL}/juteMukamRecv/jute_mukam_recvd_setup`,
+    JUTE_MUKAM_RECVD_GET: `${API_URL}/juteMukamRecv/jute_mukam_recvd`,
+    JUTE_MUKAM_RECVD_CREATE: `${API_URL}/juteMukamRecv/jute_mukam_recvd_create`,
+    JUTE_MUKAM_RECVD_UPDATE: `${API_URL}/juteMukamRecv/jute_mukam_recvd_update`,
+
     JUTE_MR_TABLE: `${API_URL}/juteMR/get_mr_table`,
     JUTE_MR_BY_ID: `${API_URL}/juteMR/get_mr_by_id`,
     JUTE_MR_UPDATE: `${API_URL}/juteMR/update_mr`,
