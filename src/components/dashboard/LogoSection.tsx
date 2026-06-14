@@ -19,25 +19,27 @@ const LogoSection = ({ isCollapsed, onToggle, isMobile, onClose }: LogoSectionPr
   return (
         <div className="flex items-center justify-between p-4 border-b border-[#005580]">
         {!isCollapsed && (
-          <div className="logoBlock">
+          <div className="logoBlock flex items-center gap-2 cursor-pointer" onClick={handleChangeDashboard}>
                 <Image src="/app-icons/android-192.png"
-                height={40}
-                width={40}
+                height={28}
+                width={28}
                 alt="Logo"
-                className="h-10 w-auto"
+                className="h-7 w-auto"
                 unoptimized
                 loading="eager"
-                priority
-                onClick={handleChangeDashboard} />
+                priority />
+                <span className="text-white font-semibold text-sm leading-tight whitespace-nowrap">
+                  Global Erp Solutions
+                </span>
               </div>
         )}
         {isCollapsed && (
           <div className="logoBlock mx-auto">
                 <Image src="/app-icons/android-192.png"
-                height={32}
-                width={32}
+                height={24}
+                width={24}
                 alt="Logo"
-                className="h-8 w-8"
+                className="h-6 w-6"
                 unoptimized
                 loading="eager"
                 priority
