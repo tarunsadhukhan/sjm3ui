@@ -6,17 +6,9 @@ import {
   Typography,
   TextField,
   MenuItem,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  TableContainer,
-  IconButton,
   CircularProgress,
   Paper,
 } from "@mui/material";
-import { Trash2 } from "lucide-react";
 import Swal from "sweetalert2";
 import { Button } from "@/components/ui/button";
 import { useSelectedCompanyCoId } from "@/hooks/use-selected-company-coid";
@@ -69,7 +61,7 @@ export default function SupplierRegistrationPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [supplier, setSupplier] = useState<SupplierForm>(EMPTY_SUPPLIER);
-  const [branches, setBranches] = useState<BranchPayload[]>([{ ...EMPTY_BRANCH }]);
+  const [branch, setBranch] = useState<BranchPayload>({ ...EMPTY_BRANCH });
 
   useEffect(() => {
     if (!coId) return;
@@ -82,6 +74,13 @@ export default function SupplierRegistrationPage() {
         Swal.fire({ title: "Error", text: error || "Failed to load setup", icon: "error" });
       } else {
         setSetup(data);
+        // Default party type to "Jute Supplier"
+        const juteType = data.party_types.find((p) =>
+          p.party_types_mst_name?.toLowerCase().includes("jute supplier"),
+        );
+        if (juteType) {
+          setSupplier((prev) => ({ ...prev, party_type: String(juteType.party_types_mst_id) }));
+        }
       }
       setLoading(false);
     };
@@ -95,26 +94,18 @@ export default function SupplierRegistrationPage() {
     [],
   );
 
-  const updateBranch = useCallback((idx: number, patch: Partial<BranchPayload>) => {
-    setBranches((prev) => {
-      const copy = prev.map((b, i) => (i === idx ? { ...b, ...patch } : b));
-      // keep exactly one trailing blank row
-      if (!isBranchEmpty(copy[copy.length - 1])) copy.push({ ...EMPTY_BRANCH });
-      return copy;
-    });
-  }, []);
-
-  const removeBranch = useCallback((idx: number) => {
-    setBranches((prev) => {
-      const next = prev.filter((_, i) => i !== idx);
-      return next.length ? next : [{ ...EMPTY_BRANCH }];
-    });
-  }, []);
+  const updateBranch = useCallback(
+    (patch: Partial<BranchPayload>) => setBranch((prev) => ({ ...prev, ...patch })),
+    [],
+  );
 
   const resetForm = useCallback(() => {
-    setSupplier(EMPTY_SUPPLIER);
-    setBranches([{ ...EMPTY_BRANCH }]);
-  }, []);
+    const juteType = setup?.party_types.find((p) =>
+      p.party_types_mst_name?.toLowerCase().includes("jute supplier"),
+    );
+    setSupplier({ ...EMPTY_SUPPLIER, party_type: juteType ? String(juteType.party_types_mst_id) : "" });
+    setBranch({ ...EMPTY_BRANCH });
+  }, [setup]);
 
   // City options for a branch, filtered by its selected state
   const citiesForState = useCallback(
@@ -140,7 +131,7 @@ export default function SupplierRegistrationPage() {
       // Soft duplicate on branch unique fields — ask to continue
       if (data?.duplicate && data.conflicts?.length) {
         const list = data.conflicts
-          .map((c) => `• ${c.label} <b>${c.value}</b> is already linked to <b>${c.supplier}</b>`)
+          .map((c) => `• ${c.label} <b>${c.value}</b> is already entered`)
           .join("<br/>");
         const confirm = await Swal.fire({
           title: "Already Linked",
@@ -176,7 +167,7 @@ export default function SupplierRegistrationPage() {
       Swal.fire({ title: "Required", text: "Please select a party type", icon: "warning" });
       return;
     }
-    const cleanBranches = branches.filter((b) => !isBranchEmpty(b));
+    const cleanBranches = isBranchEmpty(branch) ? [] : [branch];
 
     setSaving(true);
     try {
@@ -188,7 +179,7 @@ export default function SupplierRegistrationPage() {
     } finally {
       setSaving(false);
     }
-  }, [coId, supplier, branches, doRegister]);
+  }, [coId, supplier, branch, doRegister]);
 
   const partyTypes = setup?.party_types ?? [];
   const entities = setup?.entities ?? [];
@@ -298,6 +289,68 @@ export default function SupplierRegistrationPage() {
     [supplier, partyTypes, entities, countries, updateSupplier],
   );
 
+  const branchField = useCallback(
+    (field: keyof BranchPayload, label: string) => (
+      <TextField
+        label={label}
+        size="small"
+        value={(branch[field] as string | number | undefined) ?? ""}
+        onChange={(e) => updateBranch({ [field]: e.target.value })}
+      />
+    ),
+    [branch, updateBranch],
+  );
+
+  const branchFields = useMemo(
+    () => (
+      <Box className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {branchField("address", "Address")}
+        {branchField("address_additional", "Address Additional")}
+        {branchField("gst_no", "GST No")}
+        {branchField("zip_code", "Zip Code")}
+        <TextField
+          label="State"
+          size="small"
+          select
+          value={(branch.state as string | number | undefined) ?? ""}
+          onChange={(e) => updateBranch({ state: e.target.value, city: "" })}
+        >
+          <MenuItem value="">Select</MenuItem>
+          {states.map((s) => (
+            <MenuItem key={s.state_id} value={String(s.state_id)}>
+              {s.state}
+            </MenuItem>
+          ))}
+        </TextField>
+        <TextField
+          label="City"
+          size="small"
+          select
+          value={(branch.city as string | number | undefined) ?? ""}
+          onChange={(e) => updateBranch({ city: e.target.value })}
+          disabled={!branch.state}
+        >
+          <MenuItem value="">Select</MenuItem>
+          {citiesForState(branch.state).map((c) => (
+            <MenuItem key={c.city_id} value={String(c.city_id)}>
+              {c.city_name}
+            </MenuItem>
+          ))}
+        </TextField>
+        {branchField("contact_person", "Contact Person")}
+        {branchField("contact_no", "Contact No")}
+        {branchField("whatsapp_no", "WhatsApp No")}
+        {branchField("email_id", "Email")}
+        {branchField("bank_acc_no", "Bank Account No")}
+        {branchField("ifsc_code", "IFSC Code")}
+        {branchField("bank_name", "Bank Name")}
+        {branchField("bank_branch", "Bank Branch")}
+        {branchField("upi_code", "UPI Code")}
+      </Box>
+    ),
+    [branch, states, citiesForState, updateBranch, branchField],
+  );
+
   if (loading) {
     return (
       <Box className="flex items-center justify-center py-12">
@@ -320,105 +373,12 @@ export default function SupplierRegistrationPage() {
         {supplierFields}
       </Paper>
 
-      {/* Branch details — sheet */}
+      {/* Branch details — single branch, same form style as header */}
       <Paper elevation={0} className="rounded-lg border p-5">
         <Typography variant="subtitle1" fontWeight={600} sx={{ mb: 2 }}>
           Branch Details
         </Typography>
-        <TableContainer sx={{ overflowX: "auto" }}>
-          <Table size="small" sx={{ minWidth: 2200 }}>
-            <TableHead>
-              <TableRow>
-                {[
-                  "Address", "Address Additional", "GST No", "Zip", "State", "City",
-                  "Contact Person", "Contact No", "WhatsApp No", "Email", "Bank Acc No",
-                  "IFSC", "Bank Name", "Bank Branch", "UPI", "",
-                ].map((h, i) => (
-                  <TableCell key={i} sx={{ fontWeight: 600, whiteSpace: "nowrap" }}>
-                    {h}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {branches.map((b, i) => {
-                const isLast = i === branches.length - 1;
-                const cell = (
-                  field: keyof BranchPayload,
-                  placeholder: string,
-                  width = 160,
-                ) => (
-                  <TableCell sx={{ minWidth: width }}>
-                    <TextField
-                      fullWidth
-                      size="small"
-                      value={(b[field] as string | number | undefined) ?? ""}
-                      placeholder={placeholder}
-                      onChange={(e) => updateBranch(i, { [field]: e.target.value })}
-                    />
-                  </TableCell>
-                );
-                return (
-                  <TableRow key={i}>
-                    {cell("address", "Address", 220)}
-                    {cell("address_additional", "Address 2", 200)}
-                    {cell("gst_no", "GST No")}
-                    {cell("zip_code", "Zip", 110)}
-                    <TableCell sx={{ minWidth: 160 }}>
-                      <TextField
-                        fullWidth
-                        size="small"
-                        select
-                        value={(b.state as string | number | undefined) ?? ""}
-                        onChange={(e) => updateBranch(i, { state: e.target.value, city: "" })}
-                      >
-                        <MenuItem value="">Select</MenuItem>
-                        {states.map((s) => (
-                          <MenuItem key={s.state_id} value={String(s.state_id)}>
-                            {s.state}
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                    </TableCell>
-                    <TableCell sx={{ minWidth: 160 }}>
-                      <TextField
-                        fullWidth
-                        size="small"
-                        select
-                        value={(b.city as string | number | undefined) ?? ""}
-                        onChange={(e) => updateBranch(i, { city: e.target.value })}
-                        disabled={!b.state}
-                      >
-                        <MenuItem value="">Select</MenuItem>
-                        {citiesForState(b.state).map((c) => (
-                          <MenuItem key={c.city_id} value={String(c.city_id)}>
-                            {c.city_name}
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                    </TableCell>
-                    {cell("contact_person", "Contact Person", 180)}
-                    {cell("contact_no", "Contact No", 140)}
-                    {cell("whatsapp_no", "WhatsApp", 140)}
-                    {cell("email_id", "Email", 180)}
-                    {cell("bank_acc_no", "Bank Acc No", 160)}
-                    {cell("ifsc_code", "IFSC", 130)}
-                    {cell("bank_name", "Bank Name", 160)}
-                    {cell("bank_branch", "Bank Branch", 160)}
-                    {cell("upi_code", "UPI", 140)}
-                    <TableCell sx={{ minWidth: 56 }}>
-                      {!isLast && (
-                        <IconButton size="small" onClick={() => removeBranch(i)} sx={{ color: "error.main" }}>
-                          <Trash2 size={16} />
-                        </IconButton>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        {branchFields}
       </Paper>
 
       <Box className="flex justify-end">
