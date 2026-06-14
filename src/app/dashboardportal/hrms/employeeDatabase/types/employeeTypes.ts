@@ -119,6 +119,7 @@ export interface OfficialDetails {
   contractor_id: number | null;
   office_mobile_no: string | null;
   office_email_id: string | null;
+  bio_metric_id: string | null;
   sub_dept_name?: string;
   designation_name?: string;
   branch_name?: string;

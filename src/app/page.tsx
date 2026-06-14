@@ -38,13 +38,15 @@ export default function Home() {
       {/* Left side - Welcome Image */}
       <div className="hidden lg:flex lg:w-1/2 bg-linear-to-br from-emerald-800 to-teal-600 p-12 relative">
         <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/background.png')" }}
+          className="absolute inset-0 bg-contain bg-center bg-no-repeat"
+          style={{ backgroundImage: "url('/app-icons/icon-1024.png')" }}
         ></div>
+        {/* Dark overlay to keep the WELCOME text readable over the logo */}
+        <div className="absolute inset-0 bg-black/40"></div>
 
         {/* Centering the text */}
         <div className="relative flex flex-col items-center justify-center w-full h-full text-white z-10">
-          <h2 className="text-6xl font-bold text-center mb-12">WELCOME</h2>
+          <h2 className="text-6xl font-bold text-center mb-12 drop-shadow-lg">WELCOME</h2>
         </div>
       </div>
 
@@ -53,10 +55,10 @@ export default function Home() {
         <div className="w-full max-w-md space-y-8">
           <div className="flex justify-center items-center w-full">
             <Image
-              src="/vow-animated-compressed.gif"
-              alt="VOW Logo"
-              width={200}
-              height={100}
+              src="/ts-global-erp-glowing-128.gif"
+              alt="TS Global ERP Logo"
+              width={180}
+              height={180}
               priority
               className="mx-auto w-auto h-auto"
               unoptimized

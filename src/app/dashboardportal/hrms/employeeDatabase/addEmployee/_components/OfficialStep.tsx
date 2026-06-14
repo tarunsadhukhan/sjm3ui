@@ -36,7 +36,12 @@ export default function OfficialStep({ data, onChange, disabled, setup, sidebarB
 
   const handleEmpCodeBlur = useCallback(async (code: string) => {
     const trimmed = code.trim();
-    if (!trimmed || !coId || !currentBranchId) {
+    if (!trimmed) {
+      setEmpCodeError("Employee code is required");
+      setTimeout(() => empCodeRef.current?.focus(), 0);
+      return;
+    }
+    if (!coId || !currentBranchId) {
       setEmpCodeError(null);
       return;
     }
@@ -118,6 +123,7 @@ export default function OfficialStep({ data, onChange, disabled, setup, sidebarB
       { name: "contractor_id", label: "Contractor", type: "select", options: [...setup.contractorOptions], grid: { xs: 12, sm: 4 } },
       { name: "office_mobile_no", label: "Office Mobile", type: "text", grid: { xs: 12, sm: 4 } },
       { name: "office_email_id", label: "Office Email", type: "text", grid: { xs: 12, sm: 4 } },
+      { name: "bio_metric_id", label: "Bio Metric ID", type: "text", grid: { xs: 12, sm: 4 } },
     ] satisfies Field[],
   }), [setup.subDeptOptions, designationOptions, filteredBranchOptions, setup.reportingEmployeeOptions, setup.categoryOptions, setup.contractorOptions, empCodeError, handleEmpCodeBlur]);
 
@@ -135,6 +141,7 @@ export default function OfficialStep({ data, onChange, disabled, setup, sidebarB
     contractor_id: data?.contractor_id ?? "",
     office_mobile_no: data?.office_mobile_no ?? "",
     office_email_id: data?.office_email_id ?? "",
+    bio_metric_id: data?.bio_metric_id ?? "",
   }), [data]);
 
   const prevSubDeptRef = useRef(selectedSubDeptId);

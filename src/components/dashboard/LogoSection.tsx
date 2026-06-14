@@ -20,7 +20,7 @@ const LogoSection = ({ isCollapsed, onToggle, isMobile, onClose }: LogoSectionPr
         <div className="flex items-center justify-between p-4 border-b border-[#005580]">
         {!isCollapsed && (
           <div className="logoBlock">
-                <Image src="/logo.png" 
+                <Image src="/app-icons/android-192.png"
                 height={60}
                 width={150}
                 alt="Logo"
@@ -33,7 +33,7 @@ const LogoSection = ({ isCollapsed, onToggle, isMobile, onClose }: LogoSectionPr
         )}
         {isCollapsed && (
           <div className="logoBlock mx-auto">
-                <Image src="/logo.png" 
+                <Image src="/app-icons/android-192.png"
                 height={40}
                 width={40}
                 alt="Logo"

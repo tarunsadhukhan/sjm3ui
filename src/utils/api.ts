@@ -220,6 +220,8 @@ const apiRoutesPortalMasters = {
     PARTY_CREATE: `${API_URL}/partyMaster/party_create`,
     PARTY_EDIT_SETUP: `${API_URL}/partyMaster/party_edit_setup`,
     PARTY_EDIT: `${API_URL}/partyMaster/party_edit`,
+    SUPPLIER_REGISTRATION_SETUP: `${API_URL}/partyMaster/supplier_registration_setup`,
+    SUPPLIER_REGISTER: `${API_URL}/partyMaster/supplier_register`,
 
     WAREHOUSE_TABLE: `${API_URL}/warehouseMaster/get_warehouse_table`,
     WAREHOUSE_CREATE_SETUP: `${API_URL}/warehouseMaster/warehouse_create_setup`,

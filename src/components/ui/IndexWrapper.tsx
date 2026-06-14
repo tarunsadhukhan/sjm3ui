@@ -48,6 +48,9 @@ type IndexWrapperProps<RowType extends GridValidRowModel & { id?: string | numbe
    * even if the user has page-level edit permission.
    * When not provided, all rows follow page-level permission (current behavior). */
   isRowEditable?: (row: RowType) => boolean;
+  /** Optional extra row-level action(s) rendered in the Actions cell, immediately
+   * after the View/Edit icon. Return null to render nothing for a given row. */
+  renderRowActions?: (row: RowType) => React.ReactNode;
   toolbarContent?: React.ReactNode;
   children?: React.ReactNode;
   className?: string;
@@ -82,6 +85,7 @@ function IndexWrapper<RowType extends GridValidRowModel & { id?: string | number
   onView,
   onEdit,
   isRowEditable,
+  renderRowActions,
   toolbarContent,
   children,
   className,
@@ -181,16 +185,17 @@ function IndexWrapper<RowType extends GridValidRowModel & { id?: string | number
   const actionColumn = useMemo<BaseColumn<RowType> | undefined>(() => {
     const hasEditHandler = Boolean(onEdit) && canEdit;
     const hasViewHandler = Boolean(onView) && canView;
+    const hasRowActions = Boolean(renderRowActions);
 
-    // If neither action is available at the page level, no column needed
-    if (!hasEditHandler && !hasViewHandler) {
+    // If no action is available at the page level, no column needed
+    if (!hasEditHandler && !hasViewHandler && !hasRowActions) {
       return undefined;
     }
 
     return {
       field: "__actions",
       headerName: "Actions",
-      width: 90,
+      width: hasRowActions ? 130 : 90,
       sortable: false,
       filterable: false,
       align: "center",
@@ -219,11 +224,12 @@ function IndexWrapper<RowType extends GridValidRowModel & { id?: string | number
                 </IconButton>
               </Tooltip>
             ) : null}
+            {renderRowActions?.(row)}
           </Stack>
         );
       },
     } satisfies BaseColumn<RowType>;
-  }, [canEdit, canView, isRowEditable, onEdit, onView]);
+  }, [canEdit, canView, isRowEditable, onEdit, onView, renderRowActions]);
 
   const finalColumns = useMemo<BaseColumn<RowType>[]>(() => {
     if (!actionColumn) {

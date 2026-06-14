@@ -166,6 +166,13 @@ function AddEmployeeContent() {
       const currentWizardStep = WIZARD_STEPS[selectedStep];
       const sections = currentWizardStep.sections;
 
+      // Employee code is mandatory before saving the Official Information step
+      if (sections.includes("official") && !formData.official?.emp_code?.trim()) {
+        setSnackbar({ open: true, message: "Employee code is required", severity: "error" });
+        setSaving(false);
+        return;
+      }
+
       // Step 1 (Personal Information) → create employee if no eb_id yet
       if (selectedStep === 0 && !ebId) {
         const { data, error } = await createEmployee(coId, branchId, {

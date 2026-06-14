@@ -3,13 +3,14 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { GridColDef, GridFilterModel, GridPaginationModel } from "@mui/x-data-grid";
-import { Snackbar, Alert, Chip, Tabs, Tab } from "@mui/material";
+import { Snackbar, Alert, Chip, Tabs, Tab, Tooltip, IconButton } from "@mui/material";
+import { LogIn } from "lucide-react";
 import IndexWrapper from "@/components/ui/IndexWrapper";
 import { useSelectedCompanyCoId } from "@/hooks/use-selected-company-coid";
 import { useSidebarContext } from "@/components/dashboard/sidebarContext";
-import { fetchEmployeeList } from "@/utils/hrmsService";
+import { fetchEmployeeList, updateEmployeeStatus } from "@/utils/hrmsService";
 import type { EmployeeListRow } from "./types/employeeTypes";
-import { EMPLOYEE_STATUS } from "./types/employeeTypes";
+import { EMPLOYEE_STATUS, EMPLOYEE_LIFECYCLE_STATUS } from "./types/employeeTypes";
 
 const STATUS_COLOR: Record<number, "default" | "primary" | "warning" | "success" | "error" | "info"> = {
   [EMPLOYEE_STATUS.DRAFT]: "default",
@@ -139,6 +140,37 @@ export default function EmployeeDatabasePage() {
     [router],
   );
 
+  // Move a Joined (35) employee back to Open (1)
+  const [statusUpdatingId, setStatusUpdatingId] = useState<number | null>(null);
+
+  const handleSetOpen = useCallback(async (row: EmployeeListRow) => {
+    setStatusUpdatingId(row.eb_id);
+    const { error } = await updateEmployeeStatus({ eb_id: row.eb_id, status_id: EMPLOYEE_STATUS.OPEN });
+    setStatusUpdatingId(null);
+    if (error) {
+      setSnackbar({ open: true, message: error, severity: "error" });
+      return;
+    }
+    setSnackbar({ open: true, message: "Employee moved to Open", severity: "success" });
+    fetchData();
+  }, [fetchData]);
+
+  const renderRowActions = useCallback(
+    (row: EmployeeListRow) => {
+      if (row.status_id !== EMPLOYEE_LIFECYCLE_STATUS.JOINED) return null;
+      return (
+        <Tooltip title="Move to Open">
+          <span>
+            <IconButton size="small" disabled={statusUpdatingId === row.eb_id} onClick={() => handleSetOpen(row)}>
+              <LogIn size={16} />
+            </IconButton>
+          </span>
+        </Tooltip>
+      );
+    },
+    [handleSetOpen, statusUpdatingId],
+  );
+
   return (
     <>
       <IndexWrapper<EmployeeListRow>
@@ -158,6 +190,7 @@ export default function EmployeeDatabasePage() {
         createAction={{ label: "Add Employee", onClick: handleCreate }}
         onView={handleView}
         onEdit={handleEdit}
+        renderRowActions={renderRowActions}
         isRowEditable={(row) => row.status_id === EMPLOYEE_STATUS.DRAFT || row.status_id === EMPLOYEE_STATUS.OPEN}
         filterMode="server"
         filterModel={filterModel}
