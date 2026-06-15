@@ -39,6 +39,8 @@ export interface MukamRecvEntry {
   geo_location: string | null;
   geo_place: string | null;
   remarks: string | null;
+  /** Captured photo stored as an HTML <img> snippet (base64 data URI). */
+  mukam_photo: string | null;
 }
 
 export interface MukamRecvPayload {
@@ -53,6 +55,7 @@ export interface MukamRecvPayload {
   geo_location?: string;
   geo_place?: string;
   remarks?: string;
+  mukam_photo?: string;
 }
 
 export const fetchMukamRecvSetup = async (coId: string | number) =>

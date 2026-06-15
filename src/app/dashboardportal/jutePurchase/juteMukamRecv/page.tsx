@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Box,
   Typography,
@@ -9,8 +9,12 @@ import {
   Paper,
   InputAdornment,
   Autocomplete,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
-import { MapPin, RefreshCw } from "lucide-react";
+import { MapPin, RefreshCw, Camera, X } from "lucide-react";
 import Swal from "sweetalert2";
 import { Button } from "@/components/ui/button";
 import { useSelectedCompanyCoId } from "@/hooks/use-selected-company-coid";
@@ -34,6 +38,8 @@ interface MukamForm {
   geo_location: string;
   geo_place: string;
   remarks: string;
+  /** Captured photo as an HTML <img> snippet (base64 data URI). */
+  mukam_photo: string;
 }
 
 const NEW = "new";
@@ -73,6 +79,160 @@ function SearchSelect({
   );
 }
 
+/**
+ * Live-camera photo capture. Opens the device camera in a dialog, captures a
+ * downscaled JPEG frame, and emits an HTML `<img>` snippet (base64 data URI)
+ * stored in the form. Read-only entries render the saved photo only.
+ */
+function CameraCapture({
+  value,
+  onChange,
+  readOnly,
+}: {
+  value: string;
+  onChange: (html: string) => void;
+  readOnly: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  const [hasStream, setHasStream] = useState(false);
+  const [error, setError] = useState("");
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+
+  const stopStream = useCallback(() => {
+    streamRef.current?.getTracks().forEach((t) => t.stop());
+    streamRef.current = null;
+    setHasStream(false);
+  }, []);
+
+  const closeDialog = useCallback(() => {
+    stopStream();
+    setOpen(false);
+    setError("");
+  }, [stopStream]);
+
+  // Make sure the camera is released if the component unmounts while open.
+  useEffect(() => () => stopStream(), [stopStream]);
+
+  // Attach the stream once the dialog's <video> is actually mounted.
+  useEffect(() => {
+    if (hasStream && open && videoRef.current && streamRef.current) {
+      videoRef.current.srcObject = streamRef.current;
+      videoRef.current.play().catch(() => {});
+    }
+  }, [hasStream, open]);
+
+  const openCamera = useCallback(async () => {
+    // getUserMedia, like geolocation, only works on a secure origin.
+    if (typeof window !== "undefined" && !window.isSecureContext) {
+      Swal.fire({
+        title: "Camera needs HTTPS",
+        html: "The browser only allows the camera on <b>https://</b> or <b>localhost</b>.",
+        icon: "info",
+      });
+      return;
+    }
+    if (typeof navigator === "undefined" || !navigator.mediaDevices?.getUserMedia) {
+      Swal.fire({ title: "Unavailable", text: "Camera is not supported by this browser.", icon: "warning" });
+      return;
+    }
+    setOpen(true);
+    setError("");
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "environment" },
+        audio: false,
+      });
+      streamRef.current = stream;
+      // The effect below attaches the stream once the <video> is mounted.
+      setHasStream(true);
+    } catch {
+      setError("Could not access the camera. Allow camera permission for this site in the browser's settings.");
+    }
+  }, []);
+
+  const capture = useCallback(() => {
+    const video = videoRef.current;
+    if (!video || !video.videoWidth) return;
+    // Downscale to a max edge of 1280px to keep the stored base64 small.
+    const maxEdge = 1280;
+    const scale = Math.min(1, maxEdge / Math.max(video.videoWidth, video.videoHeight));
+    const w = Math.round(video.videoWidth * scale);
+    const h = Math.round(video.videoHeight * scale);
+    const canvas = document.createElement("canvas");
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    ctx.drawImage(video, 0, 0, w, h);
+    const dataUrl = canvas.toDataURL("image/jpeg", 0.7);
+    onChange(`<img src="${dataUrl}" alt="mukam photo" style="max-width:100%;height:auto;" />`);
+    closeDialog();
+  }, [onChange, closeDialog]);
+
+  return (
+    <Box className="flex flex-col gap-2">
+      <Typography variant="body2" sx={{ color: "text.secondary" }}>
+        Photo
+      </Typography>
+
+      {value ? (
+        <Box
+          className="overflow-hidden rounded-md border"
+          sx={{ maxWidth: 320, "& img": { display: "block", width: "100%", height: "auto" } }}
+          dangerouslySetInnerHTML={{ __html: value }}
+        />
+      ) : (
+        <Typography variant="body2" sx={{ color: "text.disabled" }}>
+          No photo
+        </Typography>
+      )}
+
+      {!readOnly && (
+        <Box className="flex items-center gap-3">
+          <Button variant="ghost" onClick={openCamera}>
+            <Camera size={16} className="mr-1" />
+            {value ? "Retake" : "Take Photo"}
+          </Button>
+          {value && (
+            <Button variant="ghost" onClick={() => onChange("")}>
+              <X size={16} className="mr-1" />
+              Remove
+            </Button>
+          )}
+        </Box>
+      )}
+
+      <Dialog open={open} onClose={closeDialog} maxWidth="sm" fullWidth>
+        <DialogTitle>Take Photo</DialogTitle>
+        <DialogContent>
+          {error ? (
+            <Typography color="error" variant="body2">
+              {error}
+            </Typography>
+          ) : (
+            <Box
+              component="video"
+              ref={videoRef}
+              playsInline
+              muted
+              sx={{ width: "100%", borderRadius: 1, backgroundColor: "black" }}
+            />
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button variant="ghost" onClick={closeDialog}>
+            Cancel
+          </Button>
+          <Button onClick={capture} disabled={!!error}>
+            Capture
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Box>
+  );
+}
+
 const todayStr = () => new Date().toISOString().slice(0, 10);
 
 const emptyForm = (): MukamForm => ({
@@ -85,6 +245,7 @@ const emptyForm = (): MukamForm => ({
   geo_location: "",
   geo_place: "",
   remarks: "",
+  mukam_photo: "",
 });
 
 export default function JuteMukamRecvPage() {
@@ -208,6 +369,7 @@ export default function JuteMukamRecvPage() {
       geo_location: d.geo_location ?? "",
       geo_place: d.geo_place ?? "",
       remarks: d.remarks ?? "",
+      mukam_photo: d.mukam_photo ?? "",
     });
     setEditable(data.editable);
     if (!data.editable) {
@@ -236,6 +398,7 @@ export default function JuteMukamRecvPage() {
       geo_location: form.geo_location,
       geo_place: form.geo_place,
       remarks: form.remarks,
+      mukam_photo: form.mukam_photo,
     };
 
     setSaving(true);
@@ -379,6 +542,14 @@ export default function JuteMukamRecvPage() {
             onChange={(e) => update("remarks", e.target.value)}
             disabled={readOnly}
             className="sm:col-span-2 lg:col-span-3"
+          />
+        </Box>
+
+        <Box className="mt-5">
+          <CameraCapture
+            value={form.mukam_photo}
+            onChange={(html) => update("mukam_photo", html)}
+            readOnly={readOnly}
           />
         </Box>
 
