@@ -806,6 +806,17 @@ const apiRoutesPortalMasters = {
     BIO_ATT_BPROCESS: `${API_URL}/hrmsMasters/bio_att_bprocess`,
     BIO_ATT_B_ATTEN: `${API_URL}/hrmsMasters/bio_att_b_atten`,
     BIO_ATT_WAGES_REGISTER: `${API_URL}/hrmsMasters/wages_register`,
+    BIO_ATT_EMP_SEARCH: `${API_URL}/hrmsMasters/bio_att_emp_search`,
+    BIO_ATT_MANUAL_LIST: `${API_URL}/hrmsMasters/bio_att_manual_list`,
+    BIO_ATT_MANUAL_CREATE: `${API_URL}/hrmsMasters/bio_att_manual_create`,
+
+    // Production Entry - Machine Stoppage
+    MC_STOPPAGE_SETUP: `${API_URL}/productionEntry/mc_stoppage_setup`,
+    MC_STOPPAGE_LIST: `${API_URL}/productionEntry/mc_stoppage_list`,
+    MC_STOPPAGE_BY_ID: `${API_URL}/productionEntry/mc_stoppage_by_id`,
+    MC_STOPPAGE_CREATE: `${API_URL}/productionEntry/mc_stoppage_create`,
+    MC_STOPPAGE_EDIT: `${API_URL}/productionEntry/mc_stoppage_edit`,
+    MC_STOPPAGE_DELETE: `${API_URL}/productionEntry/mc_stoppage_delete`,
     BIO_ATT_EXCEL_STATUS: (jobId: string) =>
         `${API_URL}/hrmsMasters/bio_att_excel_status/${encodeURIComponent(jobId)}`,
 
