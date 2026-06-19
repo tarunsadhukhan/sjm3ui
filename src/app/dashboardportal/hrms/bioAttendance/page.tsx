@@ -8,6 +8,7 @@ import IndexWrapper from "@/components/ui/IndexWrapper";
 import { useSidebarContext } from "@/components/dashboard/sidebarContext";
 import CreateBioAttendancePage from "./CreateBioAttendancePage";
 
+
 type BioAttendanceRow = {
 	id: number | string;
 	bio_att_id: number;
