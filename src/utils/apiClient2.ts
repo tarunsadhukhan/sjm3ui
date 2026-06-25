@@ -46,7 +46,12 @@ export const fetchWithCookie = async <T = any>(
         // Normalize error to string
         const message = err instanceof Error ? err.message : String(err);
         console.error(`Error in fetchWithCookie for ${url}:`, message);
-        return { data: null, error: `${message} (backend: ${url})`, status: 0 };
+        const base = process.env.NEXT_PUBLIC_API_BASE_URL || "(not set)";
+        return {
+            data: null,
+            error: `Backend not reachable. NEXT_PUBLIC_API_BASE_URL=${base}`,
+            status: 0,
+        };
     }
 };
 
