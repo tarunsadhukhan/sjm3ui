@@ -56,6 +56,10 @@ export default function SubdomainGuard() {
           // Use fallback subdomain from env, or allow through with default
           const fallbackSubdomain = process.env.NEXT_PUBLIC_STATIC_SUBDOMAIN || 'sls';
           subdomain = fallbackSubdomain;
+        } else if (hostname.split('.').length <= 2) {
+          // Apex domain with no subdomain (e.g. infoskyglobalit.in) — there is no
+          // tenant prefix to read, so use the configured static subdomain.
+          subdomain = process.env.NEXT_PUBLIC_STATIC_SUBDOMAIN || 'sls';
         } else {
           subdomain = hostname.split('.')[0];
         }

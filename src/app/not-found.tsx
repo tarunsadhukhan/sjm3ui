@@ -2,21 +2,20 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <html lang="en">
-      <body
-        style={{
-          margin: 0,
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontFamily:
-            "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif",
-          background: "#f5f7fa",
-          color: "#0c3c60",
-        }}
-      >
-        <div style={{ textAlign: "center", padding: "2rem" }}>
+    <div
+      style={{
+        margin: 0,
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontFamily:
+          "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif",
+        background: "#f5f7fa",
+        color: "#0c3c60",
+      }}
+    >
+      <div style={{ textAlign: "center", padding: "2rem" }}>
           <div style={{ fontSize: "5rem", fontWeight: 700, lineHeight: 1 }}>
             404
           </div>
@@ -47,9 +46,8 @@ export default function NotFound() {
             }}
           >
             Go Home
-          </Link>
-        </div>
-      </body>
-    </html>
+        </Link>
+      </div>
+    </div>
   );
 }
