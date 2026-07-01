@@ -1,5 +1,23 @@
 import type { NextConfig } from "next";
 
+// Allow the host serving the app (derived from NEXT_PUBLIC_API_BASE_URL) as a
+// dev origin, so the "page auto-refreshes every few minutes" fix keeps working
+// when the base URL changes in .env.local — no need to edit this file again.
+// Adds the API host, its parent domain, and a wildcard for that parent
+// (e.g. api.infoskyglobalit.in -> infoskyglobalit.in + *.infoskyglobalit.in,
+// which covers sjm.infoskyglobalit.in etc.). Dev-only.
+const apiDevOrigins = (() => {
+  const raw = process.env.NEXT_PUBLIC_API_BASE_URL;
+  if (!raw) return [] as string[];
+  try {
+    const { hostname } = new URL(raw);
+    const parent = hostname.split(".").slice(1).join(".");
+    return [hostname, parent, parent && `*.${parent}`].filter(Boolean) as string[];
+  } catch {
+    return [] as string[];
+  }
+})();
+
 const nextConfig: NextConfig = {
   allowedDevOrigins: [
     'localhost',
@@ -17,6 +35,8 @@ const nextConfig: NextConfig = {
     // Production-style tenant domains used in dev (sls, dev3, admin, ...).
     'vowerp.co.in',
     '*.vowerp.co.in',
+    // Host serving the app, derived from NEXT_PUBLIC_API_BASE_URL (see top of file).
+    ...apiDevOrigins,
   ],
   images: {
     // Allow image optimization for localhost subdomains
