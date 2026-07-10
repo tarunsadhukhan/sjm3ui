@@ -11,7 +11,6 @@ import { Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { CircularProgress, Box } from "@mui/material";
 import TransactionWrapper, { type TransactionAction } from "@/components/ui/TransactionWrapper";
-import { useLineItems, SearchableSelect } from "@/components/ui/transaction";
 import useSelectedCompanyCoId from "@/hooks/use-selected-company-coid";
 import { useBranchOptions } from "@/utils/branchUtils";
 import { fetchWithCookie } from "@/utils/apiClient2";
@@ -39,7 +38,7 @@ import {
   CHANNEL_OPTIONS,
   UNIT_OPTIONS,
 } from "./utils/jutePOConstants";
-import { createBlankLine, lineHasAnyData, lineIsComplete } from "./utils/jutePOFactories";
+import { lineHasAnyData, lineIsComplete } from "./utils/jutePOFactories";
 import { calculateTotals } from "./utils/jutePOCalculations";
 import {
   mapJutePOSetupResponse,
@@ -64,6 +63,7 @@ import {
   JutePOApprovalBar,
   JutePOTotalsDisplay,
   JutePOPreview,
+  JutePOLineEntryForm,
 } from "./components";
 
 function JutePOCreatePageContent() {
@@ -190,19 +190,20 @@ function JutePOCreatePageContent() {
   // Line items hook
   const {
     lineItems,
-    setLineItems,
     replaceItems: replaceLineItems,
     removeLineItems,
-    handleLineFieldChange,
+    addLine,
+    updateLine,
   } = useJutePOLineItems({
     mode: effectiveModeForHooks,
-    juteUnit: formValues.juteUnit,
-    vehicleCapacity: parseFloat(
-      (setupData?.vehicle_types ?? []).find((v) => String(v.vehicle_type_id) === formValues.vehicleType)?.capacity_weight?.toString() ?? "0"
-    ),
-    vehicleQty: parseInt(formValues.vehicleQty, 10) || 1,
-    getQualityOptions: (itemId: string) => qualitiesByItem[itemId] ?? [],
   });
+
+  // Row currently loaded into the line entry panel (null = adding a new line)
+  const [editingLineId, setEditingLineId] = React.useState<string | null>(null);
+  const editingLine = React.useMemo(
+    () => lineItems.find((line) => line.id === editingLineId) ?? null,
+    [lineItems, editingLineId]
+  );
 
   // Select options hook
   const { labelResolvers, getQualityOptions } = useJutePOSelectOptions({
@@ -456,29 +457,49 @@ function JutePOCreatePageContent() {
     [fetchQualitiesForItem]
   );
 
-  // Wrapped handleLineFieldChange that also triggers quality fetch on item change
-  const handleLineFieldChangeWithQualityFetch = React.useCallback(
-    (id: string, field: keyof JutePOLineItem, value: string) => {
-      handleLineFieldChange(id, field, value);
-      
-      // When item changes, fetch qualities for the new item
-      if (field === "itemId" && value) {
-        handleItemSelect(value);
-      }
-    },
-    [handleLineFieldChange, handleItemSelect]
+  // Item options for the line entry panel
+  const itemOptions = React.useMemo(
+    () =>
+      (setupData?.jute_items ?? EMPTY_JUTE_ITEMS).map((i: { item_id: number; item_desc: string }) => ({
+        label: i.item_desc,
+        value: String(i.item_id),
+      })),
+    [setupData]
   );
 
-  // Column definitions for line items
+  // ========== Line Entry Panel Handlers ==========
+
+  const handleEditLine = React.useCallback((item: JutePOLineItem) => {
+    setEditingLineId(item.id);
+  }, []);
+
+  const handleDeleteLine = React.useCallback(
+    (id: string) => {
+      removeLineItems([id]);
+      setEditingLineId((prev) => (prev === id ? null : prev));
+    },
+    [removeLineItems]
+  );
+
+  const handleUpdateLine = React.useCallback(
+    (id: string, draft: Partial<Omit<JutePOLineItem, "id">>) => {
+      updateLine(id, draft);
+      setEditingLineId(null);
+    },
+    [updateLine]
+  );
+
+  const handleCancelEdit = React.useCallback(() => {
+    setEditingLineId(null);
+  }, []);
+
+  // Column definitions for line items (read-only display + row actions)
   const lineItemColumns = useJutePOLineItemColumns({
     canEdit: canEditLineItems,
-    itemOptions: (setupData?.jute_items ?? EMPTY_JUTE_ITEMS).map((i: { item_id: number; item_desc: string }) => ({
-      label: i.item_desc,
-      value: String(i.item_id),
-    })),
-    getQualityOptions,
     labelResolvers,
-    handleLineFieldChange: handleLineFieldChangeWithQualityFetch,
+    editingLineId,
+    onEditLine: handleEditLine,
+    onDeleteLine: handleDeleteLine,
   });
 
   // ========== Form Handlers ==========
@@ -627,8 +648,9 @@ function JutePOCreatePageContent() {
           items: lineItems as unknown[],
           getItemId: (item: unknown) => (item as JutePOLineItem).id,
           canEdit: canEditLineItems,
+          // Rows are removed via the per-row Delete action, not checkbox selection
+          selectable: false,
           columns: lineItemColumns as unknown as { id: string; header: React.ReactNode; width?: string; renderCell: (context: { item: unknown; index: number; canEdit: boolean }) => React.ReactNode }[],
-          onRemoveSelected: canEditLineItems ? removeLineItems : undefined,
         }}
         footer={
           <>
@@ -653,16 +675,30 @@ function JutePOCreatePageContent() {
         }
       >
         {isMounted ? (
-          <JutePOHeaderForm
-            schema={formSchema}
-            formKey={formKey}
-            initialValues={initialValues}
-            mode={effectiveModeForHooks}
-            formRef={formRef}
-            onSubmit={handleFormSubmit}
-            onValuesChange={(values) => setFormValues(values as unknown as JutePOFormValues)}
-            onSupplierChange={handleSupplierChange}
-          />
+          <>
+            <JutePOHeaderForm
+              schema={formSchema}
+              formKey={formKey}
+              initialValues={initialValues}
+              mode={effectiveModeForHooks}
+              formRef={formRef}
+              onSubmit={handleFormSubmit}
+              onValuesChange={(values) => setFormValues(values as unknown as JutePOFormValues)}
+              onSupplierChange={handleSupplierChange}
+            />
+            {effectiveModeForHooks !== "view" && (
+              <JutePOLineEntryForm
+                disabled={!canEditLineItems}
+                itemOptions={itemOptions}
+                getQualityOptions={getQualityOptions}
+                onItemSelect={handleItemSelect}
+                editingLine={editingLine}
+                onAdd={addLine}
+                onUpdate={handleUpdateLine}
+                onCancelEdit={handleCancelEdit}
+              />
+            )}
+          </>
         ) : (
           <div className="animate-pulse space-y-4 p-4">
             <div className="h-10 bg-gray-200 rounded w-full" />

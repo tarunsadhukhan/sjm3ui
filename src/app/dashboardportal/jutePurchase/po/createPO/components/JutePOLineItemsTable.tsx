@@ -2,201 +2,147 @@
 
 /**
  * @component JutePOLineItemsTable
- * @description Line items table for Jute PO with editable columns.
- * Columns: Item, Quality, Crop Year, Marka, Weight (editable), Rate, Moisture, Amount (calculated)
+ * @description Read-only line items table for Jute PO. Lines are entered via
+ * JutePOLineEntryForm above; each row has Edit / Delete actions when editable.
+ * Columns: Item, Quality, Crop Year, Marka, Weight, Rate, Moisture, Amount, Actions
  */
 
 import * as React from "react";
-import { TransactionLineColumn, SearchableSelect } from "@/components/ui/transaction";
-import { Input } from "@/components/ui/input";
-import type { JutePOLineItem, Option, JutePOLabelResolvers } from "../types/jutePOTypes";
-import { CROP_YEAR_OPTIONS } from "../utils/jutePOConstants";
+import { Pencil, Trash2 } from "lucide-react";
+import { TransactionLineColumn } from "@/components/ui/transaction";
+import { Button } from "@/components/ui/button";
+import type { JutePOLineItem, JutePOLabelResolvers } from "../types/jutePOTypes";
 import { formatAmount } from "../utils/jutePOCalculations";
 
 type UseJutePOLineItemColumnsParams = {
   canEdit: boolean;
-  itemOptions: Option[];
-  getQualityOptions: (itemId: string) => Option[];
   labelResolvers: JutePOLabelResolvers;
-  handleLineFieldChange: (id: string, field: keyof JutePOLineItem, value: string) => void;
+  /** ID of the row currently loaded in the entry panel, if any. */
+  editingLineId: string | null;
+  onEditLine: (item: JutePOLineItem) => void;
+  onDeleteLine: (id: string) => void;
 };
 
 export function useJutePOLineItemColumns({
   canEdit,
-  itemOptions,
-  getQualityOptions,
   labelResolvers,
-  handleLineFieldChange,
+  editingLineId,
+  onEditLine,
+  onDeleteLine,
 }: UseJutePOLineItemColumnsParams): TransactionLineColumn<JutePOLineItem>[] {
-  return React.useMemo<TransactionLineColumn<JutePOLineItem>[]>(
-    () => [
+  return React.useMemo<TransactionLineColumn<JutePOLineItem>[]>(() => {
+    const columns: TransactionLineColumn<JutePOLineItem>[] = [
       {
         id: "item",
         header: "Item",
         width: "1.5fr",
-        renderCell: ({ item }: { item: JutePOLineItem }) => {
-          if (!canEdit) {
-            // Use itemName from API data if available, otherwise fallback to label resolver
-            const displayName = item.itemName || labelResolvers.item(item.itemId);
-            return <span className="text-xs">{displayName}</span>;
-          }
-          const value = itemOptions.find((opt) => opt.value === item.itemId) ?? null;
-          return (
-            <SearchableSelect<Option>
-              options={itemOptions}
-              value={value}
-              onChange={(next: Option | null) => handleLineFieldChange(item.id, "itemId", next?.value ?? "")}
-              getOptionLabel={(opt: Option) => opt.label}
-              getOptionKey={(opt: Option) => opt.value}
-              isOptionEqualToValue={(a: Option, b: Option) => a.value === b.value}
-              placeholder="Select item"
-              disabled={!canEdit}
-            />
-          );
-        },
-        getTooltip: ({ item }: { item: JutePOLineItem }) => item.itemName || labelResolvers.item(item.itemId) || undefined,
+        renderCell: ({ item }: { item: JutePOLineItem }) => (
+          <span className="text-xs">{item.itemName || labelResolvers.item(item.itemId)}</span>
+        ),
+        getTooltip: ({ item }: { item: JutePOLineItem }) =>
+          item.itemName || labelResolvers.item(item.itemId) || undefined,
       },
       {
         id: "quality",
         header: "Quality",
         width: "1.2fr",
-        renderCell: ({ item }: { item: JutePOLineItem }) => {
-          const qualityOptions = item.itemId ? getQualityOptions(item.itemId) : [];
-          if (!canEdit) {
-            // Use qualityName from API data if available, otherwise fallback to label resolver
-            const displayName = item.qualityName || labelResolvers.quality(item.itemId, item.quality);
-            return <span className="text-xs">{displayName}</span>;
-          }
-          const value = qualityOptions.find((opt) => opt.value === item.quality) ?? null;
-          return (
-            <SearchableSelect<Option>
-              options={qualityOptions}
-              value={value}
-              onChange={(next: Option | null) => handleLineFieldChange(item.id, "quality", next?.value ?? "")}
-              getOptionLabel={(opt: Option) => opt.label}
-              getOptionKey={(opt: Option) => opt.value}
-              isOptionEqualToValue={(a: Option, b: Option) => a.value === b.value}
-              placeholder="Select quality"
-              disabled={!canEdit || !item.itemId}
-            />
-          );
-        },
-        getTooltip: ({ item }: { item: JutePOLineItem }) => item.qualityName || labelResolvers.quality(item.itemId, item.quality) || undefined,
+        renderCell: ({ item }: { item: JutePOLineItem }) => (
+          <span className="text-xs">
+            {item.qualityName || labelResolvers.quality(item.itemId, item.quality)}
+          </span>
+        ),
+        getTooltip: ({ item }: { item: JutePOLineItem }) =>
+          item.qualityName || labelResolvers.quality(item.itemId, item.quality) || undefined,
       },
       {
         id: "cropYear",
         header: "Crop Year",
         width: "0.9fr",
-        renderCell: ({ item }: { item: JutePOLineItem }) => {
-          if (!canEdit) {
-            return <span className="text-xs">{item.cropYear}</span>;
-          }
-          const value = CROP_YEAR_OPTIONS.find((opt) => opt.value === item.cropYear) ?? null;
-          return (
-            <SearchableSelect<Option>
-              options={CROP_YEAR_OPTIONS}
-              value={value}
-              onChange={(next: Option | null) => handleLineFieldChange(item.id, "cropYear", next?.value ?? "")}
-              getOptionLabel={(opt: Option) => opt.label}
-              getOptionKey={(opt: Option) => opt.value}
-              isOptionEqualToValue={(a: Option, b: Option) => a.value === b.value}
-              placeholder="Year"
-              disabled={!canEdit}
-            />
-          );
-        },
+        renderCell: ({ item }: { item: JutePOLineItem }) => (
+          <span className="text-xs">{item.cropYear || "-"}</span>
+        ),
       },
       {
         id: "marka",
         header: "Marka",
         width: "0.8fr",
-        renderCell: ({ item }: { item: JutePOLineItem }) => {
-          if (!canEdit) {
-            return <span className="text-xs">{item.marka || "-"}</span>;
-          }
-          return (
-            <Input
-              value={item.marka ?? ""}
-              onChange={(e) => handleLineFieldChange(item.id, "marka", e.target.value)}
-              placeholder="Marka"
-              disabled={!canEdit}
-              className="h-8 text-xs"
-            />
-          );
-        },
+        renderCell: ({ item }: { item: JutePOLineItem }) => (
+          <span className="text-xs">{item.marka || "-"}</span>
+        ),
       },
       {
         id: "weight",
         header: "Weight (Qtl)",
         width: "0.9fr",
-        renderCell: ({ item }: { item: JutePOLineItem }) => {
-          if (!canEdit) {
-            return <span className="text-xs text-right font-medium">{item.weight || "-"}</span>;
-          }
-          return (
-            <Input
-              type="number"
-              value={item.weight ?? ""}
-              onChange={(e) => handleLineFieldChange(item.id, "weight", e.target.value)}
-              placeholder="0.00"
-              disabled={!canEdit}
-              className="h-8 text-xs text-right"
-            />
-          );
-        },
+        renderCell: ({ item }: { item: JutePOLineItem }) => (
+          <span className="text-xs text-right font-medium">{item.weight || "-"}</span>
+        ),
       },
       {
         id: "rate",
         header: "Rate (per Qtl)",
         width: "0.8fr",
-        renderCell: ({ item }: { item: JutePOLineItem }) => {
-          if (!canEdit) {
-            return <span className="text-xs text-right">{formatAmount(parseFloat(item.rate) || 0)}</span>;
-          }
-          return (
-            <Input
-              type="number"
-              value={item.rate ?? ""}
-              onChange={(e) => handleLineFieldChange(item.id, "rate", e.target.value)}
-              placeholder="0.00"
-              disabled={!canEdit}
-              className="h-8 text-xs text-right"
-            />
-          );
-        },
+        renderCell: ({ item }: { item: JutePOLineItem }) => (
+          <span className="text-xs text-right">{formatAmount(parseFloat(item.rate) || 0)}</span>
+        ),
       },
       {
         id: "allowableMoisture",
         header: "Moisture %",
         width: "0.8fr",
-        renderCell: ({ item }: { item: JutePOLineItem }) => {
-          if (!canEdit) {
-            return <span className="text-xs text-right">{item.allowableMoisture || "-"}</span>;
-          }
-          return (
-            <Input
-              type="number"
-              value={item.allowableMoisture ?? ""}
-              onChange={(e) => handleLineFieldChange(item.id, "allowableMoisture", e.target.value)}
-              placeholder="0"
-              disabled={!canEdit}
-              className="h-8 text-xs text-right"
-            />
-          );
-        },
+        renderCell: ({ item }: { item: JutePOLineItem }) => (
+          <span className="text-xs text-right">{item.allowableMoisture || "-"}</span>
+        ),
       },
       {
         id: "amount",
         header: "Amount",
         width: "1fr",
         renderCell: ({ item }: { item: JutePOLineItem }) => (
-          <span className="text-xs text-right font-medium">{formatAmount(parseFloat(item.amount) || 0)}</span>
+          <span className="text-xs text-right font-medium">
+            {formatAmount(parseFloat(item.amount) || 0)}
+          </span>
         ),
-        getTooltip: ({ item }: { item: JutePOLineItem }) => `Line total: ${formatAmount(parseFloat(item.amount) || 0)}`,
+        getTooltip: ({ item }: { item: JutePOLineItem }) =>
+          `Line total: ${formatAmount(parseFloat(item.amount) || 0)}`,
       },
-    ],
-    [canEdit, itemOptions, getQualityOptions, labelResolvers, handleLineFieldChange]
-  );
+    ];
+
+    if (canEdit) {
+      columns.push({
+        id: "actions",
+        header: "Actions",
+        width: "0.7fr",
+        renderCell: ({ item }: { item: JutePOLineItem }) => (
+          <div className="flex items-center gap-1">
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="h-7 w-7 p-0"
+              onClick={() => onEditLine(item)}
+              disabled={item.id === editingLineId}
+              title="Edit line"
+            >
+              <Pencil className="h-3.5 w-3.5" />
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="h-7 w-7 p-0"
+              onClick={() => onDeleteLine(item.id)}
+              title="Delete line"
+            >
+              <Trash2 className="h-3.5 w-3.5" />
+            </Button>
+          </div>
+        ),
+      });
+    }
+
+    return columns;
+  }, [canEdit, labelResolvers, editingLineId, onEditLine, onDeleteLine]);
 }
 
 export default useJutePOLineItemColumns;
