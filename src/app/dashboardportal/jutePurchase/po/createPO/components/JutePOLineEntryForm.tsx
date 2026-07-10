@@ -5,13 +5,12 @@
  * @description Header-style entry panel for Jute PO line items.
  * Fields are entered here (instead of inline in the grid) and added to the
  * table below via Add. Editing a table row loads its values back into this
- * panel (Update / Cancel).
+ * panel (Update / Cancel). Uses the same MUI field styling as the header form.
  */
 
 import * as React from "react";
 import { Plus, X } from "lucide-react";
-import { SearchableSelect } from "@/components/ui/transaction";
-import { Input } from "@/components/ui/input";
+import { Autocomplete, TextField, Typography } from "@mui/material";
 import { Button } from "@/components/ui/button";
 import type { JutePOLineItem, Option } from "../types/jutePOTypes";
 import { CROP_YEAR_OPTIONS } from "../utils/jutePOConstants";
@@ -55,6 +54,9 @@ export type JutePOLineEntryFormProps = {
   onUpdate: (id: string, draft: JutePOLineDraft) => void;
   onCancelEdit: () => void;
 };
+
+// Same look as the header form's MuiForm select fields
+const selectFieldSx = { "& .MuiInputBase-root": { backgroundColor: "background.paper" } };
 
 export function JutePOLineEntryForm({
   disabled,
@@ -118,102 +120,95 @@ export function JutePOLineEntryForm({
 
   return (
     <div className="mt-4 rounded-md border p-3 space-y-3">
-      <div className="text-sm font-semibold">
+      <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
         {editingLine ? "Edit Line Item" : "Add Line Item"}
-      </div>
+      </Typography>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <div className="space-y-1">
-          <label className="text-xs font-medium">Item *</label>
-          <SearchableSelect<Option>
-            options={itemOptions}
-            value={itemValue}
-            onChange={handleItemChange}
-            getOptionLabel={(opt: Option) => opt.label}
-            getOptionKey={(opt: Option) => opt.value}
-            isOptionEqualToValue={(a: Option, b: Option) => a.value === b.value}
-            placeholder="Select item"
-            disabled={disabled}
-          />
-        </div>
-        <div className="space-y-1">
-          <label className="text-xs font-medium">Quality</label>
-          <SearchableSelect<Option>
-            options={qualityOptions}
-            value={qualityValue}
-            onChange={(next: Option | null) =>
-              setDraft((prev) => ({ ...prev, quality: next?.value ?? "", qualityName: next?.label ?? "" }))
-            }
-            getOptionLabel={(opt: Option) => opt.label}
-            getOptionKey={(opt: Option) => opt.value}
-            isOptionEqualToValue={(a: Option, b: Option) => a.value === b.value}
-            placeholder="Select quality"
-            disabled={disabled || !draft.itemId}
-          />
-        </div>
-        <div className="space-y-1">
-          <label className="text-xs font-medium">Crop Year</label>
-          <SearchableSelect<Option>
-            options={CROP_YEAR_OPTIONS}
-            value={cropYearValue}
-            onChange={(next: Option | null) =>
-              setDraft((prev) => ({ ...prev, cropYear: next?.value ?? "" }))
-            }
-            getOptionLabel={(opt: Option) => opt.label}
-            getOptionKey={(opt: Option) => opt.value}
-            isOptionEqualToValue={(a: Option, b: Option) => a.value === b.value}
-            placeholder="Year"
-            disabled={disabled}
-          />
-        </div>
-        <div className="space-y-1">
-          <label className="text-xs font-medium">Marka</label>
-          <Input
-            value={draft.marka}
-            onChange={(e) => setDraft((prev) => ({ ...prev, marka: e.target.value }))}
-            placeholder="Marka"
-            disabled={disabled}
-            className="h-9 text-xs"
-          />
-        </div>
-        <div className="space-y-1">
-          <label className="text-xs font-medium">Weight (Qtl) *</label>
-          <Input
-            type="number"
-            value={draft.weight}
-            onChange={(e) => setDraft((prev) => ({ ...prev, weight: e.target.value }))}
-            placeholder="0.00"
-            disabled={disabled}
-            className="h-9 text-xs text-right"
-          />
-        </div>
-        <div className="space-y-1">
-          <label className="text-xs font-medium">Rate (per Qtl) *</label>
-          <Input
-            type="number"
-            value={draft.rate}
-            onChange={(e) => setDraft((prev) => ({ ...prev, rate: e.target.value }))}
-            placeholder="0.00"
-            disabled={disabled}
-            className="h-9 text-xs text-right"
-          />
-        </div>
-        <div className="space-y-1">
-          <label className="text-xs font-medium">Moisture %</label>
-          <Input
-            type="number"
-            value={draft.allowableMoisture}
-            onChange={(e) => setDraft((prev) => ({ ...prev, allowableMoisture: e.target.value }))}
-            placeholder="0"
-            disabled={disabled}
-            className="h-9 text-xs text-right"
-          />
-        </div>
-        <div className="space-y-1">
-          <label className="text-xs font-medium">Amount</label>
-          <div className="h-9 flex items-center justify-end rounded-md border bg-muted/50 px-3 text-xs font-medium">
-            {formatAmount(amount)}
-          </div>
-        </div>
+        <Autocomplete<Option, false, false, false>
+          options={itemOptions}
+          value={itemValue}
+          onChange={(_, next) => handleItemChange(next)}
+          getOptionLabel={(opt) => opt.label}
+          getOptionKey={(opt) => opt.value}
+          isOptionEqualToValue={(a, b) => a.value === b.value}
+          disabled={disabled}
+          noOptionsText="No options"
+          renderInput={(params) => (
+            <TextField {...params} label="Item *" fullWidth size="small" sx={selectFieldSx} />
+          )}
+        />
+        <Autocomplete<Option, false, false, false>
+          options={qualityOptions}
+          value={qualityValue}
+          onChange={(_, next) =>
+            setDraft((prev) => ({ ...prev, quality: next?.value ?? "", qualityName: next?.label ?? "" }))
+          }
+          getOptionLabel={(opt) => opt.label}
+          getOptionKey={(opt) => opt.value}
+          isOptionEqualToValue={(a, b) => a.value === b.value}
+          disabled={disabled || !draft.itemId}
+          noOptionsText="No options"
+          renderInput={(params) => (
+            <TextField {...params} label="Quality" fullWidth size="small" sx={selectFieldSx} />
+          )}
+        />
+        <Autocomplete<Option, false, false, false>
+          options={CROP_YEAR_OPTIONS}
+          value={cropYearValue}
+          onChange={(_, next) => setDraft((prev) => ({ ...prev, cropYear: next?.value ?? "" }))}
+          getOptionLabel={(opt) => opt.label}
+          getOptionKey={(opt) => opt.value}
+          isOptionEqualToValue={(a, b) => a.value === b.value}
+          disabled={disabled}
+          noOptionsText="No options"
+          renderInput={(params) => (
+            <TextField {...params} label="Crop Year" fullWidth size="small" sx={selectFieldSx} />
+          )}
+        />
+        <TextField
+          label="Marka"
+          value={draft.marka}
+          onChange={(e) => setDraft((prev) => ({ ...prev, marka: e.target.value }))}
+          disabled={disabled}
+          fullWidth
+          size="small"
+        />
+        <TextField
+          label="Weight (Qtl)"
+          type="number"
+          required
+          value={draft.weight}
+          onChange={(e) => setDraft((prev) => ({ ...prev, weight: e.target.value }))}
+          disabled={disabled}
+          fullWidth
+          size="small"
+        />
+        <TextField
+          label="Rate (per Qtl)"
+          type="number"
+          required
+          value={draft.rate}
+          onChange={(e) => setDraft((prev) => ({ ...prev, rate: e.target.value }))}
+          disabled={disabled}
+          fullWidth
+          size="small"
+        />
+        <TextField
+          label="Moisture %"
+          type="number"
+          value={draft.allowableMoisture}
+          onChange={(e) => setDraft((prev) => ({ ...prev, allowableMoisture: e.target.value }))}
+          disabled={disabled}
+          fullWidth
+          size="small"
+        />
+        <TextField
+          label="Amount"
+          value={formatAmount(amount)}
+          fullWidth
+          size="small"
+          InputProps={{ readOnly: true }}
+        />
       </div>
       <div className="flex justify-end gap-2">
         {editingLine && (
