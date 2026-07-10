@@ -19,6 +19,17 @@ export type BranchRecord = {
   branch_id: number;
   branch_name: string;
   branch_code?: string;
+  branch_contact_no?: string | null;
+  branch_email?: string | null;
+};
+
+/** Company letterhead details for the printable PO preview. */
+export type CompanyLetterhead = {
+  co_name?: string | null;
+  co_logo?: string | null;
+  co_address1?: string | null;
+  co_address2?: string | null;
+  co_zipcode?: string | number | null;
 };
 
 export type MukamRecord = {
@@ -144,6 +155,7 @@ export type JutePOSetupData = {
   jute_items: JuteItemRecord[];
   suppliers: JuteSupplierRecord[]; // All suppliers for the company
   brokers: JuteBrokerRecord[]; // All brokers (parties) for the company
+  company: CompanyLetterhead | null; // Letterhead for the printable preview
   channel_options: ChannelOption[];
   unit_options: UnitOption[];
   crop_year_options: CropYearOption[];

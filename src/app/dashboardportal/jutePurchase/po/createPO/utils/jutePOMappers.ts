@@ -36,6 +36,8 @@ export const mapBranchRecords = (records: unknown[]): BranchRecord[] =>
         branch_id: Number(id),
         branch_name: String(data?.branch_name ?? id),
         branch_code: data?.branch_code ? String(data.branch_code) : undefined,
+        branch_contact_no: data?.branch_contact_no ? String(data.branch_contact_no) : null,
+        branch_email: data?.branch_email ? String(data.branch_email) : null,
       } satisfies BranchRecord;
     })
     .filter(Boolean) as BranchRecord[];
@@ -157,6 +159,7 @@ export const mapJutePOSetupResponse = (response: unknown): JutePOSetupData => {
     jute_items: mapJuteItemRecords((data?.jute_groups as unknown[]) ?? (data?.jute_items as unknown[]) ?? []),
     suppliers: mapJuteSupplierRecords((data?.suppliers as unknown[]) ?? []),
     brokers: mapJuteBrokerRecords((data?.brokers as unknown[]) ?? []),
+    company: (data?.company as JutePOSetupData["company"]) ?? null,
     channel_options: (data?.channel_options as JutePOSetupData["channel_options"]) ?? [],
     unit_options: (data?.unit_options as JutePOSetupData["unit_options"]) ?? [],
     crop_year_options: (data?.crop_year_options as JutePOSetupData["crop_year_options"]) ?? [],

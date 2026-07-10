@@ -2,17 +2,40 @@
 
 /**
  * @component JutePOPreview
- * @description Printable preview modal for Jute PO with header and line items.
+ * @description Printable preview modal for Jute PO. Print layout matches the
+ * Material Receipt print format: centered company letterhead, document title,
+ * key:value header block, centered Mukam line, bordered line items table.
  */
 
 import * as React from "react";
-import { Dialog, DialogTitle, DialogContent, IconButton } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, IconButton, Box, Divider, Typography } from "@mui/material";
 import { X, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { JutePOFormValues, JutePOLineItem, JutePOLabelResolvers } from "../types/jutePOTypes";
+import type {
+  JutePOFormValues,
+  JutePOLineItem,
+  JutePOLabelResolvers,
+  CompanyLetterhead,
+  BranchRecord,
+  ApprovalStatusId,
+} from "../types/jutePOTypes";
 import { formatWeight, formatAmount, formatDate } from "../utils/jutePOCalculations";
 import { JUTE_PO_STATUS_LABELS } from "../utils/jutePOConstants";
-import type { ApprovalStatusId } from "../types/jutePOTypes";
+
+// ── Inline styles (print-friendly HTML table, same as MRPreview) ──
+const thStyle: React.CSSProperties = {
+  border: "1px solid #333",
+  padding: "6px 8px",
+  fontWeight: 600,
+  fontSize: "11px",
+  textAlign: "center",
+  verticalAlign: "bottom",
+  backgroundColor: "#f5f5f5",
+};
+const tdStyle: React.CSSProperties = { border: "1px solid #333", padding: "5px 8px", fontSize: "11px" };
+const tdRight: React.CSSProperties = { ...tdStyle, textAlign: "right" };
+const tdCenter: React.CSSProperties = { ...tdStyle, textAlign: "center" };
+const thRight: React.CSSProperties = { ...thStyle, textAlign: "right" };
 
 type JutePOPreviewProps = {
   open: boolean;
@@ -24,6 +47,8 @@ type JutePOPreviewProps = {
   labelResolvers: JutePOLabelResolvers;
   totalWeight: number;
   totalAmount: number;
+  company?: CompanyLetterhead | null;
+  branchInfo?: BranchRecord | null;
 };
 
 export function JutePOPreview({
@@ -36,39 +61,43 @@ export function JutePOPreview({
   labelResolvers,
   totalWeight,
   totalAmount,
+  company,
+  branchInfo,
 }: JutePOPreviewProps) {
   const printRef = React.useRef<HTMLDivElement>(null);
 
   const handlePrint = () => {
-    const printWindow = window.open("", "_blank");
-    if (printWindow && printRef.current) {
-      printWindow.document.write(`
-        <html>
-          <head>
-            <title>Jute PO - ${poNumber || "Draft"}</title>
-            <style>
-              body { font-family: Arial, sans-serif; padding: 20px; }
-              table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-              th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-              th { background-color: #f5f5f5; }
-              .header { margin-bottom: 20px; }
-              .header h1 { margin: 0; font-size: 24px; }
-              .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 20px 0; }
-              .info-item { display: flex; gap: 8px; }
-              .info-label { font-weight: bold; min-width: 120px; }
-              .totals { margin-top: 20px; text-align: right; }
-              .totals p { margin: 5px 0; }
-              @media print { @page { size: A4; margin: 10mm; } body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
-            </style>
-          </head>
-          <body>
-            ${printRef.current.innerHTML}
-          </body>
-        </html>
-      `);
-      printWindow.document.close();
-      printWindow.print();
+    const content = printRef.current?.innerHTML ?? "";
+    const win = window.open("", "_blank");
+    if (!win) {
+      alert("Please allow popups to print.");
+      return;
     }
+
+    const title = `Jute PO - ${poNumber || "Draft"}`;
+    win.document.open();
+    win.document.write(`<!DOCTYPE html><html><head><title>${title}</title></head><body><div id="root"></div></body></html>`);
+    win.document.close();
+
+    document.querySelectorAll("style, link[rel=\"stylesheet\"]").forEach((n) => {
+      win.document.head.appendChild(n.cloneNode(true));
+    });
+
+    const s = win.document.createElement("style");
+    s.textContent = `
+      @media print { @page { size: A4; margin: 8mm; } }
+      body { margin: 0; padding: 16px; font-family: Arial, sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      table { width: 100%; border-collapse: collapse; }
+      .print-hidden { display: none !important; }
+      .co-header { text-align: center; margin-bottom: 12px; }
+      .co-logo { display: block; margin: 0 auto 4px; max-height: 56px; max-width: 180px; object-fit: contain; }
+    `;
+    win.document.head.appendChild(s);
+
+    const root = win.document.getElementById("root");
+    if (root) root.innerHTML = content;
+    win.focus();
+    setTimeout(() => { win.print(); win.close(); }, 300);
   };
 
   // Filter out blank lines
@@ -90,127 +119,210 @@ export function JutePOPreview({
       </DialogTitle>
 
       <DialogContent dividers>
-        <div ref={printRef}>
-          {/* Header */}
-          <div className="header">
-            <h1 className="text-2xl font-bold">Jute Purchase Order</h1>
-            <p className="text-gray-600">
-              {poNumber ? `PO #${poNumber}` : "Draft"} • {JUTE_PO_STATUS_LABELS[statusId]}
-            </p>
-          </div>
+        <Box ref={printRef} sx={{ p: 2, fontFamily: "Arial, sans-serif", fontSize: "12px" }}>
+          {/* ── Centered Company Letterhead + Title ── */}
+          <Box className="co-header" sx={{ textAlign: "center", mb: 2 }}>
+            {company?.co_logo && (
+              <Box
+                component="img"
+                src={company.co_logo}
+                alt="Company Logo"
+                className="co-logo"
+                sx={{ maxHeight: 56, maxWidth: 180, objectFit: "contain", mb: 0.5, mx: "auto", display: "block" }}
+              />
+            )}
+            {company?.co_name && (
+              <Typography variant="h6" fontWeight={700} sx={{ mb: 0.5 }}>
+                {company.co_name}
+              </Typography>
+            )}
+            {company?.co_address1 && (
+              <Typography variant="caption" display="block" sx={{ mb: 0.25 }}>
+                {company.co_address1}
+              </Typography>
+            )}
+            {company?.co_address2 && (
+              <Typography variant="caption" display="block" sx={{ mb: 0.25 }}>
+                {company.co_address2}
+              </Typography>
+            )}
+            {company?.co_zipcode && (
+              <Typography variant="caption" display="block" sx={{ mb: 0.25 }}>
+                {String(company.co_zipcode)}
+              </Typography>
+            )}
+            {(branchInfo?.branch_contact_no || branchInfo?.branch_email) && (
+              <Typography variant="caption" display="block" sx={{ mb: 0.25 }}>
+                {branchInfo?.branch_contact_no && <>Phone: {String(branchInfo.branch_contact_no)}</>}
+                {branchInfo?.branch_contact_no && branchInfo?.branch_email && <>{"  |  "}</>}
+                {branchInfo?.branch_email && <>Email: {branchInfo.branch_email}</>}
+              </Typography>
+            )}
+            {branchInfo?.branch_name && (
+              <Typography
+                variant="caption"
+                display="block"
+                sx={{ fontStyle: "italic", color: "text.secondary", mt: 0.5 }}
+              >
+                {branchInfo.branch_name}
+              </Typography>
+            )}
 
-          {/* Info Grid */}
-          <div className="grid grid-cols-2 gap-4 my-4 p-4 bg-gray-50 rounded">
-            <div className="flex gap-2">
-              <span className="font-semibold">Branch:</span>
-              <span>{labelResolvers.branch(formValues.branch)}</span>
-            </div>
-            <div className="flex gap-2">
-              <span className="font-semibold">PO Date:</span>
-              <span>{formatDate(formValues.poDate)}</span>
-            </div>
-            <div className="flex gap-2">
-              <span className="font-semibold">Mukam:</span>
-              <span>{labelResolvers.mukam(formValues.mukam)}</span>
-            </div>
-            <div className="flex gap-2">
-              <span className="font-semibold">Unit:</span>
-              <span>{formValues.juteUnit}</span>
-            </div>
-            <div className="flex gap-2">
-              <span className="font-semibold">Supplier:</span>
-              <span>{labelResolvers.supplier(formValues.supplier)}</span>
-            </div>
-            {formValues.partyName && (
-              <div className="flex gap-2">
-                <span className="font-semibold">Party:</span>
-                <span>{labelResolvers.party(formValues.partyName)}</span>
-              </div>
-            )}
-            {formValues.brokerName && (
-              <div className="flex gap-2">
-                <span className="font-semibold">Broker:</span>
-                <span>{labelResolvers.broker(formValues.brokerName)}</span>
-              </div>
-            )}
-            {formValues.payTo && (
-              <div className="flex gap-2">
-                <span className="font-semibold">Pay To:</span>
-                <span>{labelResolvers.payTo(formValues.payTo)}</span>
-              </div>
-            )}
-            <div className="flex gap-2">
-              <span className="font-semibold">Vehicle Type:</span>
-              <span>{labelResolvers.vehicleType(formValues.vehicleType)}</span>
-            </div>
-            <div className="flex gap-2">
-              <span className="font-semibold">Vehicle Qty:</span>
-              <span>{formValues.vehicleQty}</span>
-            </div>
-            <div className="flex gap-2">
-              <span className="font-semibold">Channel:</span>
-              <span>{formValues.channelType}</span>
-            </div>
-            <div className="flex gap-2">
-              <span className="font-semibold">Credit Term:</span>
-              <span>{formValues.creditTerm} days</span>
-            </div>
-            <div className="flex gap-2">
-              <span className="font-semibold">Expected Date:</span>
-              <span>{formatDate(formValues.expectedDate)}</span>
-            </div>
-            <div className="flex gap-2">
-              <span className="font-semibold">Freight Charge:</span>
-              <span>₹ {formatAmount(parseFloat(formValues.freightCharge) || 0)}</span>
-            </div>
-            {formValues.daltaPc && (
-              <div className="flex gap-2">
-                <span className="font-semibold">Less (%):</span>
-                <span>{formValues.daltaPc}</span>
-              </div>
-            )}
-          </div>
+            {/* Document Title */}
+            <Typography variant="h5" fontWeight={700} sx={{ mt: 1.5 }}>
+              Purchase Order
+            </Typography>
+          </Box>
 
-          {/* Line Items Table */}
-          <table className="w-full border-collapse mt-4">
+          {/* ── Header Fields (two-column key:value pairs) ── */}
+          <Box
+            component="table"
+            sx={{
+              width: "100%",
+              borderCollapse: "collapse",
+              mb: 2,
+              "& td": { padding: "3px 6px", fontSize: "12px", border: "none" },
+            }}
+          >
+            <tbody>
+              <tr>
+                <td style={{ width: "18%", fontWeight: 600 }}>PO NO</td>
+                <td style={{ width: "3%" }}>:</td>
+                <td style={{ width: "29%" }}>{poNumber || "Draft"}</td>
+                <td style={{ width: "21%", fontWeight: 600, textAlign: "right" }}>PO DATE :</td>
+                <td style={{ width: "29%" }}>{formatDate(formValues.poDate)}</td>
+              </tr>
+              <tr>
+                <td style={{ fontWeight: 600 }}>M/S</td>
+                <td>:</td>
+                <td colSpan={3}>{labelResolvers.supplier(formValues.supplier) || "-"}</td>
+              </tr>
+              {formValues.partyName && (
+                <tr>
+                  <td style={{ fontWeight: 600 }}>PARTY</td>
+                  <td>:</td>
+                  <td colSpan={3}>{labelResolvers.party(formValues.partyName)}</td>
+                </tr>
+              )}
+              {(formValues.brokerName || formValues.payTo) && (
+                <tr>
+                  <td style={{ fontWeight: 600 }}>BROKER</td>
+                  <td>:</td>
+                  <td>{formValues.brokerName ? labelResolvers.broker(formValues.brokerName) : "-"}</td>
+                  <td style={{ fontWeight: 600, textAlign: "right" }}>PAY TO :</td>
+                  <td>{formValues.payTo ? labelResolvers.payTo(formValues.payTo) : "-"}</td>
+                </tr>
+              )}
+              <tr>
+                <td style={{ fontWeight: 600 }}>VEHICLE TYPE</td>
+                <td>:</td>
+                <td>{labelResolvers.vehicleType(formValues.vehicleType) || "-"}</td>
+                <td style={{ fontWeight: 600, textAlign: "right" }}>VEHICLE QTY :</td>
+                <td>{formValues.vehicleQty || "-"}</td>
+              </tr>
+              <tr>
+                <td style={{ fontWeight: 600 }}>CHANNEL</td>
+                <td>:</td>
+                <td>{formValues.channelType || "-"}</td>
+                <td style={{ fontWeight: 600, textAlign: "right" }}>UNIT :</td>
+                <td>{formValues.juteUnit || "-"}</td>
+              </tr>
+              <tr>
+                <td style={{ fontWeight: 600 }}>CREDIT TERM</td>
+                <td>:</td>
+                <td>{formValues.creditTerm ? `${formValues.creditTerm} days` : "-"}</td>
+                <td style={{ fontWeight: 600, textAlign: "right" }}>EXPECTED DATE :</td>
+                <td>{formatDate(formValues.expectedDate)}</td>
+              </tr>
+              {(formValues.freightCharge || formValues.daltaPc) && (
+                <tr>
+                  <td style={{ fontWeight: 600 }}>FREIGHT CHARGES</td>
+                  <td>:</td>
+                  <td>{formValues.freightCharge ? `₹ ${formatAmount(parseFloat(formValues.freightCharge) || 0)}` : "-"}</td>
+                  <td style={{ fontWeight: 600, textAlign: "right" }}>LESS (%) :</td>
+                  <td>{formValues.daltaPc || "-"}</td>
+                </tr>
+              )}
+            </tbody>
+          </Box>
+
+          {/* Mukam */}
+          {formValues.mukam && (
+            <Typography variant="body2" textAlign="center" sx={{ mb: 1 }}>
+              <strong>Mukam :</strong> {labelResolvers.mukam(formValues.mukam)}
+            </Typography>
+          )}
+
+          <Divider sx={{ my: 1 }} />
+
+          {/* ── Line Items Table ── */}
+          <Box component="table" sx={{ width: "100%", borderCollapse: "collapse", fontSize: "11px" }}>
             <thead>
-              <tr className="bg-gray-100">
-                <th className="border p-2 text-left">Item</th>
-                <th className="border p-2 text-left">Quality</th>
-                <th className="border p-2 text-left">Crop Year</th>
-                <th className="border p-2 text-left">Marka</th>
-                <th className="border p-2 text-right">Weight (Qtl)</th>
-                <th className="border p-2 text-right">Rate</th>
-                <th className="border p-2 text-right">Moisture %</th>
-                <th className="border p-2 text-right">Amount</th>
+              <tr>
+                <th style={thStyle}>Item</th>
+                <th style={thStyle}>Quality</th>
+                <th style={thStyle}>Crop Year</th>
+                <th style={thStyle}>Marka</th>
+                <th style={thRight}>Weight in<br />Qtls</th>
+                <th style={thRight}>Rate per<br />Qtls Rs</th>
+                <th style={thRight}>Moisture %</th>
+                <th style={thRight}>Amount Rs</th>
               </tr>
             </thead>
             <tbody>
               {validLines.map((line, index) => (
                 <tr key={line.id || index}>
-                  <td className="border p-2">{labelResolvers.item(line.itemId)}</td>
-                  <td className="border p-2">{labelResolvers.quality(line.itemId, line.quality)}</td>
-                  <td className="border p-2">{line.cropYear}</td>
-                  <td className="border p-2">{line.marka || "-"}</td>
-                  <td className="border p-2 text-right">{formatWeight(parseFloat(line.weight) || 0)}</td>
-                  <td className="border p-2 text-right">{formatAmount(parseFloat(line.rate) || 0)}</td>
-                  <td className="border p-2 text-right">{line.allowableMoisture || "-"}</td>
-                  <td className="border p-2 text-right">{formatAmount(parseFloat(line.amount) || 0)}</td>
+                  <td style={tdStyle}>{line.itemName || labelResolvers.item(line.itemId)}</td>
+                  <td style={tdStyle}>{line.qualityName || labelResolvers.quality(line.itemId, line.quality)}</td>
+                  <td style={tdCenter}>{line.cropYear || "-"}</td>
+                  <td style={tdCenter}>{line.marka || "-"}</td>
+                  <td style={tdRight}>{formatWeight(parseFloat(line.weight) || 0)}</td>
+                  <td style={tdRight}>{formatAmount(parseFloat(line.rate) || 0)}</td>
+                  <td style={tdRight}>{line.allowableMoisture || "-"}</td>
+                  <td style={tdRight}>{formatAmount(parseFloat(line.amount) || 0)}</td>
                 </tr>
               ))}
+              {/* Totals row */}
+              <tr style={{ fontWeight: 700 }}>
+                <td style={tdStyle}><strong>Total</strong></td>
+                <td style={tdStyle} />
+                <td style={tdStyle} />
+                <td style={tdStyle} />
+                <td style={tdRight}><strong>{formatWeight(totalWeight)}</strong></td>
+                <td style={tdStyle} />
+                <td style={tdStyle} />
+                <td style={tdRight}><strong>{formatAmount(totalAmount)}</strong></td>
+              </tr>
             </tbody>
-          </table>
+          </Box>
 
-          {/* Totals */}
-          <div className="mt-4 text-right">
-            <p className="text-sm">
-              <span className="font-semibold">Total Weight:</span> {formatWeight(totalWeight)} Qtl
-            </p>
-            <p className="text-lg font-bold text-green-700">
-              <span className="font-semibold">Total Amount:</span> ₹ {formatAmount(totalAmount)}
-            </p>
-          </div>
-        </div>
+          {/* ── Remarks ── */}
+          {formValues.remarks && (
+            <Box sx={{ mt: 2 }}>
+              <Typography variant="body2" fontSize="12px">
+                <strong>Remarks:</strong> {formValues.remarks}
+              </Typography>
+            </Box>
+          )}
+
+          {/* ── Status ── */}
+          <Box sx={{ mt: 1 }}>
+            <Typography variant="caption" color="text.secondary">
+              Status: <strong>{JUTE_PO_STATUS_LABELS[statusId]}</strong>
+            </Typography>
+          </Box>
+
+          {/* ── Footer ── */}
+          <Typography
+            variant="caption"
+            display="block"
+            textAlign="center"
+            color="text.secondary"
+            sx={{ mt: 4 }}
+          >
+            Note*: This is a computer generated print, Signature is not required.
+          </Typography>
+        </Box>
       </DialogContent>
     </Dialog>
   );

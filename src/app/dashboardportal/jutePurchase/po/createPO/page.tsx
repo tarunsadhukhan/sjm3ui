@@ -720,6 +720,10 @@ function JutePOCreatePageContent() {
         labelResolvers={labelResolvers}
         totalWeight={totalWeight}
         totalAmount={totalAmount}
+        company={setupData?.company ?? null}
+        branchInfo={
+          setupData?.branches.find((b) => String(b.branch_id) === String(formValues.branch)) ?? null
+        }
       />
     </>
   );
