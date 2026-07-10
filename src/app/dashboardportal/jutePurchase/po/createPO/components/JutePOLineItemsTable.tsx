@@ -119,22 +119,22 @@ export function useJutePOLineItemColumns({
               type="button"
               variant="ghost"
               size="sm"
-              className="h-7 w-7 p-0"
+              className="h-9 w-9 p-0"
               onClick={() => onEditLine(item)}
               disabled={item.id === editingLineId}
               title="Edit line"
             >
-              <Pencil className="h-3.5 w-3.5" />
+              <Pencil className="h-4 w-4" />
             </Button>
             <Button
               type="button"
               variant="ghost"
               size="sm"
-              className="h-7 w-7 p-0"
+              className="h-9 w-9 p-0 text-red-600 hover:text-red-700"
               onClick={() => onDeleteLine(item.id)}
               title="Delete line"
             >
-              <Trash2 className="h-3.5 w-3.5" />
+              <Trash2 className="h-4 w-4" />
             </Button>
           </div>
         ),
