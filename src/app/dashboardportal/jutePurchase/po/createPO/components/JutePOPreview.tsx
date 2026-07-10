@@ -9,7 +9,7 @@
 
 import * as React from "react";
 import { Dialog, DialogTitle, DialogContent, IconButton, Box, Divider, Typography } from "@mui/material";
-import { X, Printer } from "lucide-react";
+import { X, Printer, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type {
   JutePOFormValues,
@@ -65,6 +65,31 @@ export function JutePOPreview({
   branchInfo,
 }: JutePOPreviewProps) {
   const printRef = React.useRef<HTMLDivElement>(null);
+  const [downloading, setDownloading] = React.useState(false);
+
+  const handleDownload = async () => {
+    if (!printRef.current || downloading) return;
+    setDownloading(true);
+    try {
+      // Dynamic import keeps html2pdf (and its canvas deps) out of the page bundle
+      const html2pdf = (await import("html2pdf.js")).default;
+      await html2pdf()
+        .set({
+          margin: 8,
+          filename: `Jute PO - ${poNumber || "Draft"}.pdf`,
+          image: { type: "jpeg", quality: 0.95 },
+          html2canvas: { scale: 2, useCORS: true },
+          jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+        })
+        .from(printRef.current)
+        .save();
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      alert("Failed to generate PDF. Please try again.");
+    } finally {
+      setDownloading(false);
+    }
+  };
 
   const handlePrint = () => {
     const content = printRef.current?.innerHTML ?? "";
@@ -111,6 +136,10 @@ export function JutePOPreview({
           <Button variant="outline" size="sm" onClick={handlePrint}>
             <Printer className="w-4 h-4 mr-2" />
             Print
+          </Button>
+          <Button variant="outline" size="sm" onClick={handleDownload} disabled={downloading}>
+            <Download className="w-4 h-4 mr-2" />
+            {downloading ? "Downloading..." : "Download"}
           </Button>
           <IconButton onClick={onClose} size="small">
             <X className="w-4 h-4" />
