@@ -6,7 +6,7 @@ import type { GridColDef, GridPaginationModel, GridRenderCellParams } from "@mui
 import { fetchWithCookie } from "@/utils/apiClient2";
 import { apiRoutesPortalMasters } from "@/utils/api";
 import IndexWrapper from "@/components/ui/IndexWrapper";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { createStatusBasedEditCheck } from "@/utils/editability";
 
 /**
@@ -62,6 +62,10 @@ const getStatusColor = (status: string): "success" | "error" | "warning" | "info
 
 export default function JutePOIndexPage() {
 	const router = useRouter();
+	// This page is served from both /po and /poapp (menu variant); keep navigation
+	// under whichever route it was opened from
+	const pathname = usePathname();
+	const basePath = pathname ?? "/dashboardportal/jutePurchase/po";
 	const [rows, setRows] = React.useState<JutePORow[]>([]);
 	const [totalRows, setTotalRows] = React.useState(0);
 	const [loading, setLoading] = React.useState(false);
@@ -224,25 +228,25 @@ export default function JutePOIndexPage() {
 	}, []);
 
 	const handleCreateJutePO = React.useCallback(() => {
-		router.push("/dashboardportal/jutePurchase/po/createPO");
-	}, [router]);
+		router.push(`${basePath}/createPO`);
+	}, [router, basePath]);
 
 	const handleView = React.useCallback(
 		(row: JutePORow) => {
 			const id = row.id ?? row.po_num;
 			if (!id) return;
-			router.push(`/dashboardportal/jutePurchase/po/createPO?mode=view&id=${encodeURIComponent(String(id))}`);
+			router.push(`${basePath}/createPO?mode=view&id=${encodeURIComponent(String(id))}`);
 		},
-		[router]
+		[router, basePath]
 	);
 
 	const handleEdit = React.useCallback(
 		(row: JutePORow) => {
 			const id = row.id ?? row.po_num;
 			if (!id) return;
-			router.push(`/dashboardportal/jutePurchase/po/createPO?mode=edit&id=${encodeURIComponent(String(id))}`);
+			router.push(`${basePath}/createPO?mode=edit&id=${encodeURIComponent(String(id))}`);
 		},
-		[router]
+		[router, basePath]
 	);
 
 	// Row is editable only in Draft or Open status

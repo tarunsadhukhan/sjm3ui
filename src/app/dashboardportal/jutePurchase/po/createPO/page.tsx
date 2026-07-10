@@ -8,7 +8,7 @@
 
 import * as React from "react";
 import { Suspense } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { CircularProgress, Box } from "@mui/material";
 import TransactionWrapper, { type TransactionAction } from "@/components/ui/TransactionWrapper";
 import useSelectedCompanyCoId from "@/hooks/use-selected-company-coid";
@@ -69,6 +69,10 @@ import {
 function JutePOCreatePageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  // Served from both /po/createPO and /poapp/createPO (menu variant);
+  // keep navigation under whichever route it was opened from
+  const pathname = usePathname() ?? "/dashboardportal/jutePurchase/po/createPO";
+  const listPath = pathname.replace(/\/createPO$/, "");
   const { coId } = useSelectedCompanyCoId();
 
   // Derive mode and ID from URL
@@ -550,9 +554,7 @@ function JutePOCreatePageContent() {
 
           if (response?.data && !response?.error && response.data?.jute_po_id) {
             // Redirect to edit mode with new ID
-            router.push(
-              `/dashboardportal/jutePurchase/po/createPO?mode=edit&id=${response.data.jute_po_id}`
-            );
+            router.push(`${pathname}?mode=edit&id=${response.data.jute_po_id}`);
           } else {
             setPageError(response?.error ?? "Failed to create Jute PO");
           }
@@ -578,7 +580,7 @@ function JutePOCreatePageContent() {
         setSaving(false);
       }
     },
-    [coId, mode, jutePOId, lineItems, router, bumpFormKey, setupData, totalWeight]
+    [coId, mode, jutePOId, lineItems, router, pathname, bumpFormKey, setupData, totalWeight]
   );
 
   const handleSave = React.useCallback(async () => {
@@ -621,7 +623,7 @@ function JutePOCreatePageContent() {
         loading={loading || saving}
         backAction={{
           label: "Back to Jute PO List",
-          onClick: () => router.push("/dashboardportal/jutePurchase/po"),
+          onClick: () => router.push(listPath),
         }}
         alerts={
           <>
