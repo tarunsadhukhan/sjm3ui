@@ -125,6 +125,7 @@ export function JutePOLineEntryForm({
       </Typography>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <Autocomplete<Option, false, false, false>
+          className="col-span-2 md:col-span-1"
           options={itemOptions}
           value={itemValue}
           onChange={(_, next) => handleItemChange(next)}
@@ -138,6 +139,7 @@ export function JutePOLineEntryForm({
           )}
         />
         <Autocomplete<Option, false, false, false>
+          className="col-span-2 md:col-span-1"
           options={qualityOptions}
           value={qualityValue}
           onChange={(_, next) =>
