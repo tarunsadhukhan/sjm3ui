@@ -215,22 +215,23 @@ export function JutePOPreview({
           >
             <tbody>
               <tr>
-                <td style={{ width: "18%", fontWeight: 600 }}>PO NO</td>
-                <td style={{ width: "3%" }}>:</td>
-                <td style={{ width: "29%" }}>{poNumber || "Draft"}</td>
-                <td style={{ width: "21%", fontWeight: 600, textAlign: "right" }}>PO DATE :</td>
-                <td style={{ width: "29%" }}>{formatDate(formValues.poDate)}</td>
+                <td style={{ width: "16%", fontWeight: 600 }}>PO NO</td>
+                <td style={{ width: "2%" }}>:</td>
+                <td style={{ width: "32%" }}>{poNumber || "Draft"}</td>
+                <td style={{ width: "16%", fontWeight: 600 }}>PO DATE</td>
+                <td style={{ width: "2%" }}>:</td>
+                <td style={{ width: "32%" }}>{formatDate(formValues.poDate)}</td>
               </tr>
               <tr>
                 <td style={{ fontWeight: 600 }}>M/S</td>
                 <td>:</td>
-                <td colSpan={3}>{labelResolvers.supplier(formValues.supplier) || "-"}</td>
+                <td colSpan={4}>{labelResolvers.supplier(formValues.supplier) || "-"}</td>
               </tr>
               {formValues.partyName && (
                 <tr>
                   <td style={{ fontWeight: 600 }}>PARTY</td>
                   <td>:</td>
-                  <td colSpan={3}>{labelResolvers.party(formValues.partyName)}</td>
+                  <td colSpan={4}>{labelResolvers.party(formValues.partyName)}</td>
                 </tr>
               )}
               {(formValues.brokerName || formValues.payTo) && (
@@ -238,7 +239,8 @@ export function JutePOPreview({
                   <td style={{ fontWeight: 600 }}>BROKER</td>
                   <td>:</td>
                   <td>{formValues.brokerName ? labelResolvers.broker(formValues.brokerName) : "-"}</td>
-                  <td style={{ fontWeight: 600, textAlign: "right" }}>PAY TO :</td>
+                  <td style={{ fontWeight: 600 }}>PAY TO</td>
+                  <td>:</td>
                   <td>{formValues.payTo ? labelResolvers.payTo(formValues.payTo) : "-"}</td>
                 </tr>
               )}
@@ -246,21 +248,24 @@ export function JutePOPreview({
                 <td style={{ fontWeight: 600 }}>VEHICLE TYPE</td>
                 <td>:</td>
                 <td>{labelResolvers.vehicleType(formValues.vehicleType) || "-"}</td>
-                <td style={{ fontWeight: 600, textAlign: "right" }}>VEHICLE QTY :</td>
+                <td style={{ fontWeight: 600 }}>VEHICLE QTY</td>
+                <td>:</td>
                 <td>{formValues.vehicleQty || "-"}</td>
               </tr>
               <tr>
                 <td style={{ fontWeight: 600 }}>CHANNEL</td>
                 <td>:</td>
                 <td>{formValues.channelType || "-"}</td>
-                <td style={{ fontWeight: 600, textAlign: "right" }}>UNIT :</td>
+                <td style={{ fontWeight: 600 }}>UNIT</td>
+                <td>:</td>
                 <td>{formValues.juteUnit || "-"}</td>
               </tr>
               <tr>
                 <td style={{ fontWeight: 600 }}>CREDIT TERM</td>
                 <td>:</td>
                 <td>{formValues.creditTerm ? `${formValues.creditTerm} days` : "-"}</td>
-                <td style={{ fontWeight: 600, textAlign: "right" }}>EXPECTED DATE :</td>
+                <td style={{ fontWeight: 600 }}>EXPECTED DATE</td>
+                <td>:</td>
                 <td>{formatDate(formValues.expectedDate)}</td>
               </tr>
               {(formValues.freightCharge || formValues.daltaPc) && (
@@ -268,7 +273,8 @@ export function JutePOPreview({
                   <td style={{ fontWeight: 600 }}>FREIGHT CHARGES</td>
                   <td>:</td>
                   <td>{formValues.freightCharge ? `₹ ${formatAmount(parseFloat(formValues.freightCharge) || 0)}` : "-"}</td>
-                  <td style={{ fontWeight: 600, textAlign: "right" }}>LESS (%) :</td>
+                  <td style={{ fontWeight: 600 }}>LESS (%)</td>
+                  <td>:</td>
                   <td>{formValues.daltaPc || "-"}</td>
                 </tr>
               )}

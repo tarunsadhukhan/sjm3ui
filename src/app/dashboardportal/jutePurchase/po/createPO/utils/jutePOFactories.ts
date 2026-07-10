@@ -4,6 +4,7 @@
  */
 
 import type { JutePOLineItem, JutePOFormValues } from "../types/jutePOTypes";
+import { calculateExpectedDate } from "./jutePOCalculations";
 
 // =============================================================================
 // LINE ITEM FACTORY
@@ -73,6 +74,9 @@ export const lineIsComplete = (line: JutePOLineItem): boolean => {
 // FORM VALUES FACTORY
 // =============================================================================
 
+/** Default delivery timeline in days (also drives the default expected date). */
+const DEFAULT_DELIVERY_TIMELINE_DAYS = 15;
+
 /**
  * Build default form values for a new Jute PO.
  */
@@ -89,10 +93,13 @@ export const buildDefaultFormValues = (): JutePOFormValues => ({
   payTo: "",
   vehicleType: "",
   vehicleQty: "",
-  channelType: "",
-  creditTerm: "",
-  deliveryTimeline: "",
-  expectedDate: "",
+  channelType: "DOMESTIC", // Default channel
+  creditTerm: "15", // Default credit term (days)
+  deliveryTimeline: String(DEFAULT_DELIVERY_TIMELINE_DAYS),
+  expectedDate: calculateExpectedDate(
+    new Date().toISOString().slice(0, 10),
+    DEFAULT_DELIVERY_TIMELINE_DAYS
+  ),
   freightCharge: "",
   daltaPc: "",
   remarks: "",

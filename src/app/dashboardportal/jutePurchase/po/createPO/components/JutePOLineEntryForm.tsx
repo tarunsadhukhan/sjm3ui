@@ -97,9 +97,13 @@ export function JutePOLineEntryForm({
   const cropYearValue = CROP_YEAR_OPTIONS.find((opt) => opt.value === draft.cropYear) ?? null;
 
   const amount = calculateAmount(Number(draft.weight), Number(draft.rate));
-  // Same completeness rule as lineIsComplete: item, weight > 0, rate > 0
+  // lineIsComplete rule (item, weight > 0, rate > 0) plus mandatory moisture %
   const canSubmit =
-    !disabled && Boolean(draft.itemId) && Number(draft.weight) > 0 && Number(draft.rate) > 0;
+    !disabled &&
+    Boolean(draft.itemId) &&
+    Number(draft.weight) > 0 &&
+    Number(draft.rate) > 0 &&
+    Number(draft.allowableMoisture) > 0;
 
   const handleItemChange = (next: Option | null) => {
     const itemId = next?.value ?? "";
@@ -198,6 +202,7 @@ export function JutePOLineEntryForm({
         <TextField
           label="Moisture %"
           type="number"
+          required
           value={draft.allowableMoisture}
           onChange={(e) => setDraft((prev) => ({ ...prev, allowableMoisture: e.target.value }))}
           disabled={disabled}
