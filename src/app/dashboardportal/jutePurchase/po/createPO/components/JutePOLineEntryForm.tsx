@@ -38,7 +38,7 @@ const BLANK_DRAFT: JutePOLineDraft = {
   marka: "",
   weight: "",
   rate: "",
-  allowableMoisture: "",
+  allowableMoisture: "18", // Default allowable moisture %
 };
 
 export type JutePOLineEntryFormProps = {
