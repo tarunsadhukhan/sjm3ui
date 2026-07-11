@@ -783,6 +783,11 @@ const apiRoutesPortalMasters = {
     MAN_MACHINE_LIST: `${API_URL}/hrmsMasters/man_machine_list`,
     MAN_MACHINE_FINAL_PROCESS: `${API_URL}/hrmsMasters/man_machine_final_process`,
 
+    // HRMS Hands Report (vw_hands_report) — Shift x Shed x M/H|Hands grid
+    HANDS_REPORT: `${API_URL}/hrmsReports/hands_report`,
+    // HRMS Actual-vs-Std Hands (vw_hands_std_report) — Shift x act/std grid
+    HANDS_STD_REPORT: `${API_URL}/hrmsReports/hands_std_report`,
+
     // HRMS Man-Machine Master (mc_occu_link_mst) endpoints
     MAN_MACHINE_MST_SETUP: `${API_URL}/hrmsMasters/man_machine_mst_setup`,
     MAN_MACHINE_MST_TABLE: `${API_URL}/hrmsMasters/get_man_machine_mst_table`,
@@ -790,6 +795,14 @@ const apiRoutesPortalMasters = {
     MAN_MACHINE_MST_CREATE: `${API_URL}/hrmsMasters/man_machine_mst_create`,
     MAN_MACHINE_MST_EDIT: `${API_URL}/hrmsMasters/man_machine_mst_edit`,
     MAN_MACHINE_MST_DELETE: `${API_URL}/hrmsMasters/man_machine_mst_delete`,
+
+    // HRMS Bio-Employee Master Link (tbl_master_bio_link_mst, match_type='E') endpoints
+    BIO_EMP_LINK_SETUP: `${API_URL}/hrmsMasters/bio_emp_link_setup`,
+    BIO_EMP_LINK_TABLE: `${API_URL}/hrmsMasters/get_bio_emp_link_table`,
+    BIO_EMP_LINK_BY_ID: `${API_URL}/hrmsMasters/get_bio_emp_link_by_id`,
+    BIO_EMP_LINK_CREATE: `${API_URL}/hrmsMasters/bio_emp_link_create`,
+    BIO_EMP_LINK_EDIT: `${API_URL}/hrmsMasters/bio_emp_link_edit`,
+    BIO_EMP_LINK_DELETE: `${API_URL}/hrmsMasters/bio_emp_link_delete`,
 
     // HRMS Bio Attendance Updation endpoints
     BIO_ATT_LIST: `${API_URL}/hrmsMasters/bio_att_list`,
