@@ -34,7 +34,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen flex items-center justify-center p-8">
+    <main className="min-h-screen flex items-center justify-center p-8 bg-[hsl(var(--brand-primary)/0.08)]">
       <div className="w-full max-w-md space-y-8">
         <div className="flex justify-center items-center w-full">
           <Image
@@ -43,7 +43,7 @@ export default function Home() {
             width={180}
             height={180}
             priority
-            className="mx-auto w-auto h-auto"
+            className="logo-glow mx-auto w-auto h-auto rounded-full"
             unoptimized
           />
         </div>

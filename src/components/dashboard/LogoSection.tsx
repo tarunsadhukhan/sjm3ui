@@ -17,7 +17,7 @@ const LogoSection = ({ isCollapsed, onToggle, isMobile, onClose }: LogoSectionPr
   };
 
   return (
-        <div className="flex items-center justify-between p-4 border-b border-[#005580]">
+        <div className="flex items-center justify-between p-4 border-b border-[hsl(var(--sidebar-accent))]">
         {!isCollapsed && (
           <div className="logoBlock flex items-center gap-2 cursor-pointer" onClick={handleChangeDashboard}>
                 <Image src="/app-icons/android-192.png"
@@ -28,7 +28,7 @@ const LogoSection = ({ isCollapsed, onToggle, isMobile, onClose }: LogoSectionPr
                 unoptimized
                 loading="eager"
                 priority />
-                <span className="text-white font-semibold text-sm leading-tight whitespace-nowrap">
+                <span className="text-[hsl(var(--sidebar-fg))] font-semibold text-sm leading-tight whitespace-nowrap">
                   Global Erp Solutions
                 </span>
               </div>
@@ -49,7 +49,7 @@ const LogoSection = ({ isCollapsed, onToggle, isMobile, onClose }: LogoSectionPr
         {isMobile && (
           <button
             onClick={onClose}
-            className="text-white p-1 hover:bg-[#005580] rounded"
+            className="text-[hsl(var(--sidebar-fg))] p-1 hover:bg-[hsl(var(--sidebar-accent))] rounded"
             aria-label="Close menu"
           >
             <X size={20} />
