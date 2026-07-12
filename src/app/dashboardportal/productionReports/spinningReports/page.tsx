@@ -3,9 +3,12 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
 	Snackbar,
 	Alert,
+	Box,
 	Button,
+	Checkbox,
 	FormControl,
 	InputLabel,
+	ListItemText,
 	MenuItem,
 	Select,
 	type SelectChangeEvent,
@@ -14,6 +17,7 @@ import {
 	GridColDef,
 	GridColumnGroupingModel,
 	GridPaginationModel,
+	type GridValidRowModel,
 } from "@mui/x-data-grid";
 import IndexWrapper from "@/components/ui/IndexWrapper";
 import { useSidebarContextSafe } from "@/components/dashboard/sidebarContext";
@@ -50,6 +54,44 @@ const VIEW_TITLES: Record<ViewKey, string> = {
 	empDate: "Spinning Employee-wise Date-wise Production / Eff",
 	frameRunning: "Spinning Frame-wise Running Eff",
 	runningHoursEff: "Spinning Production Eff (Running Hours basis)",
+};
+
+/**
+ * Metric (sub-column) definitions per view for the "Columns" filter.
+ * Metric columns are recognised by their field naming convention; columns
+ * matching no metric (Date, Quality, Machine, Employee) are always shown.
+ */
+type MetricDef = {
+	key: string;
+	label: string;
+	match: (field: string) => boolean;
+};
+
+const VIEW_METRICS: Record<ViewKey, MetricDef[]> = {
+	productionEff: [
+		{ key: "frames", label: "Frame", match: (f) => f.endsWith("_frames") || f === "frames_total" },
+		{ key: "prod", label: "Production", match: (f) => f.endsWith("_prod") || f === "prod_total" },
+		{ key: "eff", label: "Eff%", match: (f) => f === "overall_eff" },
+		{ key: "avg", label: "Avg/Frame", match: (f) => f === "overall_avg" },
+	],
+	mcDate: [
+		{ key: "prod", label: "Prod", match: (f) => f.endsWith("_prod") },
+		{ key: "eff", label: "Eff%", match: (f) => f.endsWith("_eff") },
+		{ key: "avg", label: "Avg/Frame", match: (f) => f.endsWith("_avg") },
+	],
+	empDate: [
+		{ key: "prod", label: "Prod", match: (f) => f.endsWith("_prod") },
+		{ key: "eff", label: "Eff%", match: (f) => f.endsWith("_eff") },
+	],
+	frameRunning: [
+		{ key: "hrs", label: "Hrs", match: (f) => f.endsWith("_hrs") },
+		{ key: "eff", label: "Eff%", match: (f) => f.endsWith("_eff") },
+	],
+	runningHoursEff: [
+		{ key: "prod", label: "Production", match: (f) => f === "production" },
+		{ key: "hrs", label: "Running Hrs", match: (f) => f === "running_hours" },
+		{ key: "eff", label: "Eff%", match: (f) => f === "eff" },
+	],
 };
 
 // Sort a list of dd-mm-yyyy date strings chronologically, in place. SQL emits
@@ -792,29 +834,115 @@ export default function SpinningReportsPage() {
 		loadReport();
 	}, [loadReport]);
 
+	// Metric keys currently hidden via the "Columns" filter (reset per view)
+	const [hiddenMetrics, setHiddenMetrics] = useState<string[]>([]);
+
 	const handleViewChange = useCallback((e: SelectChangeEvent<ViewKey>) => {
 		setView(e.target.value as ViewKey);
+		setHiddenMetrics([]);
 		setPaginationModel((prev) => ({ ...prev, page: 0 }));
 	}, []);
 
+	// ─── Column (metric) visibility filter ─────────────────────────────────
+
+	const metricDefs = VIEW_METRICS[view];
+
+	const keepField = useCallback(
+		(field: string): boolean => {
+			const owner = VIEW_METRICS[view].find((m) => m.match(field));
+			return !owner || !hiddenMetrics.includes(owner.key);
+		},
+		[view, hiddenMetrics],
+	);
+
+	const filterCols = useCallback(
+		<T extends GridValidRowModel>(cols: GridColDef<T>[]): GridColDef<T>[] =>
+			cols.filter((c) => keepField(c.field)),
+		[keepField],
+	);
+
+	const filterGrouping = useCallback(
+		(model: GridColumnGroupingModel): GridColumnGroupingModel =>
+			model
+				.map((group) => ({
+					...group,
+					children: group.children.filter(
+						(child) => !("field" in child) || keepField(child.field),
+					),
+				}))
+				.filter((group) => group.children.length > 0),
+		[keepField],
+	);
+
+	const handleMetricsChange = useCallback(
+		(e: SelectChangeEvent<string[]>) => {
+			const visible =
+				typeof e.target.value === "string"
+					? e.target.value.split(",")
+					: e.target.value;
+			setHiddenMetrics(
+				VIEW_METRICS[view]
+					.map((m) => m.key)
+					.filter((key) => !visible.includes(key)),
+			);
+		},
+		[view],
+	);
+
+	const visibleMetricKeys = useMemo(
+		() => metricDefs.filter((m) => !hiddenMetrics.includes(m.key)).map((m) => m.key),
+		[metricDefs, hiddenMetrics],
+	);
+
 	const viewSelect = (
-		<FormControl size="small" sx={{ minWidth: 320 }}>
-			<InputLabel id="spinning-report-view-label">Report</InputLabel>
-			<Select<ViewKey>
-				labelId="spinning-report-view-label"
-				label="Report"
-				value={view}
-				onChange={handleViewChange}
-			>
-				<MenuItem value="productionEff">Spinning Production and Eff</MenuItem>
-				<MenuItem value="mcDate">Spinning Mc-wise Date-wise Production / Eff</MenuItem>
-				<MenuItem value="empDate">Spinning Employee-wise Date-wise Production / Eff</MenuItem>
-				<MenuItem value="frameRunning">Spinning Frame-wise Running Eff</MenuItem>
-				<MenuItem value="runningHoursEff">
-					Spinning Production Eff (Running Hours basis)
-				</MenuItem>
-			</Select>
-		</FormControl>
+		<Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+			<FormControl size="small" sx={{ minWidth: 320 }}>
+				<InputLabel id="spinning-report-view-label">Report</InputLabel>
+				<Select<ViewKey>
+					labelId="spinning-report-view-label"
+					label="Report"
+					value={view}
+					onChange={handleViewChange}
+				>
+					<MenuItem value="productionEff">Spinning Production and Eff</MenuItem>
+					<MenuItem value="mcDate">Spinning Mc-wise Date-wise Production / Eff</MenuItem>
+					<MenuItem value="empDate">Spinning Employee-wise Date-wise Production / Eff</MenuItem>
+					<MenuItem value="frameRunning">Spinning Frame-wise Running Eff</MenuItem>
+					<MenuItem value="runningHoursEff">
+						Spinning Production Eff (Running Hours basis)
+					</MenuItem>
+				</Select>
+			</FormControl>
+			<FormControl size="small" sx={{ minWidth: 170 }}>
+				<InputLabel id="spinning-metric-filter-label">Columns</InputLabel>
+				<Select<string[]>
+					labelId="spinning-metric-filter-label"
+					label="Columns"
+					multiple
+					value={visibleMetricKeys}
+					onChange={handleMetricsChange}
+					renderValue={(selected) =>
+						selected.length === metricDefs.length
+							? "All"
+							: metricDefs
+									.filter((m) => selected.includes(m.key))
+									.map((m) => m.label)
+									.join(", ") || "None"
+					}
+				>
+					{metricDefs.map((m) => (
+						<MenuItem key={m.key} value={m.key}>
+							<Checkbox
+								size="small"
+								checked={!hiddenMetrics.includes(m.key)}
+								sx={{ p: 0.5, mr: 1 }}
+							/>
+							<ListItemText primary={m.label} />
+						</MenuItem>
+					))}
+				</Select>
+			</FormControl>
+		</Box>
 	);
 
 	const handleApply = useCallback((values: SpinningFilterValues) => {
@@ -1342,7 +1470,7 @@ export default function SpinningReportsPage() {
 				title={VIEW_TITLES[view]}
 				subtitle={subtitle}
 				rows={peRows}
-				columns={peColumns}
+				columns={filterCols(peColumns)}
 				rowCount={peRows.length}
 				paginationModel={paginationModel}
 				onPaginationModelChange={setPaginationModel}
@@ -1355,7 +1483,7 @@ export default function SpinningReportsPage() {
 						{filterButton}
 					</>
 				}
-				columnGroupingModel={peGroupingModel}
+				columnGroupingModel={filterGrouping(peGroupingModel)}
 				getRowClassName={(params) =>
 					(params.row as ProductionEffRow).isDateTotal
 						? "spinning-row-date-total"
@@ -1375,7 +1503,7 @@ export default function SpinningReportsPage() {
 				title={VIEW_TITLES[view]}
 				subtitle={subtitle}
 				rows={mcRows}
-				columns={mcColumns}
+				columns={filterCols(mcColumns)}
 				rowCount={mcRows.length}
 				paginationModel={paginationModel}
 				onPaginationModelChange={setPaginationModel}
@@ -1388,7 +1516,7 @@ export default function SpinningReportsPage() {
 						{filterButton}
 					</>
 				}
-				columnGroupingModel={mcGrouping}
+				columnGroupingModel={filterGrouping(mcGrouping)}
 				getRowClassName={(params) =>
 					(params.row as McDateRow).isGrandTotal
 						? "spinning-row-grand-total"
@@ -1408,7 +1536,7 @@ export default function SpinningReportsPage() {
 				title={VIEW_TITLES[view]}
 				subtitle={subtitle}
 				rows={empRows}
-				columns={empColumns}
+				columns={filterCols(empColumns)}
 				rowCount={empRows.length}
 				paginationModel={paginationModel}
 				onPaginationModelChange={setPaginationModel}
@@ -1421,7 +1549,7 @@ export default function SpinningReportsPage() {
 						{filterButton}
 					</>
 				}
-				columnGroupingModel={empGrouping}
+				columnGroupingModel={filterGrouping(empGrouping)}
 				getRowClassName={(params) =>
 					(params.row as EntityDateRow).isGrandTotal
 						? "spinning-row-grand-total"
@@ -1441,7 +1569,7 @@ export default function SpinningReportsPage() {
 				title={VIEW_TITLES[view]}
 				subtitle={subtitle}
 				rows={frameRows}
-				columns={frameColumns}
+				columns={filterCols(frameColumns)}
 				rowCount={frameRows.length}
 				paginationModel={paginationModel}
 				onPaginationModelChange={setPaginationModel}
@@ -1454,7 +1582,7 @@ export default function SpinningReportsPage() {
 						{filterButton}
 					</>
 				}
-				columnGroupingModel={frameGrouping}
+				columnGroupingModel={filterGrouping(frameGrouping)}
 				getRowClassName={(params) =>
 					(params.row as FrameRunningRow).isTotal
 						? "spinning-row-grand-total"
@@ -1474,7 +1602,7 @@ export default function SpinningReportsPage() {
 			title={VIEW_TITLES[view]}
 			subtitle={subtitle}
 			rows={rhEffRows}
-			columns={rhEffColumns}
+			columns={filterCols(rhEffColumns)}
 			rowCount={rhEffRows.length}
 			paginationModel={paginationModel}
 			onPaginationModelChange={setPaginationModel}
