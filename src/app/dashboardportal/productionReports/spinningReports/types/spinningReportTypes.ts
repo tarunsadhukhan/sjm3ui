@@ -41,8 +41,9 @@ export interface SpinningFrameRunningRow {
   total_hours: number;
 }
 
-/** Row from GET /api/spinningReports/running-hours-eff */
+/** Row from GET /api/spinningReports/running-hours-eff — one per (date, machine, quality) */
 export interface SpinningRunningHoursEffRow {
+  report_date: string;
   mc_id: number | null;
   mc_name: string | null;
   quality_id: number | null;

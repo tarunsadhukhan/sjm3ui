@@ -88,9 +88,9 @@ const VIEW_METRICS: Record<ViewKey, MetricDef[]> = {
 		{ key: "eff", label: "Eff%", match: (f) => f.endsWith("_eff") },
 	],
 	runningHoursEff: [
-		{ key: "prod", label: "Production", match: (f) => f === "production" },
-		{ key: "hrs", label: "Running Hrs", match: (f) => f === "running_hours" },
-		{ key: "eff", label: "Eff%", match: (f) => f === "eff" },
+		{ key: "prod", label: "Prod", match: (f) => f.endsWith("_prod") },
+		{ key: "hrs", label: "Hrs", match: (f) => f.endsWith("_hrs") },
+		{ key: "eff", label: "Eff%", match: (f) => f.endsWith("_eff") },
 	],
 };
 
@@ -661,38 +661,126 @@ type RunningHoursEffRow = {
 	id: string;
 	mc_name: string;
 	quality_name: string;
-	production: number;
-	running_hours: number;
-	eff: number;
+	overall_prod: number;
+	overall_hrs: number;
+	overall_eff: number;
 	isGrandTotal?: boolean;
+	[key: string]: string | number | boolean | undefined;
 };
 
-function buildRunningHoursEffRows(
-	rows: SpinningRunningHoursEffRow[],
-): RunningHoursEffRow[] {
-	const out: RunningHoursEffRow[] = rows.map((r, idx) => ({
-		id: `${r.mc_id ?? "m"}_${r.quality_id ?? "q"}_${idx}`,
-		mc_name: r.mc_name ?? "—",
-		quality_name: r.quality_name ?? "—",
-		production: Number(r.production) || 0,
-		running_hours: Number(r.running_hours) || 0,
-		eff: Number(r.eff) || 0,
-	}));
-	if (out.length === 0) return out;
-	const prod = out.reduce((s, r) => s + r.production, 0);
-	const running = out.reduce((s, r) => s + r.running_hours, 0);
-	const effSum = out.reduce((s, r) => s + (r.eff > 0 ? r.eff : 0), 0);
-	const effCount = out.filter((r) => r.eff > 0).length;
-	out.push({
-		id: "__GRAND_TOTAL__",
-		mc_name: "Grand Total",
-		quality_name: "",
-		production: prod,
-		running_hours: running,
-		eff: effCount > 0 ? effSum / effCount : 0,
-		isGrandTotal: true,
+/**
+ * Pivot per-(date, machine, quality) rows into one row per (machine, quality)
+ * with d{idx}_prod / d{idx}_hrs / d{idx}_eff date columns + Overall group.
+ * Overall eff is production-weighted: SUM(prod) / SUM(expected) where
+ * expected = prod * 100 / eff for dates with a computed eff.
+ */
+function pivotRunningHoursEff(rows: SpinningRunningHoursEffRow[]): {
+	dates: string[];
+	rows: RunningHoursEffRow[];
+} {
+	const dates: string[] = [];
+	const seenDate = new Set<string>();
+	type Cell = { prod: number; hrs: number; eff: number };
+	const entities = new Map<
+		string,
+		{ mc_name: string; quality_name: string; cells: Map<string, Cell> }
+	>();
+	rows.forEach((r) => {
+		if (!seenDate.has(r.report_date)) {
+			seenDate.add(r.report_date);
+			dates.push(r.report_date);
+		}
+		const key = `${r.mc_id ?? "m"}_${r.quality_id ?? "q"}`;
+		let e = entities.get(key);
+		if (!e) {
+			e = {
+				mc_name: r.mc_name ?? "—",
+				quality_name: r.quality_name ?? "—",
+				cells: new Map(),
+			};
+			entities.set(key, e);
+		}
+		e.cells.set(r.report_date, {
+			prod: Number(r.production) || 0,
+			hrs: Number(r.running_hours) || 0,
+			eff: Number(r.eff) || 0,
+		});
 	});
-	return out;
+	sortDdMmYyyy(dates);
+
+	const out: RunningHoursEffRow[] = [];
+	entities.forEach((e, key) => {
+		const row: RunningHoursEffRow = {
+			id: key,
+			mc_name: e.mc_name,
+			quality_name: e.quality_name,
+			overall_prod: 0,
+			overall_hrs: 0,
+			overall_eff: 0,
+		};
+		let prodSum = 0;
+		let hrsSum = 0;
+		let expectedSum = 0;
+		dates.forEach((d, idx) => {
+			const c = e.cells.get(d);
+			row[`d${idx}_prod`] = c?.prod ?? 0;
+			row[`d${idx}_hrs`] = c?.hrs ?? 0;
+			row[`d${idx}_eff`] = c?.eff ?? 0;
+			if (c) {
+				prodSum += c.prod;
+				hrsSum += c.hrs;
+				if (c.eff > 0) expectedSum += (c.prod * 100) / c.eff;
+			}
+		});
+		row.overall_prod = prodSum;
+		row.overall_hrs = hrsSum;
+		row.overall_eff = expectedSum > 0 ? (prodSum / expectedSum) * 100 : 0;
+		out.push(row);
+	});
+	out.sort(
+		(a, b) =>
+			a.mc_name.localeCompare(b.mc_name) ||
+			a.quality_name.localeCompare(b.quality_name),
+	);
+
+	if (out.length > 0) {
+		const totalRow: RunningHoursEffRow = {
+			id: "__GRAND_TOTAL__",
+			mc_name: "Grand Total",
+			quality_name: "",
+			overall_prod: 0,
+			overall_hrs: 0,
+			overall_eff: 0,
+			isGrandTotal: true,
+		};
+		let gProd = 0;
+		let gHrs = 0;
+		let gExpected = 0;
+		dates.forEach((d, idx) => {
+			let prod = 0;
+			let hrs = 0;
+			let expected = 0;
+			entities.forEach((e) => {
+				const c = e.cells.get(d);
+				if (!c) return;
+				prod += c.prod;
+				hrs += c.hrs;
+				if (c.eff > 0) expected += (c.prod * 100) / c.eff;
+			});
+			totalRow[`d${idx}_prod`] = prod;
+			totalRow[`d${idx}_hrs`] = hrs;
+			totalRow[`d${idx}_eff`] = expected > 0 ? (prod / expected) * 100 : 0;
+			gProd += prod;
+			gHrs += hrs;
+			gExpected += expected;
+		});
+		totalRow.overall_prod = gProd;
+		totalRow.overall_hrs = gHrs;
+		totalRow.overall_eff = gExpected > 0 ? (gProd / gExpected) * 100 : 0;
+		out.push(totalRow);
+	}
+
+	return { dates, rows: out };
 }
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -732,6 +820,7 @@ export default function SpinningReportsPage() {
 	const [frameRows, setFrameRows] = useState<FrameRunningRow[]>([]);
 
 	// View 5 state
+	const [rhEffDates, setRhEffDates] = useState<string[]>([]);
 	const [rhEffRows, setRhEffRows] = useState<RunningHoursEffRow[]>([]);
 
 	const [loading, setLoading] = useState(false);
@@ -758,6 +847,7 @@ export default function SpinningReportsPage() {
 		setEmpRows([]);
 		setFrameDates([]);
 		setFrameRows([]);
+		setRhEffDates([]);
 		setRhEffRows([]);
 	}, []);
 
@@ -818,7 +908,9 @@ export default function SpinningReportsPage() {
 					filter.fromDate,
 					filter.toDate,
 				);
-				setRhEffRows(buildRunningHoursEffRows(data));
+				const pivot = pivotRunningHoursEff(data);
+				setRhEffDates(pivot.dates);
+				setRhEffRows(pivot.rows);
 			}
 		} catch (err: unknown) {
 			const message =
@@ -1094,21 +1186,33 @@ export default function SpinningReportsPage() {
 			});
 			body += `</tbody></table>`;
 		} else {
+			const dateGroups = rhEffDates
+				.map((d) => `<th colspan="3">${escapeHtml(d)}</th>`)
+				.join("");
+			const subPerDate = rhEffDates
+				.map(() => `<th>Prod</th><th>Hrs</th><th>Eff%</th>`)
+				.join("");
 			body +=
-				`<table><thead><tr>` +
-				["Machine", "Quality", "Production", "Running Hrs", "Eff%"]
-					.map((h) => `<th>${h}</th>`)
-					.join("") +
-				`</tr></thead><tbody>`;
+				`<table><thead>` +
+				`<tr><th rowspan="2">Machine</th><th rowspan="2">Quality</th>${dateGroups}<th colspan="3">Overall</th></tr>` +
+				`<tr>${subPerDate}<th>Prod</th><th>Hrs</th><th>Eff%</th></tr>` +
+				`</thead><tbody>`;
 			rhEffRows.forEach((r) => {
 				const cls = r.isGrandTotal ? ' class="grand-total"' : "";
-				body +=
-					`<tr${cls}>` +
+				let tds =
 					`<td class="text">${escapeHtml(r.mc_name)}</td>` +
-					`<td class="text">${escapeHtml(r.quality_name)}</td>` +
-					`<td>${fmtNum(r.production)}</td>` +
-					`<td>${fmtNum(r.running_hours)}</td>` +
-					`<td>${fmtNum(r.eff)}</td></tr>`;
+					`<td class="text">${escapeHtml(r.quality_name)}</td>`;
+				rhEffDates.forEach((_, idx) => {
+					tds +=
+						`<td>${fmtNum(r[`d${idx}_prod`])}</td>` +
+						`<td>${fmtNum(r[`d${idx}_hrs`])}</td>` +
+						`<td>${fmtNum(r[`d${idx}_eff`])}</td>`;
+				});
+				tds +=
+					`<td>${fmtNum(r.overall_prod)}</td>` +
+					`<td>${fmtNum(r.overall_hrs)}</td>` +
+					`<td>${fmtNum(r.overall_eff)}</td>`;
+				body += `<tr${cls}>${tds}</tr>`;
 			});
 			body += `</tbody></table>`;
 		}
@@ -1123,6 +1227,7 @@ export default function SpinningReportsPage() {
 		empRows,
 		frameDates,
 		frameRows,
+		rhEffDates,
 		rhEffRows,
 		buildMetaHtml,
 	]);
@@ -1373,37 +1478,73 @@ export default function SpinningReportsPage() {
 		];
 	}, [frameDates]);
 
-	const rhEffColumns = useMemo<GridColDef<RunningHoursEffRow>[]>(
-		() => [
-			{ field: "mc_name", headerName: "Machine", flex: 1, minWidth: 160 },
-			{ field: "quality_name", headerName: "Quality", flex: 1, minWidth: 160 },
+	const rhEffColumns = useMemo<GridColDef<RunningHoursEffRow>[]>(() => {
+		const num = (
+			field: string,
+			header: "Prod" | "Hrs" | "Eff%",
+			minWidth = 80,
+			flex = 1,
+		): GridColDef<RunningHoursEffRow> => ({
+			field,
+			headerName: header,
+			type: "number",
+			flex,
+			minWidth,
+			sortable: false,
+			valueFormatter: (value: unknown) => fmtNum(value),
+		});
+		const dateCols: GridColDef<RunningHoursEffRow>[] = rhEffDates.flatMap(
+			(_, idx) => [
+				num(`d${idx}_prod`, "Prod", 85),
+				num(`d${idx}_hrs`, "Hrs"),
+				num(`d${idx}_eff`, "Eff%"),
+			],
+		);
+		return [
 			{
-				field: "production",
-				headerName: "Production",
-				type: "number",
-				flex: 1,
+				field: "mc_name",
+				headerName: "Machine",
+				flex: 1.4,
 				minWidth: 130,
-				valueFormatter: (value: unknown) => fmtNum(value),
+				sortable: false,
 			},
 			{
-				field: "running_hours",
-				headerName: "Running Hrs",
-				type: "number",
-				flex: 1,
-				minWidth: 130,
-				valueFormatter: (value: unknown) => fmtNum(value),
+				field: "quality_name",
+				headerName: "Quality",
+				flex: 2,
+				minWidth: 180,
+				sortable: false,
 			},
+			...dateCols,
+			num("overall_prod", "Prod", 95),
+			num("overall_hrs", "Hrs", 90),
+			num("overall_eff", "Eff%", 85),
+		];
+	}, [rhEffDates]);
+
+	const rhEffGrouping = useMemo<GridColumnGroupingModel>(() => {
+		const dateGroups = rhEffDates.map((d, idx) => ({
+			groupId: `g_d${idx}`,
+			headerName: d,
+			children: [
+				{ field: `d${idx}_prod` },
+				{ field: `d${idx}_hrs` },
+				{ field: `d${idx}_eff` },
+			],
+		}));
+		return [
+			...dateGroups,
 			{
-				field: "eff",
-				headerName: "Eff%",
-				type: "number",
-				flex: 1,
-				minWidth: 110,
-				valueFormatter: (value: unknown) => fmtNum(value),
+				groupId: "g_overall",
+				headerName: "Overall",
+				children: [
+					{ field: "overall_prod" },
+					{ field: "overall_hrs" },
+					{ field: "overall_eff" },
+				],
 			},
-		],
-		[],
-	);
+		];
+	}, [rhEffDates]);
 
 	// ─── Render ─────────────────────────────────────────────────────────────
 
@@ -1604,6 +1745,7 @@ export default function SpinningReportsPage() {
 			rows={rhEffRows}
 			columns={filterCols(rhEffColumns)}
 			rowCount={rhEffRows.length}
+			columnGroupingModel={filterGrouping(rhEffGrouping)}
 			paginationModel={paginationModel}
 			onPaginationModelChange={setPaginationModel}
 			loading={loading}
