@@ -5,8 +5,10 @@ import {
 	Alert,
 	Button,
 	Box,
+	Checkbox,
 	FormControl,
 	InputLabel,
+	ListItemText,
 	MenuItem,
 	Select,
 	type SelectChangeEvent,
@@ -22,6 +24,7 @@ import {
 	GridColDef,
 	GridColumnGroupingModel,
 	GridPaginationModel,
+	type GridValidRowModel,
 } from "@mui/x-data-grid";
 import IndexWrapper from "@/components/ui/IndexWrapper";
 import { useSidebarContextSafe } from "@/components/dashboard/sidebarContext";
@@ -68,7 +71,7 @@ type PivotRow = {
 };
 
 // Machine day-wise pivot — rows are machines, columns are dates with
-// Production + Issue sub-columns + Total / Average column groups.
+// Unit + Eff% sub-columns + Total / Average column groups.
 type QualityDayWiseRow = {
 	id: string;
 	quality_name: string;
@@ -89,6 +92,46 @@ const VIEW_TITLES: Record<ViewKey, string> = {
 	dateProduction: "Details Report",
 	dateIssue: "Date Wise Output",
 	qualityDayWise: "Machine Day Wise Report",
+};
+
+/**
+ * Metric (sub-column) definitions per view for the "Columns" filter.
+ * Metric columns are recognised by their field naming convention; columns
+ * matching no metric (Date, Machine) are always shown.
+ */
+type MetricDef = {
+	key: string;
+	label: string;
+	match: (field: string) => boolean;
+};
+
+const VIEW_METRICS: Record<ViewKey, MetricDef[]> = {
+	shiftMatrix: [
+		{ key: "op", label: "OP", match: (f) => f.endsWith("_op") },
+		{ key: "cl", label: "CL", match: (f) => f.endsWith("_cl") },
+		{ key: "unit", label: "Unit", match: (f) => f.endsWith("_unit") },
+		{ key: "eff", label: "Eff%", match: (f) => f.endsWith("_eff") },
+	],
+	summary: [
+		{ key: "opening", label: "Opening", match: (f) => f === "opening" },
+		{ key: "production", label: "Production", match: (f) => f === "production" },
+		{ key: "issue", label: "Issue", match: (f) => f === "issue" },
+		{ key: "closing", label: "Closing", match: (f) => f === "closing" },
+	],
+	dateProduction: [
+		{ key: "opening", label: "Opening", match: (f) => f === "opening" },
+		{ key: "production", label: "Production", match: (f) => f === "production" },
+		{ key: "issue", label: "Issue", match: (f) => f === "issue" },
+		{ key: "closing", label: "Closing", match: (f) => f === "closing" },
+	],
+	dateIssue: [
+		{ key: "total", label: "Total", match: (f) => f === "total" },
+		{ key: "average", label: "Average", match: (f) => f === "average" },
+	],
+	qualityDayWise: [
+		{ key: "unit", label: "Unit", match: (f) => f.endsWith("_unit") },
+		{ key: "eff", label: "Eff%", match: (f) => f.endsWith("_eff") },
+	],
 };
 
 // Row used by the shift matrix view — one row per machine with shift A/B/C
@@ -446,19 +489,21 @@ function pivotByDate(
 }
 
 // Machine day-wise pivot: rows are machines, columns are dates with
-// (Production, Issue) sub-columns + Total and Average column groups.
+// (Unit, Eff%) sub-columns + Total (Unit) and Average (Unit, Eff%) groups.
+// Eff aggregates as the average over days where eff > 0 (summing % is
+// meaningless), so the Total group carries Unit only.
 function pivotQualityDayWise(
 	rows: Array<{
 		report_date: string;
 		quality_id: number;
 		quality_name: string;
-		production: number;
-		issue: number;
+		unit: number;
+		eff: number;
 	}>,
 ): { dates: string[]; rows: QualityDayWiseRow[] } {
 	const dateOrder: string[] = [];
 	const seenDate = new Set<string>();
-	type Cell = { prod: number; iss: number };
+	type Cell = { unit: number; eff: number };
 	const qualities = new Map<
 		number,
 		{ quality_name: string; cells: Map<string, Cell> }
@@ -475,8 +520,8 @@ function pivotQualityDayWise(
 			qualities.set(r.quality_id, q);
 		}
 		q.cells.set(r.report_date, {
-			prod: Number(r.production) || 0,
-			iss: Number(r.issue) || 0,
+			unit: Number(r.unit) || 0,
+			eff: Number(r.eff) || 0,
 		});
 	});
 
@@ -484,23 +529,24 @@ function pivotQualityDayWise(
 		.sort((a, b) => a[1].quality_name.localeCompare(b[1].quality_name))
 		.map(([quality_id, { quality_name, cells }]) => {
 			const row: QualityDayWiseRow = { id: String(quality_id), quality_name };
-			let totalProd = 0;
-			let totalIss = 0;
-			let nProd = 0;
-			let nIss = 0;
+			let totalUnit = 0;
+			let nUnit = 0;
+			let effSum = 0;
+			let nEff = 0;
 			dateOrder.forEach((d, idx) => {
-				const c = cells.get(d) ?? { prod: 0, iss: 0 };
-				row[`d${idx}_prod`] = c.prod;
-				row[`d${idx}_iss`] = c.iss;
-				totalProd += c.prod;
-				totalIss += c.iss;
-				if (c.prod > 0) nProd += 1;
-				if (c.iss > 0) nIss += 1;
+				const c = cells.get(d) ?? { unit: 0, eff: 0 };
+				row[`d${idx}_unit`] = c.unit;
+				row[`d${idx}_eff`] = c.eff;
+				totalUnit += c.unit;
+				if (c.unit > 0) nUnit += 1;
+				if (c.eff > 0) {
+					effSum += c.eff;
+					nEff += 1;
+				}
 			});
-			row.total_prod = totalProd;
-			row.total_iss = totalIss;
-			row.avg_prod = nProd > 0 ? totalProd / nProd : 0;
-			row.avg_iss = nIss > 0 ? totalIss / nIss : 0;
+			row.total_unit = totalUnit;
+			row.avg_unit = nUnit > 0 ? totalUnit / nUnit : 0;
+			row.avg_eff = nEff > 0 ? effSum / nEff : 0;
 			return row;
 		});
 
@@ -510,24 +556,35 @@ function pivotQualityDayWise(
 			quality_name: "Grand Total",
 			isGrandTotal: true,
 		};
-		let gTotalProd = 0;
-		let gTotalIss = 0;
-		let gNProd = 0;
-		let gNIss = 0;
+		let gTotalUnit = 0;
+		let gNUnit = 0;
+		let gEffSum = 0;
+		let gNEff = 0;
 		dateOrder.forEach((_, idx) => {
-			const dProd = out.reduce((s, r) => s + (Number(r[`d${idx}_prod`]) || 0), 0);
-			const dIss = out.reduce((s, r) => s + (Number(r[`d${idx}_iss`]) || 0), 0);
-			grand[`d${idx}_prod`] = dProd;
-			grand[`d${idx}_iss`] = dIss;
-			gTotalProd += dProd;
-			gTotalIss += dIss;
-			if (dProd > 0) gNProd += 1;
-			if (dIss > 0) gNIss += 1;
+			const dUnit = out.reduce((s, r) => s + (Number(r[`d${idx}_unit`]) || 0), 0);
+			// Grand-total eff per date = average of machine effs that ran that day
+			let dEffSum = 0;
+			let dNEff = 0;
+			out.forEach((r) => {
+				const e = Number(r[`d${idx}_eff`]) || 0;
+				if (e > 0) {
+					dEffSum += e;
+					dNEff += 1;
+				}
+			});
+			const dEff = dNEff > 0 ? dEffSum / dNEff : 0;
+			grand[`d${idx}_unit`] = dUnit;
+			grand[`d${idx}_eff`] = dEff;
+			gTotalUnit += dUnit;
+			if (dUnit > 0) gNUnit += 1;
+			if (dEff > 0) {
+				gEffSum += dEff;
+				gNEff += 1;
+			}
 		});
-		grand.total_prod = gTotalProd;
-		grand.total_iss = gTotalIss;
-		grand.avg_prod = gNProd > 0 ? gTotalProd / gNProd : 0;
-		grand.avg_iss = gNIss > 0 ? gTotalIss / gNIss : 0;
+		grand.total_unit = gTotalUnit;
+		grand.avg_unit = gNUnit > 0 ? gTotalUnit / gNUnit : 0;
+		grand.avg_eff = gNEff > 0 ? gEffSum / gNEff : 0;
 		out.push(grand);
 	}
 
@@ -703,8 +760,8 @@ export default function DrawingReportsPage() {
 						report_date: r.report_date,
 						quality_id: r.quality_id,
 						quality_name: r.quality_name,
-						production: r.production,
-						issue: r.issue,
+						unit: r.production,
+						eff: r.eff,
 					})),
 				);
 				setQualityDayWiseDates(pivot.dates);
@@ -730,27 +787,113 @@ export default function DrawingReportsPage() {
 		loadReport();
 	}, [loadReport]);
 
+	// Metric keys currently hidden via the "Columns" filter (reset per view)
+	const [hiddenMetrics, setHiddenMetrics] = useState<string[]>([]);
+
 	const handleViewChange = useCallback((e: SelectChangeEvent<ViewKey>) => {
 		setView(e.target.value as ViewKey);
+		setHiddenMetrics([]);
 		setPaginationModel((prev) => ({ ...prev, page: 0 }));
 	}, []);
 
+	// ─── Column (metric) visibility filter ─────────────────────────────────
+
+	const metricDefs = VIEW_METRICS[view];
+
+	const keepField = useCallback(
+		(field: string): boolean => {
+			const owner = VIEW_METRICS[view].find((m) => m.match(field));
+			return !owner || !hiddenMetrics.includes(owner.key);
+		},
+		[view, hiddenMetrics],
+	);
+
+	const filterCols = useCallback(
+		<T extends GridValidRowModel>(cols: GridColDef<T>[]): GridColDef<T>[] =>
+			cols.filter((c) => keepField(c.field)),
+		[keepField],
+	);
+
+	const filterGrouping = useCallback(
+		(model: GridColumnGroupingModel): GridColumnGroupingModel =>
+			model
+				.map((group) => ({
+					...group,
+					children: group.children.filter(
+						(child) => !("field" in child) || keepField(child.field),
+					),
+				}))
+				.filter((group) => group.children.length > 0),
+		[keepField],
+	);
+
+	const handleMetricsChange = useCallback(
+		(e: SelectChangeEvent<string[]>) => {
+			const visible =
+				typeof e.target.value === "string"
+					? e.target.value.split(",")
+					: e.target.value;
+			setHiddenMetrics(
+				VIEW_METRICS[view]
+					.map((m) => m.key)
+					.filter((key) => !visible.includes(key)),
+			);
+		},
+		[view],
+	);
+
+	const visibleMetricKeys = useMemo(
+		() => metricDefs.filter((m) => !hiddenMetrics.includes(m.key)).map((m) => m.key),
+		[metricDefs, hiddenMetrics],
+	);
+
 	const viewSelect = (
-		<FormControl size="small" sx={{ minWidth: 240 }}>
-			<InputLabel id="drawing-report-view-label">Report</InputLabel>
-			<Select<ViewKey>
-				labelId="drawing-report-view-label"
-				label="Report"
-				value={view}
-				onChange={handleViewChange}
-			>
-				<MenuItem value="shiftMatrix">Drawing Efficiency Report</MenuItem>
-				<MenuItem value="summary">Summary Report</MenuItem>
-				<MenuItem value="dateProduction">Details Report</MenuItem>
-				<MenuItem value="dateIssue">Date Wise Output</MenuItem>
-				<MenuItem value="qualityDayWise">Machine Day Wise Report</MenuItem>
-			</Select>
-		</FormControl>
+		<Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+			<FormControl size="small" sx={{ minWidth: 240 }}>
+				<InputLabel id="drawing-report-view-label">Report</InputLabel>
+				<Select<ViewKey>
+					labelId="drawing-report-view-label"
+					label="Report"
+					value={view}
+					onChange={handleViewChange}
+				>
+					<MenuItem value="shiftMatrix">Drawing Efficiency Report</MenuItem>
+					<MenuItem value="summary">Summary Report</MenuItem>
+					<MenuItem value="dateProduction">Details Report</MenuItem>
+					<MenuItem value="dateIssue">Date Wise Output</MenuItem>
+					<MenuItem value="qualityDayWise">Machine Day Wise Report</MenuItem>
+				</Select>
+			</FormControl>
+			<FormControl size="small" sx={{ minWidth: 170 }}>
+				<InputLabel id="drawing-metric-filter-label">Columns</InputLabel>
+				<Select<string[]>
+					labelId="drawing-metric-filter-label"
+					label="Columns"
+					multiple
+					value={visibleMetricKeys}
+					onChange={handleMetricsChange}
+					renderValue={(selected) =>
+						selected.length === metricDefs.length
+							? "All"
+							: metricDefs
+									.filter((m) => selected.includes(m.key))
+									.map((m) => m.label)
+									.join(", ") || "None"
+					}
+				>
+					{metricDefs.map((m) => (
+						<MenuItem key={m.key} value={m.key}>
+							<Checkbox
+								size="small"
+								checked={!hiddenMetrics.includes(m.key)}
+								sx={{ p: 0.5, mr: 1 }}
+							/>
+							<ListItemText primary={m.label} />
+						</MenuItem>
+					))}
+				</Select>
+			</FormControl>
+		</Box>
 	);
 
 	const handleApply = useCallback((values: DrawingFilterValues) => {
@@ -790,19 +933,17 @@ export default function DrawingReportsPage() {
 		};
 	}, [summaryRows]);
 
-	// Sum of Production / Issue across all machines, per date — used by the
-	// Machine Day Wise bar chart. Skips the Grand-Total pivot row.
+	// Sum of Unit across all machines per date — used by the Machine Day Wise
+	// bar chart. Skips the Grand-Total pivot row.
 	const qualityDayWiseChartTotals = useMemo(() => {
-		const prod: number[] = qualityDayWiseDates.map(() => 0);
-		const iss: number[] = qualityDayWiseDates.map(() => 0);
+		const unit: number[] = qualityDayWiseDates.map(() => 0);
 		qualityDayWiseRows.forEach((row) => {
 			if (row.isGrandTotal) return;
 			qualityDayWiseDates.forEach((_, idx) => {
-				prod[idx] += Number(row[`d${idx}_prod`]) || 0;
-				iss[idx] += Number(row[`d${idx}_iss`]) || 0;
+				unit[idx] += Number(row[`d${idx}_unit`]) || 0;
 			});
 		});
-		return { prod, iss };
+		return { unit };
 	}, [qualityDayWiseDates, qualityDayWiseRows]);
 
 	const handlePrint = useCallback(() => {
@@ -879,26 +1020,25 @@ export default function DrawingReportsPage() {
 			body +=
 				`<tr><th rowspan="2">Machine</th>` +
 				dateGroups.map((d) => `<th colspan="2">${d}</th>`).join("") +
-				`<th colspan="2">Total</th><th colspan="2">Average</th></tr>`;
+				`<th>Total</th><th colspan="2">Average</th></tr>`;
 			const subHeaders = dateGroups
-				.map(() => `<th>Prod</th><th>Issue</th>`)
+				.map(() => `<th>Unit</th><th>Eff%</th>`)
 				.join("");
 			body +=
 				`<tr>${subHeaders}` +
-				`<th>Prod</th><th>Issue</th><th>Prod</th><th>Issue</th></tr>`;
+				`<th>Unit</th><th>Unit</th><th>Eff%</th></tr>`;
 			body += `</thead><tbody>`;
 			qualityDayWiseRows.forEach((r) => {
 				const cls = r.isGrandTotal ? ' class="grand-total"' : "";
 				let tds = `<td class="text">${escapeHtml(r.quality_name)}</td>`;
 				qualityDayWiseDates.forEach((_, idx) => {
-					tds += `<td>${fmtNum(r[`d${idx}_prod`])}</td>`;
-					tds += `<td>${fmtNum(r[`d${idx}_iss`])}</td>`;
+					tds += `<td>${fmtNum(r[`d${idx}_unit`])}</td>`;
+					tds += `<td>${fmtNum(r[`d${idx}_eff`])}</td>`;
 				});
 				tds +=
-					`<td>${fmtNum(r.total_prod)}</td>` +
-					`<td>${fmtNum(r.total_iss)}</td>` +
-					`<td>${fmtNum(r.avg_prod)}</td>` +
-					`<td>${fmtNum(r.avg_iss)}</td>`;
+					`<td>${fmtNum(r.total_unit)}</td>` +
+					`<td>${fmtNum(r.avg_unit)}</td>` +
+					`<td>${fmtNum(r.avg_eff)}</td>`;
 				body += `<tr${cls}>${tds}</tr>`;
 			});
 			body += `</tbody></table>`;
@@ -1112,20 +1252,19 @@ export default function DrawingReportsPage() {
 		};
 		const numCol = (field: string): GridColDef<QualityDayWiseRow> => ({
 			field,
-			headerName: field.endsWith("_prod") ? "Prod" : "Issue",
+			headerName: field.endsWith("_unit") ? "Unit" : "Eff%",
 			type: "number",
 			width: 100,
 			sortable: false,
 			valueFormatter: (value: unknown) => fmtNum(value),
 		});
 		const dateCols: GridColDef<QualityDayWiseRow>[] = qualityDayWiseDates.flatMap(
-			(_, idx) => [numCol(`d${idx}_prod`), numCol(`d${idx}_iss`)],
+			(_, idx) => [numCol(`d${idx}_unit`), numCol(`d${idx}_eff`)],
 		);
 		const aggCols: GridColDef<QualityDayWiseRow>[] = [
-			numCol("total_prod"),
-			numCol("total_iss"),
-			numCol("avg_prod"),
-			numCol("avg_iss"),
+			numCol("total_unit"),
+			numCol("avg_unit"),
+			numCol("avg_eff"),
 		];
 		return [qualityCol, ...dateCols, ...aggCols];
 	}, [qualityDayWiseDates]);
@@ -1134,19 +1273,19 @@ export default function DrawingReportsPage() {
 		const dateGroups = qualityDayWiseDates.map((d, idx) => ({
 			groupId: `g_d${idx}`,
 			headerName: d,
-			children: [{ field: `d${idx}_prod` }, { field: `d${idx}_iss` }],
+			children: [{ field: `d${idx}_unit` }, { field: `d${idx}_eff` }],
 		}));
 		return [
 			...dateGroups,
 			{
 				groupId: "g_total",
 				headerName: "Total",
-				children: [{ field: "total_prod" }, { field: "total_iss" }],
+				children: [{ field: "total_unit" }],
 			},
 			{
 				groupId: "g_avg",
 				headerName: "Average",
-				children: [{ field: "avg_prod" }, { field: "avg_iss" }],
+				children: [{ field: "avg_unit" }, { field: "avg_eff" }],
 			},
 		];
 	}, [qualityDayWiseDates]);
@@ -1235,7 +1374,7 @@ export default function DrawingReportsPage() {
 				title={VIEW_TITLES[view]}
 				subtitle={subtitle}
 				rows={shiftMatrixRows}
-				columns={shiftMatrixColumns}
+				columns={filterCols(shiftMatrixColumns)}
 				rowCount={shiftMatrixRows.length}
 				paginationModel={paginationModel}
 				onPaginationModelChange={setPaginationModel}
@@ -1248,7 +1387,7 @@ export default function DrawingReportsPage() {
 						{filterButton}
 					</>
 				}
-				columnGroupingModel={shiftMatrixGroupingModel}
+				columnGroupingModel={filterGrouping(shiftMatrixGroupingModel)}
 				getRowClassName={(params) => {
 					const r = params.row as ShiftMatrixRow;
 					if (r.isGrandTotal) return "drawing-row-grand-total";
@@ -1288,7 +1427,7 @@ export default function DrawingReportsPage() {
 				title={VIEW_TITLES[view]}
 				subtitle={subtitle}
 				rows={summaryRows}
-				columns={summaryColumns}
+				columns={filterCols(summaryColumns)}
 				rowCount={summaryRows.length}
 				paginationModel={paginationModel}
 				onPaginationModelChange={setPaginationModel}
@@ -1315,7 +1454,7 @@ export default function DrawingReportsPage() {
 									closing: summaryTotals.closing,
 								},
 							]}
-							columns={summaryColumns}
+							columns={filterCols(summaryColumns)}
 							hideFooter
 							disableColumnMenu
 							disableColumnSorting
@@ -1355,7 +1494,7 @@ export default function DrawingReportsPage() {
 
 		const chartDialog = (
 			<Dialog open={chartOpen} onClose={() => setChartOpen(false)} maxWidth="lg" fullWidth>
-				<DialogTitle>Drawing Day-wise — Production vs Issue</DialogTitle>
+				<DialogTitle>Drawing Day-wise — Unit</DialogTitle>
 				<DialogContent dividers>
 					{qualityDayWiseDates.length === 0 ? (
 						<Typography color="text.secondary" sx={{ p: 4, textAlign: "center" }}>
@@ -1374,15 +1513,9 @@ export default function DrawingReportsPage() {
 								yAxis={[{ label: "Meters" }]}
 								series={[
 									{
-										data: qualityDayWiseChartTotals.prod,
-										label: "Production",
+										data: qualityDayWiseChartTotals.unit,
+										label: "Unit",
 										color: "#1976d2",
-										valueFormatter: (v) => (v == null ? "" : fmtNum(v)),
-									},
-									{
-										data: qualityDayWiseChartTotals.iss,
-										label: "Issue",
-										color: "#e53935",
 										valueFormatter: (v) => (v == null ? "" : fmtNum(v)),
 									},
 								]}
@@ -1403,7 +1536,7 @@ export default function DrawingReportsPage() {
 				title={VIEW_TITLES[view]}
 				subtitle={subtitle}
 				rows={qualityDayWiseRows}
-				columns={qualityDayWiseColumns}
+				columns={filterCols(qualityDayWiseColumns)}
 				rowCount={qualityDayWiseRows.length}
 				paginationModel={paginationModel}
 				onPaginationModelChange={setPaginationModel}
@@ -1417,7 +1550,7 @@ export default function DrawingReportsPage() {
 						{filterButton}
 					</>
 				}
-				columnGroupingModel={qualityDayWiseGroupingModel}
+				columnGroupingModel={filterGrouping(qualityDayWiseGroupingModel)}
 				getRowClassName={(params) =>
 					(params.row as QualityDayWiseRow).isGrandTotal ? "drawing-row-total" : ""
 				}
@@ -1442,7 +1575,7 @@ export default function DrawingReportsPage() {
 				title={VIEW_TITLES[view]}
 				subtitle={subtitle}
 				rows={dateProductionRows}
-				columns={dateProductionColumns}
+				columns={filterCols(dateProductionColumns)}
 				rowCount={dateProductionRows.length}
 				paginationModel={paginationModel}
 				onPaginationModelChange={setPaginationModel}
@@ -1478,7 +1611,7 @@ export default function DrawingReportsPage() {
 			title={VIEW_TITLES[view]}
 			subtitle={subtitle}
 			rows={pivotRows}
-			columns={pivotColumns}
+			columns={filterCols(pivotColumns)}
 			rowCount={pivotRows.length}
 			paginationModel={paginationModel}
 			onPaginationModelChange={setPaginationModel}
@@ -1491,7 +1624,7 @@ export default function DrawingReportsPage() {
 					{filterButton}
 				</>
 			}
-			columnGroupingModel={pivotGroupingModel}
+			columnGroupingModel={filterGrouping(pivotGroupingModel)}
 			getRowClassName={(params) =>
 				(params.row as PivotRow).isGrandTotal ? "drawing-row-total" : ""
 			}

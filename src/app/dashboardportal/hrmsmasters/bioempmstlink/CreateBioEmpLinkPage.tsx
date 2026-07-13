@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useState, useCallback, useMemo, useRef } from "react";
 import {
 	Dialog,
 	DialogTitle,
@@ -31,6 +31,8 @@ type EmployeeOpt = {
 	eb_id: number;
 	emp_code: string | null;
 	full_name: string | null;
+	link_id: number | null;
+	bio_dev_id: number | null;
 };
 
 export default function CreateBioEmpLinkPage({
@@ -51,6 +53,9 @@ export default function CreateBioEmpLinkPage({
 	const [initialValues, setInitialValues] = useState<Record<string, unknown>>({});
 	const [formKey, setFormKey] = useState(0);
 	const [employees, setEmployees] = useState<EmployeeOpt[]>([]);
+	// existing link found for the selected employee in create mode → save becomes an update
+	const [linkId, setLinkId] = useState<number | undefined>(undefined);
+	const lastMasterId = useRef("");
 
 	const getCoId = useCallback((): string => {
 		const selectedCompany = localStorage.getItem("sidebar_selectedCompany");
@@ -92,6 +97,8 @@ export default function CreateBioEmpLinkPage({
 			await loadSetup();
 
 			if (editId === undefined) {
+				setLinkId(undefined);
+				lastMasterId.current = "";
 				setInitialValues({
 					master_id: "",
 					bio_dev_id: "",
@@ -141,6 +148,26 @@ export default function CreateBioEmpLinkPage({
 		[employees]
 	);
 
+	// in create mode, prefill bio_dev_id from an existing link when the employee changes
+	const handleValuesChange = useCallback(
+		(values: Record<string, unknown>) => {
+			if (editId !== undefined) return;
+			const masterId = String(values.master_id ?? "");
+			if (masterId === lastMasterId.current) return;
+			lastMasterId.current = masterId;
+
+			const emp = employees.find((e) => String(e.eb_id) === masterId);
+			const existingLinkId = emp?.link_id ?? undefined;
+			setLinkId(existingLinkId);
+			setInitialValues({
+				master_id: masterId,
+				bio_dev_id: existingLinkId !== undefined ? emp?.bio_dev_id ?? "" : "",
+			});
+			setFormKey((prev) => prev + 1);
+		},
+		[editId, employees]
+	);
+
 	const schema = useMemo<Schema>(
 		() => ({
 			title: editId !== undefined ? "Edit Bio Link" : "Create Bio Link",
@@ -177,11 +204,14 @@ export default function CreateBioEmpLinkPage({
 				bio_dev_id: values.bio_dev_id === "" ? null : Number(values.bio_dev_id),
 			};
 
+			// linkId: existing link found for the chosen employee in create mode → update it
+			const effectiveId = editId ?? linkId;
+
 			let url: string;
 			let method: "POST" | "PUT";
 
-			if (editId !== undefined) {
-				url = `${apiRoutesPortalMasters.BIO_EMP_LINK_EDIT}/${editId}`;
+			if (effectiveId !== undefined) {
+				url = `${apiRoutesPortalMasters.BIO_EMP_LINK_EDIT}/${effectiveId}`;
 				method = "PUT";
 			} else {
 				url = apiRoutesPortalMasters.BIO_EMP_LINK_CREATE;
@@ -194,7 +224,7 @@ export default function CreateBioEmpLinkPage({
 			setSnackbar({
 				open: true,
 				message:
-					editId !== undefined
+					effectiveId !== undefined
 						? "Bio link updated successfully"
 						: "Bio link created successfully",
 				severity: "success",
@@ -251,11 +281,17 @@ export default function CreateBioEmpLinkPage({
 						</Box>
 					) : (
 						<Box sx={{ pt: 1 }}>
+							{editId === undefined && linkId !== undefined && (
+								<Alert severity="info" sx={{ mb: 2 }}>
+									This employee already has a bio link — saving will update it.
+								</Alert>
+							)}
 							<MuiForm
 								key={formKey}
 								schema={schema}
 								mode={mode}
 								initialValues={initialValues}
+								onValuesChange={handleValuesChange}
 								onSubmit={handleSubmit}
 								submitLabel={saving ? "Saving..." : "Save"}
 								cancelLabel="Cancel"

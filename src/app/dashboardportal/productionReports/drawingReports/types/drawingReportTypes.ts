@@ -16,6 +16,7 @@ export interface DrawingDateProductionRow {
   production: number;
   issue: number;
   closing: number;
+  eff: number;
 }
 
 /** Row from GET /api/drawingReports/date-issue */
