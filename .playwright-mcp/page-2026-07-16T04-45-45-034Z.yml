@@ -1,0 +1,32 @@
+- generic [active] [ref=f1e1]:
+  - main [ref=f1e2]:
+    - generic [ref=f1e3]:
+      - img "TS Global ERP Logo" [ref=f1e5]
+      - generic [ref=f1e6]:
+        - heading "Login" [level=2] [ref=f1e8]
+        - generic [ref=f1e9]:
+          - generic [ref=f1e10]:
+            - text: User Name
+            - textbox "User Name" [ref=f1e11]
+          - generic [ref=f1e12]:
+            - text: Password
+            - generic [ref=f1e13]:
+              - textbox "••••••••" [ref=f1e14]
+              - button "Toggle password visibility" [ref=f1e15]
+          - generic [ref=f1e19]:
+            - generic [ref=f1e20]:
+              - radio "Admin Login" [ref=f1e21]
+              - generic [ref=f1e22]: Admin Login
+            - generic [ref=f1e23]:
+              - radio "Portal Login" [checked] [ref=f1e24]
+              - generic [ref=f1e25]: Portal Login
+          - generic [ref=f1e26]:
+            - generic [ref=f1e27]:
+              - checkbox "Keep me signed in" [ref=f1e28]
+              - checkbox
+              - generic [ref=f1e29]: Keep me signed in
+            - button "Forgot Password?" [ref=f1e30]
+          - button "Log in" [ref=f1e31]
+  - region "Notifications (F8)":
+    - list
+  - button "Open Next.js Dev Tools" [ref=f1e37] [cursor=pointer]

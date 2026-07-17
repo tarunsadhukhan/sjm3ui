@@ -1,0 +1,47 @@
+[     450ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[     637ms] [LOG] [HMR] connected @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   35272ms] [LOG] Subdomain: admin @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   35272ms] [LOG] API_URL for all http://192.168.0.133:8000/api @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   35273ms] [LOG] API Request Data: {username: njmadmin@vowerp.co.in, password: 123456, logintype: portal, rememberMe: false} path http://192.168.0.133:8000/api/authRoutes/loginconsole @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   35294ms] [ERROR] Access to XMLHttpRequest at 'http://192.168.0.133:8000/api/authRoutes/loginconsole' from origin 'http://admin.localhost:3000' has been blocked by CORS policy: Request header field x-forwarded-host is not allowed by Access-Control-Allow-Headers in preflight response. @ http://admin.localhost:3000/:0
+[   35295ms] [ERROR] Login failed: AxiosError @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[   35296ms] [ERROR] Axios Error Details: {message: Network Error, name: AxiosError, description: undefined, number: undefined, fileName: undefined} @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[   35296ms] [ERROR] Login error: Error: Login request failed
+    at loginConsole (http://admin.localhost:3000/_next/static/chunks/src_1753903b._.js:518:15)
+    at async onSubmit (http://admin.localhost:3000/_next/static/chunks/src_1753903b._.js:612:26)
+    at async http://admin.localhost:3000/_next/static/chunks/node_modules__pnpm_a51d86e5._.js:2036:21 @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[   35323ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://192.168.0.133:8000/api/authRoutes/loginconsole:0
+[  211079ms] [LOG] [Fast Refresh] rebuilding @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  211099ms] [LOG] [Fast Refresh] done in 135ms @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1278190ms] [LOG] [HMR] connected @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1278303ms] [LOG] [Fast Refresh] rebuilding @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1317982ms] [LOG] [Fast Refresh] done in 39787ms @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1348776ms] [LOG] [HMR] connected @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1416706ms] [LOG] [HMR] connected @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 8507609ms] [LOG] [HMR] connected @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 8508688ms] [LOG] [Fast Refresh] rebuilding @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 8508817ms] [LOG] [Fast Refresh] done in 232ms @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 8522584ms] [LOG] [HMR] connected @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 9163925ms] [LOG] [HMR] connected @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 9164043ms] [LOG] [Fast Refresh] rebuilding @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 9164087ms] [LOG] [Fast Refresh] done in 155ms @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[13462676ms] [LOG] [HMR] connected @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[13466467ms] [LOG] [Fast Refresh] rebuilding @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[13466676ms] [LOG] [Fast Refresh] done in 364ms @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[14940035ms] [LOG] [HMR] connected @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[14940707ms] [LOG] [Fast Refresh] rebuilding @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[14940861ms] [LOG] [Fast Refresh] done in 278ms @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[16005106ms] [LOG] [HMR] connected @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[16005288ms] [LOG] [Fast Refresh] rebuilding @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[16005604ms] [LOG] [Fast Refresh] done in 423ms @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[16663283ms] [LOG] [HMR] connected @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[16663522ms] [LOG] [Fast Refresh] rebuilding @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[16663832ms] [LOG] [Fast Refresh] done in 416ms @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[22263455ms] [ERROR] WebSocket connection to 'ws://admin.localhost:3000/_next/webpack-hmr?id=OUxVPguhGzj5lAd6ZS8SN' failed: Error in connection establishment: net::ERR_NETWORK_IO_SUSPENDED @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_client_2b7b8193._.js:10876
+[22265709ms] [LOG] [HMR] connected @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[22265820ms] [LOG] [Fast Refresh] rebuilding @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[22265847ms] [LOG] [Fast Refresh] done in 131ms @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[22286560ms] [LOG] [Fast Refresh] rebuilding @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[22287319ms] [LOG] [Fast Refresh] done in 869ms @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[22319847ms] [LOG] [Fast Refresh] rebuilding @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[22319865ms] [LOG] [Fast Refresh] done in 125ms @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297

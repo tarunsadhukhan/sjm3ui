@@ -1,0 +1,11 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]: "404"
+    - generic [ref=e5]: Not Found
+    - generic [ref=e6]: The subdomain or page you requested does not exist.
+    - link "Go Home" [ref=e7] [cursor=pointer]:
+      - /url: /
+  - region "Notifications (F8)":
+    - list
+  - button "Open Next.js Dev Tools" [ref=e13] [cursor=pointer]
+  - alert [ref=e17]

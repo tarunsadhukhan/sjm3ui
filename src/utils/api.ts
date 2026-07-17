@@ -279,6 +279,12 @@ const apiRoutesPortalMasters = {
     SPINNING_QUALITY_CREATE: `${API_URL}/spinningQualityMaster/spinning_quality_create`,
     SPINNING_QUALITY_EDIT: `${API_URL}/spinningQualityMaster/spinning_quality_edit`,
 
+    // Winding Quality Master endpoints
+    WINDING_QUALITY_TABLE: `${API_URL}/windingQualityMaster/winding_quality_table`,
+    WINDING_QUALITY_EDIT_SETUP: `${API_URL}/windingQualityMaster/winding_quality_edit_setup`,
+    WINDING_QUALITY_CREATE: `${API_URL}/windingQualityMaster/winding_quality_create`,
+    WINDING_QUALITY_EDIT: `${API_URL}/windingQualityMaster/winding_quality_edit`,
+
     // Trolly Master endpoints
     TROLLY_TABLE: `${API_URL}/trollyMaster/trolly_table`,
     TROLLY_CREATE_SETUP: `${API_URL}/trollyMaster/trolly_create_setup`,

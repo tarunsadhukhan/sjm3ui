@@ -1,0 +1,35 @@
+- generic [active] [ref=f2e1]:
+  - generic [ref=f2e2]:
+    - generic [ref=f2e4]:
+      - generic [ref=f2e6] [cursor=pointer]:
+        - img "Logo" [ref=f2e7]
+        - generic [ref=f2e31]: Global Erp Solutions
+      - navigation [ref=f2e32]:
+        - link "Dashboard" [ref=f2e34] [cursor=pointer]:
+          - /url: /dashboardadmin
+        - link "Company" [ref=f2e37] [cursor=pointer]:
+          - /url: "#"
+        - link "Master Data" [ref=f2e42] [cursor=pointer]:
+          - /url: "#"
+        - link "User Management Portal" [ref=f2e47] [cursor=pointer]:
+          - /url: "#"
+      - generic [ref=f2e8]: User Settings
+    - main [ref=f2e16]:
+      - generic [ref=f2e17]:
+        - generic [ref=f2e18]:
+          - heading "Dashboard Admin" [level=1] [ref=f2e19]
+          - generic [ref=f2e20]: 2024-2025
+        - generic [ref=f2e21]:
+          - generic [ref=f2e22]:
+            - heading "Total Sales" [level=3] [ref=f2e23]
+            - paragraph [ref=f2e24]: ₹45,231
+          - generic [ref=f2e25]:
+            - heading "Total Orders" [level=3] [ref=f2e26]
+            - paragraph [ref=f2e27]: "124"
+          - generic [ref=f2e28]:
+            - heading "Active Projects" [level=3] [ref=f2e29]
+            - paragraph [ref=f2e30]: "8"
+  - region "Notifications (F8)":
+    - list
+  - button "Open Next.js Dev Tools" [ref=f2e55] [cursor=pointer]
+  - alert [ref=f2e59]

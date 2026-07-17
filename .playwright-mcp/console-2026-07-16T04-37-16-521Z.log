@@ -1,0 +1,6 @@
+[     573ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://192.168.0.133:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[     777ms] [LOG] [HMR] connected @ http://192.168.0.133:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   33084ms] [ERROR] Access to XMLHttpRequest at 'http://192.168.0.133:8000/api/authRoutes/login' from origin 'http://192.168.0.133:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.0.133:3000/:0
+[   33086ms] [ERROR] Login failed: AxiosError @ http://192.168.0.133:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[   33087ms] [ERROR] Axios Error Details: {message: Network Error, name: AxiosError, description: undefined, number: undefined, fileName: undefined} @ http://192.168.0.133:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[   33104ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://192.168.0.133:8000/api/authRoutes/login:0

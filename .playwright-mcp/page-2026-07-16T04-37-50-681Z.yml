@@ -1,0 +1,49 @@
+- generic [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e6]:
+      - heading [level=2] [ref=e43]: Login
+      - generic [ref=e9]:
+        - generic [ref=e10]:
+          - text: User Name
+          - textbox [ref=e44]:
+            - /placeholder: User Name
+            - text: testuser@test.in
+        - generic [ref=e12]:
+          - text: Password
+          - generic [ref=e13]:
+            - textbox [ref=e45]:
+              - /placeholder: ••••••••
+              - text: "123456"
+            - button [ref=e46]
+        - generic [ref=e19]:
+          - generic [ref=e20]:
+            - radio [ref=e47]
+            - generic [ref=e22]: Admin Login
+          - generic [ref=e23]:
+            - radio [checked] [ref=e48]
+            - generic [ref=e25]: Portal Login
+        - generic [ref=e26]:
+          - generic [ref=e27]:
+            - checkbox [ref=e49]
+            - checkbox
+            - generic [ref=e29]: Keep me signed in
+          - button [ref=e50]: Forgot Password?
+        - button [ref=e51]: Log in
+  - list
+  - generic [ref=e36] [cursor=pointer]:
+    - button [ref=e52]
+    - generic [ref=e53]:
+      - button [ref=e54]:
+        - generic [ref=e55]:
+          - generic [ref=e56]: "1"
+          - generic [ref=e57]: "2"
+        - generic [ref=e58]:
+          - text: Issue
+          - generic [ref=e59]: s
+      - button [ref=e60]
+  - alert [ref=e41]
+  - dialog [ref=e64]:
+    - heading "Login Failed" [level=2] [ref=e69]
+    - generic [ref=e70]: Login request failed
+    - text: "!"
+    - button "OK" [active] [ref=e72] [cursor=pointer]

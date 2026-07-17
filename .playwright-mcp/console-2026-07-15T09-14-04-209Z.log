@@ -1,0 +1,26 @@
+[     295ms] [LOG] [Fast Refresh] rebuilding @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[     614ms] [LOG] [Fast Refresh] done in 424ms @ http://admin.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1035ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://192.168.0.133:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1205ms] [LOG] [HMR] connected @ http://192.168.0.133:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   53568ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://192.168.0.133:8000/api/authRoutes/login:0
+[   53572ms] [LOG] Login API Response: {data: Object, status: 401, statusText: Unauthorized, headers: AxiosHeaders, config: Object} @ http://192.168.0.133:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  145754ms] [LOG] Subdomain: 192 @ http://192.168.0.133:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  145754ms] [LOG] API_URL for all http://192.168.0.133:8000/api @ http://192.168.0.133:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  145755ms] [LOG] API Request Data: {username: njmadmin@vowerp.co.in, password: 123456, logintype: admin, rememberMe: false} path http://192.168.0.133:8000/api/authRoutes/loginconsole @ http://192.168.0.133:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  146734ms] [LOG] API Response: {data: Object, status: 200, statusText: OK, headers: AxiosHeaders, config: Object} @ http://192.168.0.133:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  146735ms] [LOG] Cookies after login:  @ http://192.168.0.133:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  146735ms] [LOG] Login successful @ http://192.168.0.133:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  146969ms] [LOG] [Fast Refresh] rebuilding @ http://192.168.0.133:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  157963ms] [LOG] [Fast Refresh] done in 11094ms @ http://192.168.0.133:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  158658ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://192.168.0.133:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  158750ms] [LOG] [HMR] connected @ http://192.168.0.133:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  159067ms] [LOG] [Fast Refresh] rebuilding @ http://192.168.0.133:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  159099ms] [LOG] [] @ http://192.168.0.133:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  159101ms] [LOG] [] @ http://192.168.0.133:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  159284ms] [LOG] [Fast Refresh] done in 342ms @ http://192.168.0.133:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  159439ms] [LOG] [Object, Object, Object, Object] @ http://192.168.0.133:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  159443ms] [LOG] [Object, Object, Object, Object] @ http://192.168.0.133:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  208428ms] [LOG] [Object, Object, Object, Object] @ http://192.168.0.133:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  208432ms] [LOG] [Object, Object, Object, Object] @ http://192.168.0.133:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  210214ms] [LOG] [Object, Object, Object, Object] @ http://192.168.0.133:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  210217ms] [LOG] [Object, Object, Object, Object] @ http://192.168.0.133:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297

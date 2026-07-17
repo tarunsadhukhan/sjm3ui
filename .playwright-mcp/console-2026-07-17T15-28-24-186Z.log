@@ -1,0 +1,435 @@
+[     258ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[     319ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[     452ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[     978ms] [LOG] [Fast Refresh] done in 645ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   36819ms] [LOG] Subdomain: sjm @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   36820ms] [LOG] API_URL for all http://192.168.0.133:8000/api @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   36820ms] [LOG] API Request Data: {username: njmadmin@vowerp.co.in, password: 123456, logintype: admin, rememberMe: false} path http://192.168.0.133:8000/api/authRoutes/loginconsole @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   37407ms] [LOG] API Response: {data: Object, status: 200, statusText: OK, headers: AxiosHeaders, config: Object} @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   37408ms] [LOG] Cookies after login:  @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   37408ms] [LOG] Login successful @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   37687ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   37764ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   37871ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   37871ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   38135ms] [LOG] [Object, Object, Object, Object] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   38137ms] [LOG] [Object, Object, Object, Object] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  203467ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  351302ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  352092ms] [LOG] [Fast Refresh] done in 896ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  381817ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  382080ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  382211ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  382212ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  382419ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  382501ms] [LOG] [Object, Object, Object, Object] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  382502ms] [LOG] [Object, Object, Object, Object] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  390533ms] [LOG] [Fast Refresh] done in 8226ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  390751ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  390888ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  391204ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  391205ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  391214ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  391732ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://sjm.localhost:3000/dashboardadmin/dataAllowable:0
+[  391977ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  392018ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  392749ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://sjm.localhost:3000/dashbaordadmin/purchaseSetting:0
+[  392983ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  393050ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  393262ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  393656ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://sjm.localhost:3000/dashboardadmin/salesSetting:0
+[  393932ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  393970ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  394158ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  394236ms] [LOG] [Fast Refresh] done in 185ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  394340ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  397310ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  397422ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  397533ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  397533ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  397983ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://sjm.localhost:3000/dashboardadmin/leaveType:0
+[  398171ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  398216ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  398419ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  403796ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  403906ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  404065ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  404066ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  404232ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  404233ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  404259ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  406824ms] [LOG] [Fast Refresh] done in 2745ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  407049ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  407148ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  407440ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  407441ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  408010ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  408194ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://sjm.localhost:3000/dashbaordadmin/payschemePolicies:0
+[  408412ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  408452ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  408632ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  412307ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  412595ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  412821ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  412822ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  413308ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://sjm.localhost:3000/dashboardadmin/taxMaster:0
+[  413601ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  413661ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  414231ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://sjm.localhost:3000/dashboardadmin/bankAccountMaster:0
+[  414481ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  414553ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  414718ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  414912ms] [LOG] [Fast Refresh] done in 307ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  415022ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  415184ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://sjm.localhost:3000/dashboardadmin/supplierTypes:0
+[  415447ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  415521ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  415736ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  415790ms] [LOG] [Fast Refresh] done in 172ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  415899ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  415960ms] [LOG] [Fast Refresh] done in 167ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  416065ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  416329ms] [LOG] [Fast Refresh] done in 367ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  416377ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://sjm.localhost:3000/dashboardadmin/selectModules:0
+[  416653ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  416700ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  416882ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  416950ms] [LOG] [Fast Refresh] done in 180ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  417138ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  420171ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  420224ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  420283ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  420284ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  420405ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  425270ms] [LOG] [Object, Object, Object, Object] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  425272ms] [LOG] [Object, Object, Object, Object] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  425904ms] [LOG] [Fast Refresh] done in 5609ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  426740ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  426850ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  426897ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  426898ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  430055ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  430118ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  430258ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  430260ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  430351ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  430586ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://sjm.localhost:3000/dashboardadmin/plans:0
+[  430835ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  430885ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  431039ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  431117ms] [LOG] [Fast Refresh] done in 198ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  431230ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  431413ms] [LOG] [Fast Refresh] done in 294ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  431488ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://sjm.localhost:3000/dashboardadmin/supbscriptions:0
+[  431663ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  431700ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  431861ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  431915ms] [LOG] [Fast Refresh] done in 172ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  432071ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  432447ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://sjm.localhost:3000/dashboardadmin/payment:0
+[  432661ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  432702ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  432836ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  434087ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  434158ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  434231ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  434231ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  434323ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  434415ms] [LOG] [Fast Refresh] done in 199ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  434565ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  434656ms] [LOG] [Fast Refresh] done in 192ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  434928ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  434984ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  435057ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  435058ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  435134ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  435163ms] [LOG] [Fast Refresh] done in 132ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  435510ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  435635ms] [LOG] Fetching roles with URL: http://192.168.0.133:8000/api/companyAdmin/roles_tenant_admin?page=1&limit=20&user_id=21 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  437202ms] [LOG] [Fast Refresh] done in 1806ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  437456ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  437547ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  437719ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  437720ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  438267ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  438272ms] [LOG] [Fast Refresh] done in 491ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  438377ms] [LOG] [Object, Object, Object, Object] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  438378ms] [LOG] [Object, Object, Object, Object] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  438396ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  440179ms] [LOG] [Fast Refresh] done in 1887ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  440607ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  440689ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  440800ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  440801ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  440887ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  443250ms] [LOG] [Fast Refresh] done in 2468ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  443718ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  443804ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  443930ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  443930ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  444003ms] [LOG] localstorage null @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  444010ms] [LOG] localstorage null @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  444538ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  444573ms] [LOG] [Fast Refresh] done in 677ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  444724ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  444729ms] [LOG] [Fast Refresh] done in 107ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  444769ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://sjm.localhost:3000/masters/mechineMaster:0
+[  445049ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  445096ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  445234ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  445296ms] [LOG] [Fast Refresh] done in 169ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  445492ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  448946ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  449085ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  449238ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  449239ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  449322ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  449323ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  449948ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  451243ms] [LOG] [Fast Refresh] done in 1908ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  451466ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  451522ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  451568ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  451569ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  451689ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  451789ms] [LOG] [Fast Refresh] done in 205ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  458618ms] [LOG] [Object, Object, Object, Object] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  458620ms] [LOG] [Object, Object, Object, Object] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  473036ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  473838ms] [LOG] [Fast Refresh] done in 924ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  479452ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  480505ms] [LOG] [Fast Refresh] done in 1189ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  590937ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  590943ms] [LOG] [Fast Refresh] done in 108ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  591210ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  591335ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  591390ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  591390ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  591593ms] [LOG] [Object, Object, Object, Object] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  591594ms] [LOG] [Object, Object, Object, Object] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  599271ms] [LOG] [Object, Object, Object, Object] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  599272ms] [LOG] [Object, Object, Object, Object] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  600120ms] [LOG] [Object, Object, Object, Object] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  600120ms] [LOG] [Object, Object, Object, Object] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  769227ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  769307ms] [LOG] [Fast Refresh] done in 184ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  789554ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  789564ms] [LOG] [Fast Refresh] done in 117ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  842915ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  842927ms] [LOG] [Fast Refresh] done in 115ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  878494ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  878530ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  878585ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  878586ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  878768ms] [LOG] [Object, Object, Object, Object] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  878769ms] [LOG] [Object, Object, Object, Object] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1045473ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1045510ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1045566ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1045566ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1045763ms] [LOG] [Object, Object, Object, Object, Object, Object, Object, Object] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1045765ms] [LOG] [Object, Object, Object, Object, Object, Object, Object, Object] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1072876ms] [LOG] [Object, Object, Object, Object, Object, Object, Object, Object] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1072878ms] [LOG] [Object, Object, Object, Object, Object, Object, Object, Object] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1594758ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1594848ms] [LOG] [Fast Refresh] done in 191ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1649529ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1650560ms] [LOG] [Fast Refresh] done in 1146ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1650714ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1651215ms] [LOG] [Fast Refresh] done in 605ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1923578ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1923592ms] [LOG] [Fast Refresh] done in 124ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1991993ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1992000ms] [LOG] [Fast Refresh] done in 115ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2014000ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2018647ms] [LOG] [Fast Refresh] done in 4757ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2019626ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2019832ms] [LOG] [Fast Refresh] done in 316ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2030826ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2030881ms] [LOG] [Fast Refresh] done in 173ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2031019ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2031047ms] [LOG] [Fast Refresh] done in 141ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2031437ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2031454ms] [LOG] [Fast Refresh] done in 125ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2033421ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2033449ms] [LOG] [Fast Refresh] done in 135ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2048698ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2048788ms] [LOG] [Fast Refresh] done in 195ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2067322ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2067328ms] [LOG] [Fast Refresh] done in 119ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2067837ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2068513ms] [LOG] [Fast Refresh] done in 777ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2068621ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2068628ms] [LOG] [Fast Refresh] done in 114ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2116789ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2116901ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2117036ms] [LOG] [Fast Refresh] done in 240ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2281911ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2282034ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2282095ms] [LOG] [Fast Refresh] done in 167ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2282822ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2282919ms] [LOG] [Fast Refresh] done in 202ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2283335ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2283389ms] [LOG] [Fast Refresh] done in 158ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2418086ms] [ERROR] WebSocket connection to 'ws://sjm.localhost:3000/_next/webpack-hmr?id=H9KYPbgXK7eNq4nOz1Fr3' failed: Error in connection establishment: net::ERR_NETWORK_IO_SUSPENDED @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_client_2b7b8193._.js:10876
+[ 2420642ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2420996ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2421107ms] [LOG] [Fast Refresh] done in 221ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2421251ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2421288ms] [LOG] [Fast Refresh] done in 141ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2421529ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2421572ms] [LOG] [Fast Refresh] done in 143ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2421726ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2421727ms] [LOG] [Fast Refresh] done in 105ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2617834ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2619643ms] [LOG] [Fast Refresh] done in 1913ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2622368ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2622453ms] [LOG] [Fast Refresh] done in 194ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2622749ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2622780ms] [LOG] [Fast Refresh] done in 134ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2623119ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2623137ms] [LOG] [Fast Refresh] done in 120ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2623383ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2623385ms] [LOG] [Fast Refresh] done in 107ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2659284ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2659513ms] [LOG] [Fast Refresh] done in 333ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2697556ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2697697ms] [LOG] [Fast Refresh] done in 242ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2698901ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2698932ms] [LOG] [Fast Refresh] done in 132ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2775361ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2775393ms] [LOG] [Fast Refresh] done in 135ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2791018ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2791167ms] [LOG] [Fast Refresh] done in 251ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2791521ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2791592ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2791727ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2791727ms] [LOG] [] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2815230ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2815440ms] [LOG] [Fast Refresh] done in 316ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2820384ms] [LOG] [Object, Object, Object, Object, Object, Object, Object, Object] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2820385ms] [LOG] [Object, Object, Object, Object, Object, Object, Object, Object] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2828495ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 1 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828496ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 1 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828497ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 1 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828497ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 5 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828498ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 5 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828498ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 5 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828498ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 114 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828499ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 114 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828499ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 114 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828500ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 715 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828500ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 715 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828500ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 715 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828501ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 730 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828501ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 730 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828501ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 730 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828502ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 741 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828502ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 741 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828503ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 741 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828504ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 749 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828504ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 749 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828504ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 749 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828505ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 751 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828505ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 751 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828505ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 751 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828505ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 762 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828506ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 762 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828506ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 762 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828506ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 771 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828506ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 771 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828506ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 771 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828507ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 777 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828507ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 777 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828507ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 777 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828507ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 779 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828507ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 779 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828507ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 779 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828508ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 788 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828508ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 788 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828508ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 788 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828508ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 797 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828508ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 797 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828509ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 797 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828509ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 802 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828509ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 802 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828510ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 802 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828510ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 814 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828510ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 814 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828510ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 814 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828569ms] [LOG] Selected menu IDs: [1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 10, 10, 10, 10, 11, 11, 11, 11, 33, 33, 33, 33, 114, 114, 114, 114, 121, 121, 121, 121, 122, 122, 122, 122, 123, 123, 123, 123, 124, 124, 124, 124, 125, 125, 125, 125, 126, 126, 126, 126, 127, 127, 127, 127, 128, 128, 128, 128, 129, 129, 129, 129, 130, 130, 130, 130, 131, 131, 131, 131, 132, 132, 132, 132, 133, 133, 133, 133] @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2828570ms] [LOG] Access Levels: {1: 1, 2: 4, 3: 4, 4: 4, 5: 3, 6: 3, 7: 3, 8: 3, 10: 3, 11: 1, 33: 4, 114: 1, 121: 4, 122: 4, 123: 3, 124: 4, 125: 4, 126: 4, 127: 3, 128: 3, 129: 3, 130: 3, 131: 3, 132: 4, 133: 1, 700: 3, 714: 4, 715: 3, 716: 3, 717: 4, 718: 4, 719: 4, 720: 4, 721: 3, 722: 4, 723: 3, 724: 3, 725: 3, 726: 3, 727: 3, 728: 3, 729: 3, 730: 1, 733: 3, 734: 4, 735: 3, 736: 3, 737: 3, 738: 3, 739: 3, 740: 3, 741: 1, 742: 4, 743: 4, 744: 4, 745: 4, 746: 1, 747: 3, 748: 3, 749: 3, 750: 3, 751: 3, 752: 3, 753: 3, 754: 3, 755: 3, 756: 3, 757: 3, 758: 3, 759: 3, 760: 4, 761: 4, 762: 1, 763: 4, 764: 4, 765: 4, 766: 4, 769: 4, 770: 4, 771: 1, 772: 4, 773: 4, 774: 4, 775: 4, 776: 3, 777: 3, 778: 3, 779: 1, 780: 4, 781: 4, 782: 4, 783: 3, 784: 4, 785: 4, 787: 3, 788: 1, 789: 4, 790: 4, 791: 4, 793: 4} @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2828599ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 1 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828600ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 1 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828600ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 1 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828600ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 5 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828600ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 5 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828600ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 5 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828601ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 114 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828601ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 114 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828601ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 114 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828601ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 715 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828602ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 715 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828602ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 715 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828602ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 730 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828602ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 730 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828602ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 730 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828602ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 741 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828603ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 741 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828603ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 741 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828603ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 749 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828603ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 749 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828603ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 749 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828603ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 751 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828604ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 751 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828604ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 751 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828604ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 762 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828604ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 762 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828604ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 762 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828604ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 771 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828604ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 771 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828605ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 771 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828605ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 777 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828605ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 777 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828605ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 777 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828605ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 779 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828605ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 779 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828605ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 779 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828606ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 788 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828606ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 788 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828606ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 788 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828606ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 797 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828606ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 797 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828606ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 797 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828606ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 802 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828607ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 802 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828607ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 802 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828607ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 814 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828607ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 814 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828607ms] [ERROR] Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 814 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[ 2828760ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2828832ms] [LOG] [Fast Refresh] done in 176ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2829028ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2829044ms] [LOG] [Fast Refresh] done in 130ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2829219ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2829227ms] [LOG] [Fast Refresh] done in 112ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2829411ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2829413ms] [LOG] [Fast Refresh] done in 108ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2829583ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2829593ms] [LOG] [Fast Refresh] done in 117ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2958642ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2958742ms] [LOG] [Fast Refresh] done in 209ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2973154ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2973243ms] [LOG] [Fast Refresh] done in 204ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2973437ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2973437ms] [LOG] [Fast Refresh] done in 105ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2973599ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2973606ms] [LOG] [Fast Refresh] done in 121ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2973774ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2973791ms] [LOG] [Fast Refresh] done in 127ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2973963ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2973975ms] [LOG] [Fast Refresh] done in 115ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2991209ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 2991244ms] [LOG] [Fast Refresh] done in 146ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 3185244ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 3187548ms] [LOG] [Fast Refresh] done in 2413ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297

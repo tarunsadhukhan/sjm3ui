@@ -41,9 +41,10 @@ export default function RootLayout({
       <body className={`${inter.className}`} suppressHydrationWarning>
         {/* <AuthProvider>    */}
           <AppThemeProvider>
-            <SubdomainGuard />
-            <SidebarCompaniesGuardClient />
-            {children}
+            <SubdomainGuard>
+              <SidebarCompaniesGuardClient />
+              {children}
+            </SubdomainGuard>
             <Toaster />
           </AppThemeProvider>
          {/* </AuthProvider>  */}

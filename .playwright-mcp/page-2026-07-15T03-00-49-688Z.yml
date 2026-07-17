@@ -1,0 +1,42 @@
+- generic [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e6]:
+      - heading [level=2] [ref=e43]: Login
+      - generic [ref=e9]:
+        - generic [ref=e10]:
+          - text: User Name
+          - textbox [ref=e44]:
+            - /placeholder: User Name
+            - text: njmadmin@vowerp.co.in
+        - generic [ref=e12]:
+          - text: Password
+          - generic [ref=e13]:
+            - textbox [ref=e45]:
+              - /placeholder: ••••••••
+              - text: "123456"
+            - button [ref=e46]
+        - generic [ref=e26]:
+          - generic [ref=e27]:
+            - checkbox [ref=e47]
+            - checkbox
+            - generic [ref=e29]: Keep me signed in
+          - button [ref=e48]: Forgot Password?
+        - button [ref=e49]: Log in
+  - list
+  - generic [ref=e36] [cursor=pointer]:
+    - button [ref=e50]
+    - generic [ref=e51]:
+      - button [ref=e52]:
+        - generic [ref=e53]:
+          - generic [ref=e54]: "2"
+          - generic [ref=e55]: "3"
+        - generic [ref=e56]:
+          - text: Issue
+          - generic [ref=e57]: s
+      - button [ref=e58]
+  - alert [ref=e41]
+  - dialog [ref=e62]:
+    - heading "Login Failed" [level=2] [ref=e67]
+    - generic [ref=e68]: Something went wrong during login.
+    - text: "!"
+    - button "OK" [active] [ref=e70] [cursor=pointer]

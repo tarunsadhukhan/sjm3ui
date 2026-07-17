@@ -1,0 +1,39 @@
+- generic [ref=f1e1]:
+  - main [ref=f1e2]:
+    - generic [ref=f1e6]:
+      - heading [level=2] [ref=f1e43]: Login
+      - generic [ref=f1e9]:
+        - generic [ref=f1e10]:
+          - text: User Name
+          - textbox [ref=f1e44]:
+            - /placeholder: User Name
+            - text: njmadmin@vowerp.co.in
+        - generic [ref=f1e12]:
+          - text: Password
+          - generic [ref=f1e13]:
+            - textbox [ref=f1e45]:
+              - /placeholder: ••••••••
+              - text: "123456"
+            - button [ref=f1e46]
+        - generic [ref=f1e19]:
+          - generic [ref=f1e20]:
+            - radio [ref=f1e47]
+            - generic [ref=f1e22]: Admin Login
+          - generic [ref=f1e23]:
+            - radio [checked] [ref=f1e48]
+            - generic [ref=f1e25]: Portal Login
+        - generic [ref=f1e26]:
+          - generic [ref=f1e27]:
+            - checkbox [ref=f1e49]
+            - checkbox
+            - generic [ref=f1e29]: Keep me signed in
+          - button [ref=f1e50]: Forgot Password?
+        - button [ref=f1e51]: Log in
+  - list
+  - button [ref=f1e52] [cursor=pointer]
+  - alert [ref=f1e41]
+  - dialog [ref=f1e54]:
+    - heading "Login Failed" [level=2] [ref=f1e59]
+    - generic [ref=f1e60]: Invalid username or password
+    - text: "!"
+    - button "OK" [active] [ref=f1e62] [cursor=pointer]
