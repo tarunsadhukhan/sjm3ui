@@ -84,10 +84,11 @@ WORKDIR /app
 # Copy pnpm lockfile and package.json first for caching
 COPY pnpm-lock.yaml ./
 COPY package.json ./
+COPY pnpm-workspace.yaml ./
 
 # Install pnpm and dependencies
 RUN apk add --no-cache curl \
-  && npm install -g pnpm@latest \
+  && npm install -g pnpm@10.32.1 \
   && pnpm install
 
 # Copy the rest of the application code

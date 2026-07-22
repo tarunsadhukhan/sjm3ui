@@ -2,4 +2,11 @@ node_modules
 dist
 .next
 .git
-.env
+.github
+.gitignore
+.devcontainer
+.env*
+*.md
+tsconfig.tsbuildinfo
+Dockerfile
+docker-compose.yml
