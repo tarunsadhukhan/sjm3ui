@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Alert, Box, CircularProgress, MenuItem, Tab, Tabs, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, CircularProgress, MenuItem, Tab, Tabs, TextField, Typography } from "@mui/material";
+import { Download } from "lucide-react";
 import useSelectedCompanyCoId from "@/hooks/use-selected-company-coid";
 import { useSidebarContext } from "@/components/dashboard/sidebarContext";
 import { todayISO } from "@/app/dashboardportal/juteProduction/spinning/utils/spinningCalc";
@@ -77,6 +78,18 @@ export default function SpinningSqcPage() {
 	const onCountSaved = React.useCallback(() => {
 		refreshCount();
 	}, [refreshCount]);
+
+	// Excel export of the day's count readings (manual Yarn Test Report format).
+	const [exportingCount, setExportingCount] = React.useState(false);
+	const handleExportCount = React.useCallback(async () => {
+		setExportingCount(true);
+		try {
+			const { exportYarnTestReport } = await import("./utils/exportYarnTestReport");
+			await exportYarnTestReport(countDate, countReadings, countSetup?.yarn_items ?? []);
+		} finally {
+			setExportingCount(false);
+		}
+	}, [countDate, countReadings, countSetup]);
 
 	// Tab 3 — RHMR (Temperature / Humidity per date + spell)
 	const { setup: rhmrSetup, loading: rhmrSetupLoading, error: rhmrSetupError } = useSqcRhmrSetup(coId, branchId);
@@ -227,6 +240,15 @@ export default function SpinningSqcPage() {
 									onChange={(e) => setCountDate(e.target.value)}
 									InputLabelProps={{ shrink: true }}
 								/>
+								<Button
+									size="small"
+									variant="outlined"
+									startIcon={<Download size={16} />}
+									onClick={handleExportCount}
+									disabled={exportingCount || countReadings.length === 0}
+								>
+									{exportingCount ? "Exporting…" : "Download Excel"}
+								</Button>
 							</Box>
 							{countSetupError ? <Alert severity="error">{countSetupError}</Alert> : null}
 							{countSetupLoading || !countSetup ? (
