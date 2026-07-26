@@ -292,6 +292,9 @@ const apiRoutesPortalMasters = {
     TROLLY_CREATE: `${API_URL}/trollyMaster/trolly_create`,
     TROLLY_EDIT: `${API_URL}/trollyMaster/trolly_edit`,
 
+    // Utilities
+    DB_BACKUP_DOWNLOAD: `${API_URL}/utilities/backup_download`,
+
     // Jute Quality Entry endpoints (new branch-scoped schema)
     JUTE_QUALITY_ENTRY_TABLE: `${API_URL}/juteQualityEntry/jute_quality_table`,
     JUTE_QUALITY_ENTRY_CREATE_SETUP: `${API_URL}/juteQualityEntry/jute_quality_create_setup`,
