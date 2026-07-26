@@ -5,24 +5,25 @@ import { Snackbar, Alert } from "@mui/material";
 import { Edit as EditIcon } from "lucide-react";
 import IndexWrapper from "@/components/ui/IndexWrapper";
 import { GridColDef, GridPaginationModel } from "@mui/x-data-grid";
-import CreateTrolly, { TROLLY_TYPES } from "./createTrolly";
-import { fetchTrollyTable } from "@/utils/trollyService";
+import CreateJuteQuality from "./createJuteQuality";
+import { fetchJuteQualityTable } from "@/utils/juteQualityEntryService";
 
-type TrollyRow = {
+type JuteQualityRow = {
   id: number;
-  trolly_id: number;
-  trolly_name: string;
-  trolly_weight: number;
-  busket_weight: number;
+  jute_qlty_id: number;
+  jute_quality: string;
+  shr_name: string | null;
   branch_id: number;
   branch_name: string;
-  dept_id: number;
-  dept_name: string;
-  [key: string]: any;
+  item_id: number | null;
+  item_code: string | null;
+  item_name: string | null;
+  active: number;
+  [key: string]: unknown;
 };
 
-export default function TrollyMasterEntryPage() {
-  const [rows, setRows] = useState<TrollyRow[]>([]);
+export default function JuteQualityEntryPage() {
+  const [rows, setRows] = useState<JuteQualityRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({ pageSize: 10, page: 0 });
   const [totalRows, setTotalRows] = useState(0);
@@ -43,22 +44,26 @@ export default function TrollyMasterEntryPage() {
       const co_id = selectedCompany ? JSON.parse(selectedCompany).co_id : "";
       if (!co_id) throw new Error("Company not selected");
 
-      const { data, error } = await fetchTrollyTable(
+      const { data, error } = await fetchJuteQualityTable(
         co_id,
         paginationModel.page + 1,
         paginationModel.pageSize,
         searchQuery
       );
-      if (error || !data) throw new Error(error || "Failed to fetch trolly list");
+      if (error || !data) throw new Error(error || "Failed to fetch jute quality list");
 
-      const mapped = (data.data || []).map((row: any) => ({
+      const mapped = (data.data || []).map((row: Record<string, unknown>) => ({
         ...row,
-        id: row.trolly_id ?? row.id,
+        id: row.jute_qlty_id ?? row.id,
       }));
       setRows(mapped);
       setTotalRows(data.total || 0);
-    } catch (err: any) {
-      setSnackbar({ open: true, message: err.message || "Error fetching data", severity: "error" });
+    } catch (err) {
+      setSnackbar({
+        open: true,
+        message: err instanceof Error ? err.message : "Error fetching data",
+        severity: "error",
+      });
     } finally {
       setLoading(false);
     }
@@ -99,7 +104,7 @@ export default function TrollyMasterEntryPage() {
         sortable: false,
         renderCell: (params) => (
           <button
-            onClick={() => openEditDialog(params.row.trolly_id)}
+            onClick={() => openEditDialog(params.row.jute_qlty_id)}
             className="text-blue-600 hover:text-blue-800 transition-colors"
             title="Edit"
             aria-label="Edit"
@@ -108,27 +113,24 @@ export default function TrollyMasterEntryPage() {
           </button>
         ),
       },
-      { field: "trolly_name", headerName: "Trolly Name", flex: 1, minWidth: 150 },
+      { field: "jute_quality", headerName: "Jute Quality", flex: 1, minWidth: 150 },
+      { field: "shr_name", headerName: "Short Name", flex: 0.8, minWidth: 100 },
+      { field: "item_name", headerName: "Item", flex: 1, minWidth: 150 },
       { field: "branch_name", headerName: "Branch", flex: 1, minWidth: 150 },
-      { field: "dept_name", headerName: "Department", flex: 1, minWidth: 150 },
-      { field: "trolly_weight", headerName: "Trolly Weight", flex: 1, minWidth: 120, type: "number" },
-      { field: "busket_weight", headerName: "Basket Weight", flex: 1, minWidth: 120, type: "number" },
       {
-        field: "trolly_type",
-        headerName: "Trolly Type",
-        flex: 1,
-        minWidth: 110,
-        valueFormatter: (value: string | null) =>
-          TROLLY_TYPES.find((t) => t.value === value)?.label || value || "",
+        field: "active",
+        headerName: "Active",
+        flex: 0.6,
+        minWidth: 80,
+        valueFormatter: (value: number) => (value === 1 ? "Yes" : "No"),
       },
-      { field: "trolly_posting_code", headerName: "Posting Code", flex: 0.8, minWidth: 110, type: "number" },
     ],
     []
   );
 
   return (
     <IndexWrapper
-      title="Trolly Master"
+      title="Jute Quality Master"
       columns={columns}
       rows={rows}
       loading={loading}
@@ -138,10 +140,10 @@ export default function TrollyMasterEntryPage() {
       search={{
         value: searchQuery,
         onChange: handleSearchChange,
-        placeholder: "Search trolly name / department",
+        placeholder: "Search quality / short name / item",
         debounceDelayMs: 1000,
       }}
-      createAction={{ onClick: openCreateDialog, label: "Create Trolly" }}
+      createAction={{ onClick: openCreateDialog, label: "Create Jute Quality" }}
     >
       <Snackbar
         open={snackbar.open}
@@ -158,18 +160,18 @@ export default function TrollyMasterEntryPage() {
         </Alert>
       </Snackbar>
 
-      <CreateTrolly
+      <CreateJuteQuality
         open={createDialogOpen}
         onClose={closeCreateDialog}
         mode="create"
-        trollyId={null}
+        juteQltyId={null}
       />
       {editId && (
-        <CreateTrolly
+        <CreateJuteQuality
           open={editDialogOpen}
           onClose={closeEditDialog}
           mode="edit"
-          trollyId={editId}
+          juteQltyId={editId}
         />
       )}
     </IndexWrapper>

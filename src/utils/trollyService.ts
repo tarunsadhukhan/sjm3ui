@@ -19,6 +19,8 @@ export type TrollyDetails = {
   busket_weight?: number | string;
   branch_id?: number | string;
   dept_id?: number | string;
+  trolly_posting_code?: number | string | null;
+  trolly_type?: string | null;
 };
 
 type SetupResponse = {
@@ -95,6 +97,8 @@ export type TrollyPayload = {
   trolly_name: string;
   trolly_weight?: string;
   busket_weight?: string;
+  trolly_posting_code?: string;
+  trolly_type?: string;
   updated_by?: string;
 };
 

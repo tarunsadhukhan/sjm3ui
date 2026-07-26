@@ -36,6 +36,8 @@ type FormData = {
   dept_id: string;
   trolly_weight: string;
   busket_weight: string;
+  trolly_posting_code: string;
+  trolly_type: string;
 };
 
 const INITIAL: FormData = {
@@ -44,7 +46,16 @@ const INITIAL: FormData = {
   dept_id: "",
   trolly_weight: "",
   busket_weight: "",
+  trolly_posting_code: "",
+  trolly_type: "",
 };
+
+export const TROLLY_TYPES = [
+  { value: "A", label: "Assorting" },
+  { value: "S", label: "Spinning" },
+  { value: "P", label: "Spool Type" },
+  { value: "W", label: "Winding" },
+] as const;
 
 const CreateTrolly: React.FC<Props> = ({ open, onClose, mode, trollyId }) => {
   const { coId } = useSelectedCompanyCoId();
@@ -103,6 +114,8 @@ const CreateTrolly: React.FC<Props> = ({ open, onClose, mode, trollyId }) => {
             dept_id: d.dept_id?.toString() || "",
             trolly_weight: d.trolly_weight?.toString() || "",
             busket_weight: d.busket_weight?.toString() || "",
+            trolly_posting_code: d.trolly_posting_code?.toString() || "",
+            trolly_type: d.trolly_type || "",
           });
         }
       }
@@ -134,6 +147,8 @@ const CreateTrolly: React.FC<Props> = ({ open, onClose, mode, trollyId }) => {
         trolly_name: formData.trolly_name,
         trolly_weight: formData.trolly_weight || undefined,
         busket_weight: formData.busket_weight || undefined,
+        trolly_posting_code: formData.trolly_posting_code,
+        trolly_type: formData.trolly_type,
       };
 
       const { error } =
@@ -245,6 +260,32 @@ const CreateTrolly: React.FC<Props> = ({ open, onClose, mode, trollyId }) => {
               margin="normal"
               disabled={submitting}
               inputProps={{ step: "0.01" }}
+            />
+
+            <Autocomplete
+              fullWidth
+              options={TROLLY_TYPES}
+              getOptionLabel={(o) => o.label}
+              value={TROLLY_TYPES.find((t) => t.value === formData.trolly_type) || null}
+              onChange={(_, v) =>
+                setFormData((p) => ({ ...p, trolly_type: v?.value || "" }))
+              }
+              disabled={submitting}
+              renderInput={(params) => (
+                <TextField {...params} label="Trolly Type" margin="normal" />
+              )}
+            />
+
+            <TextField
+              fullWidth
+              label="Trolly Posting Code"
+              name="trolly_posting_code"
+              type="number"
+              value={formData.trolly_posting_code}
+              onChange={handleInput}
+              margin="normal"
+              disabled={submitting}
+              inputProps={{ step: "1" }}
             />
           </>
         )}
