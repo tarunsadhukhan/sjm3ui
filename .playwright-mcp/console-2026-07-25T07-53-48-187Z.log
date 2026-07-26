@@ -1,0 +1,125 @@
+[     137ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[     942ms] [LOG] [Fast Refresh] done in 911ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1189ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1262ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1374ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1375ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1412ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1413ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1451ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1452ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1540ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1541ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1689ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1693ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1829ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1833ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    2009ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    2016ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    2356ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    2364ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    2765ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    2768ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    9502ms] [WARNING] MUI: You have provided an out-of-range value `1` for the select component.
+Consider providing a value that matches one of the available options or ''.
+The available values are ``. @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    9511ms] [WARNING] MUI: You have provided an out-of-range value `1` for the select component.
+Consider providing a value that matches one of the available options or ''.
+The available values are ``. @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   10702ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   11122ms] [LOG] [Fast Refresh] done in 536ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   41553ms] [LOG] [MuiForm] submit called, mode= edit @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   41554ms] [LOG] [MuiForm] validate errors: {} values: {"supp_code":"00001","supp_name":"Kalipada Mondal ","active":true,"phone_no":"555","cin":"","supp_contact_person":"","supp_contact_designation":"","supp_email_id":"","party_pan_no":"","msme_certified":"","country_id":"1","party_type":["3"]} @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   41554ms] [LOG] [MuiForm] validate() = true errors= {} values= {"supp_code":"00001","supp_name":"Kalipada Mondal ","active":true,"phone_no":"555","cin":"","supp_contact_person":"","supp_contact_designation":"","supp_email_id":"","party_pan_no":"","msme_certified":"","country_id":"1","party_type":["3"]} @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   42953ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:8000/api/partyMaster/party_edit:0
+[   43309ms] Error: (pymysql.err.OperationalError) (1054, "Unknown column 'email_id' in 'field list'")
+[SQL: INSERT INTO party_branch_mst (party_id, active, created_date, created_by, gst_no, address, address_additional, zip_code, state_id, city_id, contact_no, contact_person, email_id, bank_acc_no, ifsc_code, bank_name, bank_branch, whatsapp_no, upi_code, updated_by, updated_date_time) VALUES (%(party_id)s, %(active)s, %(created_date)s, %(created_by)s, %(gst_no)s, %(address)s, %(address_additional)s, %(zip_code)s, %(state_id)s, %(city_id)s, %(contact_no)s, %(contact_person)s, %(email_id)s, %(bank_acc_no)s, %(ifsc_code)s, %(bank_name)s, %(bank_branch)s, %(whatsapp_no)s, %(upi_code)s, %(updated_by)s, now())]
+[parameters: {'party_id': 100000034, 'active': 0, 'created_date': None, 'created_by': None, 'gst_no': None, 'address': 'Murshidabad', 'address_additional': None, 'zip_code': 700012, 'state_id': 1, 'city_id': None, 'contact_no': None, 'contact_person': 'Test Person', 'email_id': None, 'bank_acc_no': None, 'ifsc_code': None, 'bank_name': None, 'bank_branch': None, 'whatsapp_no': None, 'upi_code': None, 'updated_by': 1}]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+    at handleSubmit (http://sjm.localhost:3000/_next/static/chunks/src_c6665cdf._.js:1098:30)
+    at async submit (http://sjm.localhost:3000/_next/static/chunks/src_c6665cdf._.js:223:13)
+[   44013ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   44526ms] [LOG] [Fast Refresh] done in 622ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  173472ms] [LOG] [MuiForm] submit called, mode= edit @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  173472ms] [LOG] [MuiForm] validate errors: {} values: {"supp_code":"00001","supp_name":"Kalipada Mondal ","active":true,"phone_no":"555","cin":"","supp_contact_person":"","supp_contact_designation":"","supp_email_id":"","party_pan_no":"","msme_certified":"","country_id":"1","party_type":["3"]} @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  173473ms] [LOG] [MuiForm] validate() = true errors= {} values= {"supp_code":"00001","supp_name":"Kalipada Mondal ","active":true,"phone_no":"555","cin":"","supp_contact_person":"","supp_contact_designation":"","supp_email_id":"","party_pan_no":"","msme_certified":"","country_id":"1","party_type":["3"]} @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  174798ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:8000/api/partyMaster/party_edit:0
+[  175049ms] Error: (pymysql.err.OperationalError) (1054, "Unknown column 'email_id' in 'field list'")
+[SQL: INSERT INTO party_branch_mst (party_id, active, created_date, created_by, gst_no, address, address_additional, zip_code, state_id, city_id, contact_no, contact_person, email_id, bank_acc_no, ifsc_code, bank_name, bank_branch, whatsapp_no, upi_code, updated_by, updated_date_time) VALUES (%(party_id)s, %(active)s, %(created_date)s, %(created_by)s, %(gst_no)s, %(address)s, %(address_additional)s, %(zip_code)s, %(state_id)s, %(city_id)s, %(contact_no)s, %(contact_person)s, %(email_id)s, %(bank_acc_no)s, %(ifsc_code)s, %(bank_name)s, %(bank_branch)s, %(whatsapp_no)s, %(upi_code)s, %(updated_by)s, now())]
+[parameters: {'party_id': 100000034, 'active': 1, 'created_date': None, 'created_by': None, 'gst_no': None, 'address': 'Murshidabad', 'address_additional': None, 'zip_code': 700012, 'state_id': 1, 'city_id': None, 'contact_no': None, 'contact_person': 'Test Person', 'email_id': None, 'bank_acc_no': None, 'ifsc_code': None, 'bank_name': None, 'bank_branch': None, 'whatsapp_no': None, 'upi_code': None, 'updated_by': 1}]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+    at handleSubmit (http://sjm.localhost:3000/_next/static/chunks/src_c6665cdf._.js:1098:30)
+    at async submit (http://sjm.localhost:3000/_next/static/chunks/src_c6665cdf._.js:223:13)
+[  179406ms] [LOG] [MuiForm] submit called, mode= edit @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  179406ms] [LOG] [MuiForm] validate errors: {} values: {"supp_code":"00001","supp_name":"Kalipada Mondal ","active":true,"phone_no":"555","cin":"","supp_contact_person":"","supp_contact_designation":"","supp_email_id":"","party_pan_no":"","msme_certified":"","country_id":"1","party_type":["3"]} @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  179406ms] [LOG] [MuiForm] validate() = true errors= {} values= {"supp_code":"00001","supp_name":"Kalipada Mondal ","active":true,"phone_no":"555","cin":"","supp_contact_person":"","supp_contact_designation":"","supp_email_id":"","party_pan_no":"","msme_certified":"","country_id":"1","party_type":["3"]} @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  180804ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:8000/api/partyMaster/party_edit:0
+[  180972ms] Error: (pymysql.err.OperationalError) (1054, "Unknown column 'email_id' in 'field list'")
+[SQL: INSERT INTO party_branch_mst (party_id, active, created_date, created_by, gst_no, address, address_additional, zip_code, state_id, city_id, contact_no, contact_person, email_id, bank_acc_no, ifsc_code, bank_name, bank_branch, whatsapp_no, upi_code, updated_by, updated_date_time) VALUES (%(party_id)s, %(active)s, %(created_date)s, %(created_by)s, %(gst_no)s, %(address)s, %(address_additional)s, %(zip_code)s, %(state_id)s, %(city_id)s, %(contact_no)s, %(contact_person)s, %(email_id)s, %(bank_acc_no)s, %(ifsc_code)s, %(bank_name)s, %(bank_branch)s, %(whatsapp_no)s, %(upi_code)s, %(updated_by)s, now())]
+[parameters: {'party_id': 100000034, 'active': 1, 'created_date': None, 'created_by': None, 'gst_no': None, 'address': 'Murshidabad', 'address_additional': None, 'zip_code': 700012, 'state_id': 1, 'city_id': None, 'contact_no': None, 'contact_person': 'Test Person', 'email_id': None, 'bank_acc_no': None, 'ifsc_code': None, 'bank_name': None, 'bank_branch': None, 'whatsapp_no': None, 'upi_code': None, 'updated_by': 1}]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+    at handleSubmit (http://sjm.localhost:3000/_next/static/chunks/src_c6665cdf._.js:1098:30)
+    at async submit (http://sjm.localhost:3000/_next/static/chunks/src_c6665cdf._.js:223:13)
+[  220638ms] [LOG] [MuiForm] submit called, mode= edit @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  220638ms] [LOG] [MuiForm] validate errors: {} values: {"supp_code":"00001","supp_name":"Kalipada Mondal ","active":true,"phone_no":"555","cin":"","supp_contact_person":"","supp_contact_designation":"","supp_email_id":"","party_pan_no":"","msme_certified":"","country_id":"1","party_type":["3"]} @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  220639ms] [LOG] [MuiForm] validate() = true errors= {} values= {"supp_code":"00001","supp_name":"Kalipada Mondal ","active":true,"phone_no":"555","cin":"","supp_contact_person":"","supp_contact_designation":"","supp_email_id":"","party_pan_no":"","msme_certified":"","country_id":"1","party_type":["3"]} @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  222204ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:8000/api/partyMaster/party_edit:0
+[  222562ms] Error: (pymysql.err.OperationalError) (1054, "Unknown column 'email_id' in 'field list'")
+[SQL: INSERT INTO party_branch_mst (party_id, active, created_date, created_by, gst_no, address, address_additional, zip_code, state_id, city_id, contact_no, contact_person, email_id, bank_acc_no, ifsc_code, bank_name, bank_branch, whatsapp_no, upi_code, updated_by, updated_date_time) VALUES (%(party_id)s, %(active)s, %(created_date)s, %(created_by)s, %(gst_no)s, %(address)s, %(address_additional)s, %(zip_code)s, %(state_id)s, %(city_id)s, %(contact_no)s, %(contact_person)s, %(email_id)s, %(bank_acc_no)s, %(ifsc_code)s, %(bank_name)s, %(bank_branch)s, %(whatsapp_no)s, %(upi_code)s, %(updated_by)s, now())]
+[parameters: {'party_id': 100000034, 'active': 1, 'created_date': None, 'created_by': None, 'gst_no': None, 'address': 'Murshidabad', 'address_additional': None, 'zip_code': 700012, 'state_id': 1, 'city_id': None, 'contact_no': None, 'contact_person': 'Test Person', 'email_id': None, 'bank_acc_no': None, 'ifsc_code': None, 'bank_name': None, 'bank_branch': None, 'whatsapp_no': None, 'upi_code': None, 'updated_by': 1}]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+    at handleSubmit (http://sjm.localhost:3000/_next/static/chunks/src_c6665cdf._.js:1098:30)
+    at async submit (http://sjm.localhost:3000/_next/static/chunks/src_c6665cdf._.js:223:13)
+[  312035ms] [LOG] [MuiForm] submit called, mode= edit @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  312035ms] [LOG] [MuiForm] validate errors: {} values: {"supp_code":"00001","supp_name":"Kalipada Mondal ","active":true,"phone_no":"555","cin":"","supp_contact_person":"","supp_contact_designation":"","supp_email_id":"","party_pan_no":"","msme_certified":"","country_id":"1","party_type":["3"]} @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  312036ms] [LOG] [MuiForm] validate() = true errors= {} values= {"supp_code":"00001","supp_name":"Kalipada Mondal ","active":true,"phone_no":"555","cin":"","supp_contact_person":"","supp_contact_designation":"","supp_email_id":"","party_pan_no":"","msme_certified":"","country_id":"1","party_type":["3"]} @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  322199ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:8000/api/partyMaster/party_edit:0
+[  322381ms] Error: (pymysql.err.OperationalError) (2003, "Can't connect to MySQL server on '45.58.59.119' (timed out)")
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+    at handleSubmit (http://sjm.localhost:3000/_next/static/chunks/src_c6665cdf._.js:1098:30)
+    at async submit (http://sjm.localhost:3000/_next/static/chunks/src_c6665cdf._.js:223:13)
+[  502439ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  502523ms] [LOG] [Fast Refresh] done in 195ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  518930ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  520634ms] [LOG] [Fast Refresh] done in 1808ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  533204ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  533355ms] [LOG] [Fast Refresh] done in 256ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  745837ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  746754ms] [LOG] [Fast Refresh] done in 1021ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  751678ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  763000ms] [LOG] [Fast Refresh] done in 11428ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  763103ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  763750ms] [LOG] [Fast Refresh] done in 748ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1124385ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1124569ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1124640ms] [LOG] [Fast Refresh] done in 182ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1124840ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1124843ms] [LOG] [Fast Refresh] done in 110ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1125041ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1125157ms] [LOG] [Fast Refresh] done in 218ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1238315ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1239221ms] [LOG] [Fast Refresh] done in 1017ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1245087ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1245864ms] [LOG] [Fast Refresh] done in 898ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1252645ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1254389ms] [LOG] [Fast Refresh] done in 1770ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1260149ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1261078ms] [LOG] [Fast Refresh] done in 1008ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1266101ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1268906ms] [LOG] [Fast Refresh] done in 2885ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1274627ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1277154ms] [LOG] [Fast Refresh] done in 2618ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1281767ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1284468ms] [LOG] [Fast Refresh] done in 2782ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1288957ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1291360ms] [LOG] [Fast Refresh] done in 2496ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1296105ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1298369ms] [LOG] [Fast Refresh] done in 2352ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1304528ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1307374ms] [LOG] [Fast Refresh] done in 2940ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1313477ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1315613ms] [LOG] [Fast Refresh] done in 2208ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1316448ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1318702ms] [LOG] [Fast Refresh] done in 2344ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1324032ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1326127ms] [LOG] [Fast Refresh] done in 2179ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297

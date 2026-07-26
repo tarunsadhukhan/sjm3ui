@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Card, CardContent, Grid, TextField, Typography, MenuItem, FormControl, InputLabel, Select, FormHelperText, Alert } from "@mui/material";
-import type { JuteMRHeader, MRPoOption, MRSupplierOption, MRPartyOption, PartyBranchOption } from "../types/mrTypes";
+import { Autocomplete, Card, CardContent, Grid, TextField, Typography, Alert } from "@mui/material";
+import type { JuteMRHeader, MRPoOption, MRSupplierOption, MRPartyOption, MRMukamOption, PartyBranchOption } from "../types/mrTypes";
 
 type MRHeaderFormProps = {
 	header: JuteMRHeader;
@@ -16,11 +16,13 @@ type MRHeaderFormProps = {
 	supplierOptions?: MRSupplierOption[];
 	/** Parties for the selected supplier, for the Party dropdown */
 	partyOptions?: MRPartyOption[];
+	/** All mukams, for the Mukam dropdown */
+	mukamOptions?: MRMukamOption[];
 	/** Total accepted weight calculated from line items */
 	totalAcceptedWeight?: number;
 };
 
-export function MRHeaderForm({ header, mode, onHeaderChange, partyBranchOptions = [], partyBranchLoading = false, partyBranchesLoaded = false, poOptions = [], supplierOptions = [], partyOptions = [], totalAcceptedWeight }: MRHeaderFormProps) {
+export function MRHeaderForm({ header, mode, onHeaderChange, partyBranchOptions = [], partyBranchLoading = false, partyBranchesLoaded = false, poOptions = [], supplierOptions = [], partyOptions = [], mukamOptions = [], totalAcceptedWeight }: MRHeaderFormProps) {
 	const showGateEntryDate = header.src_com_id != null;
 	const readOnly = mode === "view";
 
@@ -45,6 +47,15 @@ export function MRHeaderForm({ header, mode, onHeaderChange, partyBranchOptions 
 		}
 		return list;
 	}, [supplierOptions, header.jute_supplier_id, header.supplier_name]);
+
+	// Mukam options: ensure the saved mukam is always present/selectable.
+	const mukamOpts = React.useMemo(() => {
+		const list = [...mukamOptions];
+		if (header.mukam_id != null && !list.some((o) => o.mukam_id === header.mukam_id)) {
+			list.unshift({ mukam_id: header.mukam_id, mukam_name: header.mukam });
+		}
+		return list;
+	}, [mukamOptions, header.mukam_id, header.mukam]);
 
 	// Party options: ensure the saved party is always present/selectable.
 	const savedPartyId = header.party_id != null ? Number(header.party_id) : null;
@@ -94,21 +105,14 @@ export function MRHeaderForm({ header, mode, onHeaderChange, partyBranchOptions 
 								InputProps={{ readOnly: true }}
 							/>
 						) : (
-							<FormControl fullWidth>
-								<InputLabel id="supplier-label">Supplier</InputLabel>
-								<Select
-									labelId="supplier-label"
-									label="Supplier"
-									value={header.jute_supplier_id ?? ""}
-									onChange={(e) => onHeaderChange?.("jute_supplier_id", e.target.value ? Number(e.target.value) : null)}
-								>
-									{supplierOpts.map((s) => (
-										<MenuItem key={s.supplier_id} value={s.supplier_id}>
-											{s.supplier_name ?? s.supplier_id}
-										</MenuItem>
-									))}
-								</Select>
-							</FormControl>
+							<Autocomplete
+								options={supplierOpts}
+								getOptionLabel={(s) => s.supplier_name ?? String(s.supplier_id)}
+								isOptionEqualToValue={(o, v) => o.supplier_id === v.supplier_id}
+								value={supplierOpts.find((s) => s.supplier_id === header.jute_supplier_id) ?? null}
+								onChange={(_, v) => onHeaderChange?.("jute_supplier_id", v ? v.supplier_id : null)}
+								renderInput={(params) => <TextField {...params} label="Supplier" />}
+							/>
 						)}
 					</Grid>
 					<Grid size={{ xs: 12, md: 4 }}>
@@ -120,22 +124,15 @@ export function MRHeaderForm({ header, mode, onHeaderChange, partyBranchOptions 
 								InputProps={{ readOnly: true }}
 							/>
 						) : (
-							<FormControl fullWidth>
-								<InputLabel id="party-label">Party</InputLabel>
-								<Select
-									labelId="party-label"
-									label="Party"
-									value={savedPartyId ?? ""}
-									onChange={(e) => onHeaderChange?.("party_id", e.target.value ? String(e.target.value) : null)}
-									disabled={!header.jute_supplier_id}
-								>
-									{partyOpts.map((p) => (
-										<MenuItem key={p.party_id} value={p.party_id}>
-											{p.party_name ?? p.party_id}
-										</MenuItem>
-									))}
-								</Select>
-							</FormControl>
+							<Autocomplete
+								options={partyOpts}
+								getOptionLabel={(p) => p.party_name ?? String(p.party_id)}
+								isOptionEqualToValue={(o, v) => o.party_id === v.party_id}
+								value={partyOpts.find((p) => p.party_id === savedPartyId) ?? null}
+								onChange={(_, v) => onHeaderChange?.("party_id", v ? String(v.party_id) : null)}
+								disabled={!header.jute_supplier_id}
+								renderInput={(params) => <TextField {...params} label="Party" />}
+							/>
 						)}
 					</Grid>
 					<Grid size={{ xs: 12, md: 4 }}>
@@ -149,23 +146,17 @@ export function MRHeaderForm({ header, mode, onHeaderChange, partyBranchOptions 
 								helperText={partyHasNoBranches ? "Please add a branch for this party" : undefined}
 							/>
 						) : (
-							<FormControl fullWidth error={!!partyBranchError}>
-								<InputLabel id="party-branch-label">Party Branch *</InputLabel>
-								<Select
-									labelId="party-branch-label"
-									label="Party Branch *"
-									value={header.party_branch_id ?? ""}
-									onChange={(e) => onHeaderChange?.("party_branch_id", e.target.value ? Number(e.target.value) : null)}
-									disabled={partyBranchLoading}
-								>
-									{partyBranchOptions.map((branch) => (
-										<MenuItem key={branch.party_mst_branch_id} value={branch.party_mst_branch_id}>
-											{branch.display}
-										</MenuItem>
-									))}
-								</Select>
-								{partyBranchError && <FormHelperText>Party Branch is required</FormHelperText>}
-							</FormControl>
+							<Autocomplete
+								options={partyBranchOptions}
+								getOptionLabel={(b) => b.display}
+								isOptionEqualToValue={(o, v) => o.party_mst_branch_id === v.party_mst_branch_id}
+								value={partyBranchOptions.find((b) => b.party_mst_branch_id === header.party_branch_id) ?? null}
+								onChange={(_, v) => onHeaderChange?.("party_branch_id", v ? v.party_mst_branch_id : null)}
+								disabled={partyBranchLoading}
+								renderInput={(params) => (
+									<TextField {...params} label="Party Branch *" error={!!partyBranchError} helperText={partyBranchError ? "Party Branch is required" : undefined} />
+								)}
+							/>
 						)}
 					</Grid>
 					<Grid size={{ xs: 12, md: 4 }}>
@@ -177,21 +168,14 @@ export function MRHeaderForm({ header, mode, onHeaderChange, partyBranchOptions 
 								InputProps={{ readOnly: true }}
 							/>
 						) : (
-							<FormControl fullWidth>
-								<InputLabel id="po-no-label">PO No</InputLabel>
-								<Select
-									labelId="po-no-label"
-									label="PO No"
-									value={header.po_id ?? ""}
-									onChange={(e) => onHeaderChange?.("po_id", e.target.value ? Number(e.target.value) : null)}
-								>
-									{poOpts.map((po) => (
-										<MenuItem key={po.jute_po_id} value={po.jute_po_id}>
-											{po.po_num ?? po.jute_po_id}
-										</MenuItem>
-									))}
-								</Select>
-							</FormControl>
+							<Autocomplete
+								options={poOpts}
+								getOptionLabel={(po) => String(po.po_num ?? po.jute_po_id)}
+								isOptionEqualToValue={(o, v) => o.jute_po_id === v.jute_po_id}
+								value={selectedPo}
+								onChange={(_, v) => onHeaderChange?.("po_id", v ? v.jute_po_id : null)}
+								renderInput={(params) => <TextField {...params} label="PO No" />}
+							/>
 						)}
 					</Grid>
 					<Grid size={{ xs: 12, md: 4 }}>
@@ -235,12 +219,23 @@ export function MRHeaderForm({ header, mode, onHeaderChange, partyBranchOptions 
 						/>
 					</Grid>
 					<Grid size={{ xs: 12, md: 4 }}>
-						<TextField
-							label="Mukam"
-							fullWidth
-							value={header.mukam ?? ""}
-							InputProps={{ readOnly: true }}
-						/>
+						{readOnly ? (
+							<TextField
+								label="Mukam"
+								fullWidth
+								value={header.mukam ?? ""}
+								InputProps={{ readOnly: true }}
+							/>
+						) : (
+							<Autocomplete
+								options={mukamOpts}
+								getOptionLabel={(m) => m.mukam_name ?? String(m.mukam_id)}
+								isOptionEqualToValue={(o, v) => o.mukam_id === v.mukam_id}
+								value={mukamOpts.find((m) => m.mukam_id === header.mukam_id) ?? null}
+								onChange={(_, v) => onHeaderChange?.("mukam_id", v ? v.mukam_id : null)}
+								renderInput={(params) => <TextField {...params} label="Mukam" />}
+							/>
+						)}
 					</Grid>
 					<Grid size={{ xs: 12, md: 4 }}>
 						<TextField

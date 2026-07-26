@@ -23,7 +23,10 @@ export const fetchWithCookie = async <T = any>(
             },
             withCredentials: true,
             data: body,
-            validateStatus: (status) => status >= 200 && status < 500,
+            // ponytail: accept 5xx here so the backend's real `detail` is surfaced
+            // instead of the catch-all "Backend not reachable" (axios only throws
+            // on true network failures now)
+            validateStatus: (status) => status >= 200 && status < 600,
         });
         const isSuccess = response.status >= 200 && response.status < 300;
         if (!isSuccess) {

@@ -1,0 +1,397 @@
+- generic [active] [ref=f9e1]:
+  - generic [ref=f9e2]:
+    - generic [ref=f9e5]:
+      - img "Logo" [ref=f9e8]
+      - paragraph [ref=f9e11]
+      - generic [ref=f9e13]:
+        - link "Jute Procurement" [ref=f9e19] [cursor=pointer]:
+          - /url: /dashboardportal/jutePurchase
+        - link "Masters" [ref=f9e25] [cursor=pointer]:
+          - /url: /dashboardportal/masters
+        - link "HRMS" [ref=f9e31] [cursor=pointer]:
+          - /url: /dashboardportal/hrms
+        - link "BOM and Costing" [ref=f9e37] [cursor=pointer]:
+          - /url: /dashboardportal/BomCosting
+        - link "HRMS Master" [ref=f9e43] [cursor=pointer]:
+          - /url: /dashboardportal/hrmsmasters
+        - link "HRMS Reports" [ref=f9e49] [cursor=pointer]:
+          - /url: /dashboardportal/hrmsreports
+        - link "Production" [ref=f9e55] [cursor=pointer]:
+          - /url: /dashboardportal/production
+        - link "Production Master" [ref=f9e61] [cursor=pointer]:
+          - /url: /dashboardportal/productionMasters
+        - link "Production Reports" [ref=f9e67] [cursor=pointer]:
+          - /url: /dashboardportal/productionReports
+        - link "MIS Entries" [ref=f9e73] [cursor=pointer]:
+          - /url: /dashboardportal/MISEntries
+        - link "MIS Reports" [ref=f9e79] [cursor=pointer]:
+          - /url: /dashboardportal/MISReports
+        - link "Jute SQC" [ref=f9e85] [cursor=pointer]:
+          - /url: /dashboardportal/juteSQC
+    - main [ref=f9e94]:
+      - generic [ref=f9e964]:
+        - generic [ref=f9e967]:
+          - 'heading "Material Receipt - MR #27825" [level=1] [ref=f9e968]'
+          - generic [ref=f9e969]: Open
+        - generic [ref=f9e972]:
+          - generic [ref=f9e976]:
+            - 'heading "Material Receipt - MR #27825" [level=6] [ref=f9e977]'
+            - generic [ref=f9e978]:
+              - generic [ref=f9e980]:
+                - generic [ref=f9e981]: Branch
+                - generic [ref=f9e982]:
+                  - textbox "Branch" [ref=f9e983]: FACTORY
+                  - group:
+                    - generic: Branch
+              - generic [ref=f9e985]:
+                - generic [ref=f9e986]: Supplier
+                - generic [ref=f9e987]:
+                  - combobox "Supplier" [ref=f9e988] [cursor=pointer]: A kothari
+                  - textbox: "2410"
+                  - group:
+                    - generic: Supplier
+              - generic [ref=f9e990]:
+                - generic [ref=f9e991]: Party
+                - generic [ref=f9e992]:
+                  - combobox "Party" [ref=f9e993] [cursor=pointer]: Kalipada Mondal
+                  - textbox: "100000034"
+                  - group:
+                    - generic: Party
+              - generic [ref=f9e995]:
+                - generic [ref=f9e996]: Party Branch
+                - generic [ref=f9e997]:
+                  - textbox "Party Branch" [ref=f9e998]: Kalipada Mondal - Murshidabad
+                  - group:
+                    - generic: Party Branch
+              - generic [ref=f9e1000]:
+                - generic: PO No
+                - generic [ref=f9e1001]:
+                  - combobox "PO No" [ref=f9e1002] [cursor=pointer]
+                  - textbox
+                  - group:
+                    - generic: PO No
+              - generic [ref=f9e1004]:
+                - generic: PO Date
+                - generic [ref=f9e1005]:
+                  - textbox "PO Date" [ref=f9e1006]
+                  - group:
+                    - generic: PO Date
+              - generic [ref=f9e1008]:
+                - generic [ref=f9e1009]: Challan No
+                - generic [ref=f9e1010]:
+                  - textbox "Challan No" [ref=f9e1011]: "4"
+                  - group:
+                    - generic: Challan No
+              - generic [ref=f9e1013]:
+                - generic [ref=f9e1014]: Challan Date
+                - generic [ref=f9e1015]:
+                  - textbox "Challan Date" [ref=f9e1016]: 2026-07-25
+                  - group:
+                    - generic: Challan Date
+              - generic [ref=f9e1018]:
+                - generic: MR No
+                - generic [ref=f9e1019]:
+                  - textbox "MR No" [ref=f9e1020]
+                  - group:
+                    - generic: MR No
+              - generic [ref=f9e1022]:
+                - generic: MR Date
+                - generic [ref=f9e1023]:
+                  - textbox "MR Date" [ref=f9e1024]
+                  - group:
+                    - generic: MR Date
+              - generic [ref=f9e1027]:
+                - generic [ref=f9e1028]: Mukam
+                - generic [ref=f9e1029]:
+                  - combobox "Mukam" [ref=f9e1030]: JALANGI
+                  - button "Open" [ref=f9e1032] [cursor=pointer]
+                  - group:
+                    - generic: Mukam
+              - generic [ref=f9e1036]:
+                - generic [ref=f9e1037]: Vehicle No
+                - generic [ref=f9e1038]:
+                  - textbox "Vehicle No" [ref=f9e1039]: lachman
+                  - group:
+                    - generic: Vehicle No
+              - generic [ref=f9e1041]:
+                - generic [ref=f9e1042]: Unit Conversion
+                - generic [ref=f9e1043]:
+                  - textbox "Unit Conversion" [ref=f9e1044]: LOOSE
+                  - group:
+                    - generic: Unit Conversion
+              - generic [ref=f9e1046]:
+                - generic [ref=f9e1047]: Actual Weight (Gate Entry)
+                - generic [ref=f9e1048]:
+                  - spinbutton "Actual Weight (Gate Entry)" [ref=f9e1049]: "6530"
+                  - group:
+                    - generic: Actual Weight (Gate Entry)
+                - paragraph [ref=f9e1050]: Auto-distributed to line items by quantity
+              - generic [ref=f9e1052]:
+                - generic [ref=f9e1053]: MR Weight (Sum of Accepted)
+                - generic [ref=f9e1054]:
+                  - spinbutton "MR Weight (Sum of Accepted)" [ref=f9e1055]: "6360.03"
+                  - group:
+                    - generic: MR Weight (Sum of Accepted)
+                - paragraph [ref=f9e1056]: Auto-calculated from accepted weights
+              - generic [ref=f9e1058]:
+                - generic: Less (%)
+                - generic [ref=f9e1059]:
+                  - textbox "Less (%)" [ref=f9e1060]
+                  - group:
+                    - generic: Less (%)
+                - paragraph [ref=f9e1061]: From the linked PO
+              - generic [ref=f9e1063]:
+                - generic: Remarks
+                - generic [ref=f9e1064]:
+                  - textbox "Remarks" [ref=f9e1065]
+                  - group:
+                    - generic: Remarks
+          - generic [ref=f9e1066]:
+            - generic [ref=f9e1067]:
+              - generic [ref=f9e1068]:
+                - paragraph [ref=f9e1069]: Line Items
+                - paragraph [ref=f9e1070]: "2 items | Total Accepted Weight: 6360.03"
+              - generic [ref=f9e1071]:
+                - button "Remove Selected" [disabled]
+            - generic [ref=f9e1073]:
+              - generic [ref=f9e1074]:
+                - generic "Select all line items" [ref=f9e1076] [cursor=pointer]:
+                  - checkbox [ref=f9e1077]
+                - generic [ref=f9e1080]: Item
+                - generic [ref=f9e1081]: Actual Quality
+                - generic [ref=f9e1082]: UOM
+                - generic [ref=f9e1083]: Qty(%)
+                - generic [ref=f9e1084]: Actual Weight
+                - generic [ref=f9e1085]: Allowable Moisture (%)
+                - generic [ref=f9e1086]: Actual Moisture (%)
+                - generic [ref=f9e1087]: Claim Dust (%)
+                - generic [ref=f9e1088]: Shortage (kgs)
+                - generic [ref=f9e1089]: Accepted Weight
+                - generic [ref=f9e1090]: Rate
+                - generic [ref=f9e1091]: Claim Rate
+                - generic [ref=f9e1092]: Claim Quality
+                - generic [ref=f9e1093]: Water Damage Amount
+                - generic [ref=f9e1094]: Premium Amount
+                - generic [ref=f9e1095]: Warehouse
+              - generic [ref=f9e1096]:
+                - generic "Select line item" [ref=f9e1098] [cursor=pointer]:
+                  - checkbox [ref=f9e1099]
+                - generic "DESI" [ref=f9e1103]
+                - generic "D- TD5" [ref=f9e1105]
+                - generic [ref=f9e1106]: "-"
+                - 'generic "Qty(%): 65.00" [ref=f9e1109]':
+                  - generic [ref=f9e1111]:
+                    - spinbutton [ref=f9e1112]: "65"
+                    - group
+                - 'generic "Actual Weight: 4244.50" [ref=f9e1114]':
+                  - generic [ref=f9e1116]:
+                    - spinbutton [ref=f9e1117]: "4244.5"
+                    - group
+                - 'generic "Allowable Moisture: 20.00%" [ref=f9e1119]':
+                  - generic [ref=f9e1121]:
+                    - spinbutton [ref=f9e1122]: "20"
+                    - group
+                - 'generic "Actual Moisture: 22.75%" [ref=f9e1124]':
+                  - generic [ref=f9e1126]:
+                    - spinbutton [ref=f9e1127]: "22.75"
+                    - group
+                - generic [ref=f9e1131]:
+                  - spinbutton [ref=f9e1132]
+                  - group
+                - 'generic "Shortage: 116.72 kgs" [ref=f9e1134]':
+                  - generic [ref=f9e1136]:
+                    - spinbutton [ref=f9e1137]: "116.72"
+                    - group
+                - 'generic "Accepted Weight: 4127.78" [ref=f9e1139]': "4127.78"
+                - generic [ref=f9e1143]:
+                  - spinbutton [ref=f9e1144]
+                  - group
+                - 'generic "Claim Rate: 0.00" [ref=f9e1146]':
+                  - generic [ref=f9e1148]:
+                    - spinbutton [ref=f9e1149]: "0"
+                    - group
+                - generic [ref=f9e1153]:
+                  - textbox "Explanation of claim" [ref=f9e1154]
+                  - group
+                - 'generic "Water Damage Amount: 0.00" [ref=f9e1156]':
+                  - generic [ref=f9e1158]:
+                    - spinbutton [ref=f9e1159]: "0"
+                    - group
+                - 'generic "Premium Amount: 0.00" [ref=f9e1161]':
+                  - generic [ref=f9e1163]:
+                    - spinbutton [ref=f9e1164]: "0"
+                    - group
+                - generic [ref=f9e1169]:
+                  - combobox "Select warehouse" [ref=f9e1170]
+                  - button "Open" [ref=f9e1172] [cursor=pointer]
+                  - group
+              - generic [ref=f9e1175]:
+                - generic "Select line item" [ref=f9e1177] [cursor=pointer]:
+                  - checkbox [ref=f9e1178]
+                - generic "DESI" [ref=f9e1182]
+                - generic "D- TD6" [ref=f9e1184]
+                - generic [ref=f9e1185]: "-"
+                - 'generic "Qty(%): 35.00" [ref=f9e1188]':
+                  - generic [ref=f9e1190]:
+                    - spinbutton [ref=f9e1191]: "35"
+                    - group
+                - 'generic "Actual Weight: 2285.50" [ref=f9e1193]':
+                  - generic [ref=f9e1195]:
+                    - spinbutton [ref=f9e1196]: "2285.5"
+                    - group
+                - 'generic "Allowable Moisture: 20.00%" [ref=f9e1198]':
+                  - generic [ref=f9e1200]:
+                    - spinbutton [ref=f9e1201]: "20"
+                    - group
+                - 'generic "Actual Moisture: 22.33%" [ref=f9e1203]':
+                  - generic [ref=f9e1205]:
+                    - spinbutton [ref=f9e1206]: "22.33"
+                    - group
+                - generic [ref=f9e1210]:
+                  - spinbutton [ref=f9e1211]
+                  - group
+                - 'generic "Shortage: 53.25 kgs" [ref=f9e1213]':
+                  - generic [ref=f9e1215]:
+                    - spinbutton [ref=f9e1216]: "53.25"
+                    - group
+                - 'generic "Accepted Weight: 2232.25" [ref=f9e1218]': "2232.25"
+                - generic [ref=f9e1222]:
+                  - spinbutton [ref=f9e1223]
+                  - group
+                - 'generic "Claim Rate: 0.00" [ref=f9e1225]':
+                  - generic [ref=f9e1227]:
+                    - spinbutton [ref=f9e1228]: "0"
+                    - group
+                - generic [ref=f9e1232]:
+                  - textbox "Explanation of claim" [ref=f9e1233]
+                  - group
+                - 'generic "Water Damage Amount: 0.00" [ref=f9e1235]':
+                  - generic [ref=f9e1237]:
+                    - spinbutton [ref=f9e1238]: "0"
+                    - group
+                - 'generic "Premium Amount: 0.00" [ref=f9e1240]':
+                  - generic [ref=f9e1242]:
+                    - spinbutton [ref=f9e1243]: "0"
+                    - group
+                - generic [ref=f9e1248]:
+                  - combobox "Select warehouse" [ref=f9e1249]
+                  - button "Open" [ref=f9e1251] [cursor=pointer]
+                  - group
+          - generic [ref=f9e1254]:
+            - button "Back" [ref=f9e1255]
+            - button "Save" [ref=f9e1258]
+        - generic [ref=f9e1261]:
+          - separator [ref=f9e1262]
+          - generic [ref=f9e1263]:
+            - button "Pending" [ref=f9e1264] [cursor=pointer]
+            - generic [ref=f9e1265]:
+              - generic [ref=f9e1266]: Open
+              - button "Approve" [ref=f9e1268]
+        - generic [ref=f9e1270]:
+          - heading "Printable Preview" [level=6] [ref=f9e1271]
+          - separator [ref=f9e1272]
+          - generic [ref=f9e1273]:
+            - button "Print Preview" [ref=f9e1275]
+            - generic [ref=f9e1276]:
+              - generic [ref=f9e1277]:
+                - heading "Demo Company" [level=6] [ref=f9e1278]
+                - generic [ref=f9e1279]: Kolkata
+                - generic [ref=f9e1280]: "700001"
+                - generic [ref=f9e1281]: "Phone: 987777 | Email: sjm@sjm.in"
+                - generic [ref=f9e1282]: FACTORY
+                - heading "Material Receipt" [level=5] [ref=f9e1283]
+              - table [ref=f9e1284]:
+                - rowgroup [ref=f9e1285]:
+                  - row [ref=f9e1286]:
+                    - cell "MR NO" [ref=f9e1287]
+                    - cell ":" [ref=f9e1288]
+                    - cell "Draft" [ref=f9e1289]
+                    - cell "MR DATE :" [ref=f9e1290]
+                    - cell [ref=f9e1291]
+                  - row [ref=f9e1292]:
+                    - cell "M/S" [ref=f9e1293]
+                    - cell ":" [ref=f9e1294]
+                    - cell "Kalipada Mondal" [ref=f9e1295]
+                  - row [ref=f9e1296]:
+                    - cell "PO NO" [ref=f9e1297]
+                    - cell ":" [ref=f9e1298]
+                    - cell "-" [ref=f9e1299]
+                    - cell "PO DATE :" [ref=f9e1300]
+                    - cell [ref=f9e1301]
+                  - row [ref=f9e1302]:
+                    - cell "CHALLAN NO" [ref=f9e1303]
+                    - cell ":" [ref=f9e1304]
+                    - cell "4" [ref=f9e1305]
+                    - cell "CHALLAN DATE :" [ref=f9e1306]
+                    - cell "25/07/2026" [ref=f9e1307]
+                  - row [ref=f9e1308]:
+                    - cell "LORRY NO" [ref=f9e1309]
+                    - cell ":" [ref=f9e1310]
+                    - cell "lachman" [ref=f9e1311]
+              - paragraph [ref=f9e1312]:
+                - strong [ref=f9e1313]: "Mukam :"
+                - text: JALANGI
+              - separator [ref=f9e1314]
+              - paragraph [ref=f9e1315]: "Against the above we have received the consignment as follow:"
+              - table [ref=f9e1316]:
+                - rowgroup [ref=f9e1317]:
+                  - row [ref=f9e1318]:
+                    - columnheader "Bales/ drums" [ref=f9e1319]: Bales/drums
+                    - columnheader "Marks & Quality" [ref=f9e1320]: Marks &Quality
+                    - columnheader "Advised weight in Kgs" [ref=f9e1321]: Advisedweight inKgs
+                    - columnheader "Mill weight in Kgs" [ref=f9e1322]: Millweight inKgs
+                    - columnheader "Claim in Kgs" [ref=f9e1323]: Claim inKgs
+                    - columnheader "Approved Weight" [ref=f9e1324]: ApprovedWeight
+                    - columnheader "Rate per Qtls Rs" [ref=f9e1325]: Rate perQtls Rs
+                    - columnheader "CLAIM FOR" [ref=f9e1326]
+                  - row [ref=f9e1327]:
+                    - columnheader "QUALITY" [ref=f9e1328]
+                    - columnheader "CONDITION" [ref=f9e1329]
+                - rowgroup [ref=f9e1330]:
+                  - row [ref=f9e1331]:
+                    - cell "65" [ref=f9e1332]
+                    - cell "DESI D- TD5" [ref=f9e1333]:
+                      - text: DESI
+                      - generic [ref=f9e1334]: D- TD5
+                    - cell "4,251.00" [ref=f9e1335]
+                    - cell "4,244.50" [ref=f9e1336]
+                    - cell "116.72" [ref=f9e1337]
+                    - cell "4,127.78" [ref=f9e1338]
+                    - cell [ref=f9e1339]
+                    - cell [ref=f9e1340]
+                    - cell "22.8%(20%)" [ref=f9e1341]
+                  - row [ref=f9e1342]:
+                    - cell "35" [ref=f9e1343]
+                    - cell "DESI D- TD6" [ref=f9e1344]:
+                      - text: DESI
+                      - generic [ref=f9e1345]: D- TD6
+                    - cell "2,289.00" [ref=f9e1346]
+                    - cell "2,285.50" [ref=f9e1347]
+                    - cell "53.25" [ref=f9e1348]
+                    - cell "2,232.25" [ref=f9e1349]
+                    - cell [ref=f9e1350]
+                    - cell [ref=f9e1351]
+                    - cell "22.3%(20%)" [ref=f9e1352]
+                  - row [ref=f9e1353]:
+                    - cell [ref=f9e1354]:
+                      - strong [ref=f9e1355]: "100.00"
+                    - cell [ref=f9e1356]
+                    - cell [ref=f9e1357]:
+                      - strong [ref=f9e1358]: 6,540.00
+                    - cell [ref=f9e1359]:
+                      - strong [ref=f9e1360]: 6,530.00
+                    - cell [ref=f9e1361]:
+                      - strong [ref=f9e1362]: "169.97"
+                    - cell [ref=f9e1363]:
+                      - strong [ref=f9e1364]: 6,360.03
+                    - cell [ref=f9e1365]
+                    - cell [ref=f9e1366]
+                    - cell [ref=f9e1367]
+              - generic [ref=f9e1369]:
+                - text: "Status:"
+                - strong [ref=f9e1370]: OPEN
+              - generic [ref=f9e1371]: "Note*: This is a computer generated print, Signature is not required."
+  - region "Notifications (F8)":
+    - list
+  - button "Open Next.js Dev Tools" [ref=f9e104] [cursor=pointer]
+  - alert [ref=f9e108]

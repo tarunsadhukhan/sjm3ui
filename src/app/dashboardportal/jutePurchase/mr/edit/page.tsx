@@ -20,7 +20,7 @@ import {
 	calculateShortageAndAcceptedWeight,
 	distributeActualWeightToLineItems,
 } from "./weightDistribution";
-import type { JuteMRHeader, JuteMRLineItemAPI, MRLineItem, MRPoOption, MRSupplierOption, MRPartyOption, MuiFormMode, PartyBranchOption } from "../types/mrTypes";
+import type { JuteMRHeader, JuteMRLineItemAPI, MRLineItem, MRPoOption, MRSupplierOption, MRPartyOption, MRMukamOption, MuiFormMode, PartyBranchOption } from "../types/mrTypes";
 
 type JuteMRDetailsResponse = {
 	header: JuteMRHeader;
@@ -48,6 +48,7 @@ function JuteMREditPageContent() {
 	const [poOptions, setPoOptions] = React.useState<MRPoOption[]>([]);
 	const [supplierOptions, setSupplierOptions] = React.useState<MRSupplierOption[]>([]);
 	const [partyOptions, setPartyOptions] = React.useState<MRPartyOption[]>([]);
+	const [mukamOptions, setMukamOptions] = React.useState<MRMukamOption[]>([]);
 	// Tracks unsaved user edits. Approval actions (Pending/Open/Approve/etc.)
 	// are hidden until isDirty === false to prevent sending stale data to
 	// the approval workflow before Save has persisted the latest changes.
@@ -75,6 +76,12 @@ function JuteMREditPageContent() {
 					}
 				}
 
+				// Keep the mukam display name in sync with the selected id
+				if (field === "mukam_id") {
+					const selectedMukam = mukamOptions.find((m) => m.mukam_id === value);
+					updated.mukam = selectedMukam?.mukam_name ?? null;
+				}
+
 				// Supplier change cascades: reset party, party branch and PO
 				if (field === "jute_supplier_id") {
 					updated.party_id = null;
@@ -98,7 +105,7 @@ function JuteMREditPageContent() {
 				return updated;
 			});
 		},
-		[partyBranchOptions]
+		[partyBranchOptions, mukamOptions]
 	);
 
 	// Build line item columns
@@ -261,6 +268,18 @@ function JuteMREditPageContent() {
 		}
 	}, [coId]);
 
+	/** Load all mukams for the Mukam dropdown (global master, not company-specific). */
+	const loadMukams = React.useCallback(async () => {
+		try {
+			const url = `${apiRoutesPortalMasters.JUTE_MUKAM_TABLE}?limit=10000`;
+			const { data, error } = await fetchWithCookie<{ data: MRMukamOption[] }>(url, "GET");
+			if (error || !data) return;
+			setMukamOptions(data.data ?? []);
+		} catch (err) {
+			console.error("Error loading mukams:", err);
+		}
+	}, []);
+
 	/** Load parties mapped to a supplier for the Party dropdown. */
 	const loadParties = React.useCallback(async (supplierId: number) => {
 		try {
@@ -388,6 +407,11 @@ function JuteMREditPageContent() {
 		void loadSuppliers();
 	}, [loadSuppliers]);
 
+	// Load mukam options once (for the Mukam dropdown)
+	React.useEffect(() => {
+		void loadMukams();
+	}, [loadMukams]);
+
 	// Load party options whenever the supplier changes (for the Party dropdown)
 	React.useEffect(() => {
 		if (header?.jute_supplier_id) {
@@ -449,6 +473,7 @@ function JuteMREditPageContent() {
 				party_id: header.party_id != null ? Number(header.party_id) : null,
 				party_branch_id: header.party_branch_id,
 				po_id: header.po_id,
+				mukam_id: header.mukam_id,
 				remarks: header.remarks,
 				line_items: lineItems.map((li) => ({
 					jute_mr_li_id: li.juteMrLiId,
@@ -594,6 +619,7 @@ function JuteMREditPageContent() {
 						poOptions={poOptions}
 						supplierOptions={supplierOptions}
 						partyOptions={partyOptions}
+						mukamOptions={mukamOptions}
 					totalAcceptedWeight={totalAcceptedWeight}
 				/>
 			</Box>

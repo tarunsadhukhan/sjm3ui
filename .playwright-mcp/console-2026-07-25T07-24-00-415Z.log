@@ -1,0 +1,80 @@
+[     139ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[     248ms] [LOG] [Fast Refresh] done in 221ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[     572ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[     598ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1048ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1049ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1062ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1063ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1074ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1074ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1084ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1085ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1099ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1099ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1111ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1111ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1124ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1125ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1136ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1136ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1152ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1152ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1166ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1167ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1182ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1182ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1195ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1196ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1209ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1210ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1239ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1240ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1251ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1252ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1262ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1262ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1275ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1275ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1287ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1287ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1300ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1300ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1323ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1324ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1344ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1347ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1389ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1391ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1446ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1448ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1511ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1512ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1578ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[    1579ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   12841ms] [WARNING] MUI: You have provided an out-of-range value `1` for the select component.
+Consider providing a value that matches one of the available options or ''.
+The available values are ``. @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   12850ms] [WARNING] MUI: You have provided an out-of-range value `1` for the select component.
+Consider providing a value that matches one of the available options or ''.
+The available values are ``. @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   13704ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   15410ms] [LOG] [Fast Refresh] done in 1820ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   37582ms] [LOG] [MuiForm] submit called, mode= edit @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   37582ms] [LOG] [MuiForm] validate errors: {} values: {"supp_code":"00001","supp_name":"Kalipada Mondal ","active":true,"phone_no":"556","cin":"","supp_contact_person":"","supp_contact_designation":"","supp_email_id":"","party_pan_no":"","msme_certified":"","country_id":"1","party_type":["3"]} @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   37583ms] [LOG] [MuiForm] validate() = true errors= {} values= {"supp_code":"00001","supp_name":"Kalipada Mondal ","active":true,"phone_no":"556","cin":"","supp_contact_person":"","supp_contact_designation":"","supp_email_id":"","party_pan_no":"","msme_certified":"","country_id":"1","party_type":["3"]} @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   39064ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:8000/api/partyMaster/party_edit:0
+[   39067ms] [ERROR] Error in fetchWithCookie for http://127.0.0.1:8000/api/partyMaster/party_edit: Request failed with status code 500 @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:3127
+[   39264ms] Error: Backend not reachable. NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000/api
+    at handleSubmit (http://sjm.localhost:3000/_next/static/chunks/src_c6665cdf._.js:1098:30)
+    at async submit (http://sjm.localhost:3000/_next/static/chunks/src_c6665cdf._.js:223:13)
+[   39385ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   41739ms] [LOG] [Fast Refresh] done in 2459ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  558774ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  559191ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[  559422ms] [LOG] [Fast Refresh] done in 346ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1726730ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1776995ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1778185ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1778187ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal/masters/partyMaster @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[ 1778961ms] [LOG] [Fast Refresh] done in 1287ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297

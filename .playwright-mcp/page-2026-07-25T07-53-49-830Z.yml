@@ -1,0 +1,14 @@
+- generic [active] [ref=f7e1]:
+  - generic [ref=f7e2]:
+    - generic [ref=f7e5]:
+      - img "Logo" [ref=f7e8]
+      - paragraph [ref=f7e11]
+    - main [ref=f7e21]:
+      - generic [ref=f7e23]:
+        - heading "Party Master" [level=1] [ref=f7e25]
+        - generic [ref=f7e29]:
+          - textbox "Search parties" [ref=f7e30]
+          - group
+  - region "Notifications (F8)":
+    - list
+  - button "Open Next.js Dev Tools" [ref=f7e37] [cursor=pointer]

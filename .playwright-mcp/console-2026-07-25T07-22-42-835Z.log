@@ -1,0 +1,21 @@
+[     496ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[     522ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   11814ms] [LOG] Login API Response: {data: Object, status: 200, statusText: OK, headers: AxiosHeaders, config: Object} @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   11972ms] [LOG] [Fast Refresh] rebuilding @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   12837ms] [LOG] [Fast Refresh] done in 965ms @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   13428ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   13482ms] [LOG] [HMR] connected @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   13771ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   13772ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   13798ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   13799ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   13805ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   13806ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   13818ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   13819ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   15123ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   15125ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   15132ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   15133ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   15139ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297
+[   15142ms] [LOG] Detected Host: sjm.localhost:3000 http://sjm.localhost:3000/dashboardportal @ http://sjm.localhost:3000/_next/static/chunks/217dd_next_dist_9c560571._.js:2297

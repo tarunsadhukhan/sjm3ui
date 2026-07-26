@@ -1,0 +1,342 @@
+- generic [ref=f7e1]:
+  - generic [ref=f7e2]:
+    - generic [ref=f7e5]:
+      - paragraph [ref=f7e11]
+      - generic [ref=f7e42]:
+        - link [ref=f7e48] [cursor=pointer]:
+          - /url: /dashboardportal/jutePurchase
+          - text: Jute Procurement
+        - link [ref=f7e54] [cursor=pointer]:
+          - /url: /dashboardportal/masters
+          - text: Masters
+        - link [ref=f7e60] [cursor=pointer]:
+          - /url: /dashboardportal/hrms
+          - text: HRMS
+        - link [ref=f7e66] [cursor=pointer]:
+          - /url: /dashboardportal/BomCosting
+          - text: BOM and Costing
+        - link [ref=f7e72] [cursor=pointer]:
+          - /url: /dashboardportal/hrmsmasters
+          - text: HRMS Master
+        - link [ref=f7e78] [cursor=pointer]:
+          - /url: /dashboardportal/hrmsreports
+          - text: HRMS Reports
+        - link [ref=f7e84] [cursor=pointer]:
+          - /url: /dashboardportal/production
+          - text: Production
+        - link [ref=f7e90] [cursor=pointer]:
+          - /url: /dashboardportal/productionMasters
+          - text: Production Master
+        - link [ref=f7e96] [cursor=pointer]:
+          - /url: /dashboardportal/productionReports
+          - text: Production Reports
+        - link [ref=f7e102] [cursor=pointer]:
+          - /url: /dashboardportal/MISEntries
+          - text: MIS Entries
+        - link [ref=f7e108] [cursor=pointer]:
+          - /url: /dashboardportal/MISReports
+          - text: MIS Reports
+        - link [ref=f7e114] [cursor=pointer]:
+          - /url: /dashboardportal/juteSQC
+          - text: Jute SQC
+    - main [ref=f7e21]:
+      - generic [ref=f7e23]:
+        - heading [level=1] [ref=f7e115]: Party Master
+        - generic [ref=f7e27]:
+          - generic [ref=f7e29]:
+            - textbox [ref=f7e116]:
+              - /placeholder: Search parties
+            - group
+          - button [ref=f7e117]: Create
+        - generic [ref=f7e118]:
+          - grid [ref=f7e119]:
+            - row [ref=f7e120]:
+              - columnheader [ref=f7e121]:
+                - generic [ref=f7e122]: Actions
+              - columnheader [ref=f7e125] [cursor=pointer]:
+                - generic [ref=f7e126]: Party Code
+              - columnheader [ref=f7e129] [cursor=pointer]:
+                - generic [ref=f7e130]: Party Name
+              - columnheader [ref=f7e133] [cursor=pointer]:
+                - generic [ref=f7e134]: Party Type
+              - columnheader [ref=f7e137] [cursor=pointer]:
+                - generic [ref=f7e138]: Contact Person
+              - columnheader [ref=f7e141] [cursor=pointer]:
+                - generic [ref=f7e142]: Contact Email
+              - columnheader [ref=f7e145]:
+                - generic [ref=f7e146]: Active
+            - rowgroup [ref=f7e149]:
+              - row [ref=f7e150]:
+                - gridcell [ref=f7e151]:
+                  - button [ref=f7e153] [cursor=pointer]
+                - gridcell [ref=f7e157]: "00001"
+                - gridcell [ref=f7e158]: Kalipada Mondal
+                - gridcell [ref=f7e159]: Jute Supplier
+                - gridcell [ref=f7e160]
+                - gridcell [ref=f7e161]
+                - gridcell [ref=f7e162]:
+                  - switch [checked] [ref=f7e165] [cursor=pointer]
+              - row [ref=f7e168]:
+                - gridcell [ref=f7e169]:
+                  - button [ref=f7e171] [cursor=pointer]
+                - gridcell [ref=f7e175]: J0001
+                - gridcell [ref=f7e176]: Sarada Dealers Pvt Ltd
+                - gridcell [ref=f7e177]: Jute Supplier
+                - gridcell [ref=f7e178]
+                - gridcell [ref=f7e179]
+                - gridcell [ref=f7e180]:
+                  - switch [checked] [ref=f7e183] [cursor=pointer]
+              - row [ref=f7e186]:
+                - gridcell [ref=f7e187]:
+                  - button [ref=f7e189] [cursor=pointer]
+                - gridcell [ref=f7e193]: J0002
+                - gridcell [ref=f7e194]: RS Enterprise
+                - gridcell [ref=f7e195]: Jute Supplier
+                - gridcell [ref=f7e196]
+                - gridcell [ref=f7e197]
+                - gridcell [ref=f7e198]:
+                  - switch [checked] [ref=f7e201] [cursor=pointer]
+              - row [ref=f7e204]:
+                - gridcell [ref=f7e205]:
+                  - button [ref=f7e207] [cursor=pointer]
+                - gridcell [ref=f7e211]: J0003
+                - gridcell [ref=f7e212]: Nitesh Lohia
+                - gridcell [ref=f7e213]: Jute Supplier
+                - gridcell [ref=f7e214]
+                - gridcell [ref=f7e215]
+                - gridcell [ref=f7e216]:
+                  - switch [checked] [ref=f7e219] [cursor=pointer]
+              - row [ref=f7e222]:
+                - gridcell [ref=f7e223]:
+                  - button [ref=f7e225] [cursor=pointer]
+                - gridcell [ref=f7e229]: J0005
+                - gridcell [ref=f7e230]: Sarada Jute Mill Pvt Ltd
+                - gridcell [ref=f7e231]: Jute Supplier
+                - gridcell [ref=f7e232]
+                - gridcell [ref=f7e233]
+                - gridcell [ref=f7e234]:
+                  - switch [checked] [ref=f7e237] [cursor=pointer]
+              - row [ref=f7e240]:
+                - gridcell [ref=f7e241]:
+                  - button [ref=f7e243] [cursor=pointer]
+                - gridcell [ref=f7e247]: J0006
+                - gridcell [ref=f7e248]: Abhinandan Maheswari
+                - gridcell [ref=f7e249]: Jute Supplier
+                - gridcell [ref=f7e250]
+                - gridcell [ref=f7e251]
+                - gridcell [ref=f7e252]:
+                  - switch [checked] [ref=f7e255] [cursor=pointer]
+              - row [ref=f7e258]:
+                - gridcell [ref=f7e259]:
+                  - button [ref=f7e261] [cursor=pointer]
+                - gridcell [ref=f7e265]: J0008
+                - gridcell [ref=f7e266]: Jagannath Entp
+                - gridcell [ref=f7e267]: Jute Supplier
+                - gridcell [ref=f7e268]
+                - gridcell [ref=f7e269]
+                - gridcell [ref=f7e270]:
+                  - switch [checked] [ref=f7e273] [cursor=pointer]
+          - generic [ref=f7e279]:
+            - paragraph [ref=f7e280]: "Rows per page:"
+            - generic [ref=f7e281]:
+              - combobox [ref=f7e282] [cursor=pointer]: "10"
+              - textbox: "10"
+            - paragraph [ref=f7e283]: 1–7 of 7
+            - generic [ref=f7e284]:
+              - button [disabled]
+              - button [disabled]
+  - list
+  - generic [ref=f7e36] [cursor=pointer]:
+    - button "Open Next.js Dev Tools" [ref=f7e37]
+    - generic [ref=f7e481]:
+      - button "Open issues overlay" [ref=f7e482]:
+        - generic [ref=f7e483]:
+          - generic [ref=f7e484]: "0"
+          - generic [ref=f7e485]: "1"
+        - generic [ref=f7e486]: Issue
+      - button "Collapse issues badge" [ref=f7e487]
+  - alert [ref=f7e285]
+  - dialog [ref=f7e288]:
+    - heading "Edit Party" [level=2] [ref=f7e289]
+    - generic [ref=f7e291]:
+      - generic [ref=f7e292]:
+        - heading "Edit Party" [level=6] [ref=f7e295]
+        - generic [ref=f7e296]:
+          - generic [ref=f7e298]:
+            - generic [ref=f7e299]:
+              - text: Party Code
+              - generic [ref=f7e300]: "*"
+            - generic [ref=f7e301]:
+              - textbox "Party Code" [ref=f7e302]: "00001"
+              - group:
+                - generic: Party Code *
+          - generic [ref=f7e304]:
+            - generic [ref=f7e305]:
+              - text: Party Name
+              - generic [ref=f7e306]: "*"
+            - generic [ref=f7e307]:
+              - textbox "Party Name" [ref=f7e308]: Kalipada Mondal
+              - group:
+                - generic: Party Name *
+          - generic [ref=f7e311] [cursor=pointer]:
+            - checkbox "Active" [checked] [ref=f7e313]
+            - generic [ref=f7e316]: Active
+          - generic [ref=f7e318]:
+            - generic [ref=f7e319]: Phone No
+            - generic [ref=f7e320]:
+              - textbox "Phone No" [ref=f7e321]: "555"
+              - group:
+                - generic: Phone No
+          - generic [ref=f7e323]:
+            - generic: CIN
+            - generic [ref=f7e324]:
+              - textbox "CIN" [ref=f7e325]
+              - group:
+                - generic: CIN
+          - generic [ref=f7e327]:
+            - generic: Contact Person
+            - generic [ref=f7e328]:
+              - textbox "Contact Person" [ref=f7e329]
+              - group:
+                - generic: Contact Person
+          - generic [ref=f7e331]:
+            - generic: Contact Designation
+            - generic [ref=f7e332]:
+              - textbox "Contact Designation" [ref=f7e333]
+              - group:
+                - generic: Contact Designation
+          - generic [ref=f7e335]:
+            - generic: Contact Email
+            - generic [ref=f7e336]:
+              - textbox "Contact Email" [ref=f7e337]
+              - group:
+                - generic: Contact Email
+          - generic [ref=f7e339]:
+            - generic: PAN No
+            - generic [ref=f7e340]:
+              - textbox "PAN No" [ref=f7e341]
+              - group:
+                - generic: PAN No
+          - generic [ref=f7e344]:
+            - generic: Entity Type
+            - generic [ref=f7e345]:
+              - combobox "Entity Type" [ref=f7e346]
+              - button "Open" [ref=f7e348] [cursor=pointer]
+              - group:
+                - generic: Entity Type
+          - generic [ref=f7e352]:
+            - generic: MSME Certified
+            - generic [ref=f7e353]:
+              - textbox "MSME Certified" [ref=f7e354]
+              - group:
+                - generic: MSME Certified
+          - generic [ref=f7e357]:
+            - generic [ref=f7e358]: Country
+            - generic [ref=f7e359]:
+              - combobox "Country" [ref=f7e360]: India
+              - button "Open" [ref=f7e362] [cursor=pointer]
+              - group:
+                - generic: Country
+          - generic [ref=f7e367]:
+            - generic [ref=f7e368]: Party Types
+            - generic [ref=f7e369]:
+              - button "Jute Supplier" [ref=f7e371]
+              - combobox "Party Types" [ref=f7e375]
+              - button "Open" [ref=f7e377] [cursor=pointer]
+              - group:
+                - generic: Party Types
+        - generic [ref=f7e380]:
+          - button "Close" [ref=f7e381] [cursor=pointer]
+          - button "Update" [ref=f7e478] [cursor=pointer]
+      - generic [ref=f7e382]:
+        - heading "Branches" [level=3] [ref=f7e383]
+        - table [ref=f7e385]:
+          - rowgroup [ref=f7e386]:
+            - row [ref=f7e387]:
+              - columnheader "Address" [ref=f7e388]
+              - columnheader "Address Additional" [ref=f7e389]
+              - columnheader "Zip" [ref=f7e390]
+              - columnheader "State" [ref=f7e391]
+              - columnheader "GST No" [ref=f7e392]
+              - columnheader "Contact Person" [ref=f7e393]
+              - columnheader "Contact No" [ref=f7e394]
+              - columnheader "Active" [ref=f7e395]
+              - columnheader "Actions" [ref=f7e396]
+          - rowgroup [ref=f7e397]:
+            - row [ref=f7e479]:
+              - cell [ref=f7e399]:
+                - generic [ref=f7e401]:
+                  - textbox "Address" [ref=f7e402]: Murshidabad
+                  - group
+              - cell [ref=f7e403]:
+                - generic [ref=f7e405]:
+                  - textbox "Address Additional" [ref=f7e406]
+                  - group
+              - cell [ref=f7e407]:
+                - generic [ref=f7e409]:
+                  - textbox "Zip Code" [ref=f7e410]: "700012"
+                  - group
+              - cell [ref=f7e411]:
+                - generic [ref=f7e412]:
+                  - generic [ref=f7e413]: State
+                  - generic [ref=f7e414]:
+                    - combobox "State" [ref=f7e415] [cursor=pointer]: WEST BENGAL
+                    - textbox: "1"
+                    - group:
+                      - generic: State
+              - cell [ref=f7e416]:
+                - generic [ref=f7e418]:
+                  - textbox "GST No" [ref=f7e419]
+                  - group
+              - cell [ref=f7e480]:
+                - generic [ref=f7e422]:
+                  - textbox "Contact Person" [ref=f7e423]: Test Person
+                  - group
+              - cell [ref=f7e424]:
+                - generic [ref=f7e426]:
+                  - textbox "Contact No" [ref=f7e427]
+                  - group
+              - cell [ref=f7e428]:
+                - switch [ref=f7e431] [cursor=pointer]
+              - cell [ref=f7e434]:
+                - button [ref=f7e435] [cursor=pointer]
+            - row [ref=f7e440]:
+              - cell [ref=f7e441]:
+                - generic [ref=f7e443]:
+                  - textbox "Address" [ref=f7e444]
+                  - group
+              - cell [ref=f7e445]:
+                - generic [ref=f7e447]:
+                  - textbox "Address Additional" [ref=f7e448]
+                  - group
+              - cell [ref=f7e449]:
+                - generic [ref=f7e451]:
+                  - textbox "Zip Code" [ref=f7e452]
+                  - group
+              - cell [ref=f7e453]:
+                - generic [ref=f7e454]:
+                  - generic: State
+                  - generic [ref=f7e455]:
+                    - combobox "State" [ref=f7e456] [cursor=pointer]
+                    - textbox
+                    - group:
+                      - generic: State
+              - cell [ref=f7e457]:
+                - generic [ref=f7e459]:
+                  - textbox "GST No" [ref=f7e460]
+                  - group
+              - cell [ref=f7e461]:
+                - generic [ref=f7e463]:
+                  - textbox "Contact Person" [ref=f7e464]
+                  - group
+              - cell [ref=f7e465]:
+                - generic [ref=f7e467]:
+                  - textbox "Contact No" [ref=f7e468]
+                  - group
+              - cell [ref=f7e469]:
+                - switch [ref=f7e472] [cursor=pointer]
+              - cell [ref=f7e475]
+    - button "Close" [ref=f7e477]
+    - alert [ref=f7e490]:
+      - generic [ref=f7e494]: "(pymysql.err.OperationalError) (1054, \"Unknown column 'email_id' in 'field list'\") [SQL: INSERT INTO party_branch_mst (party_id, active, created_date, created_by, gst_no, address, address_additional, zip_code, state_id, city_id, contact_no, contact_person, email_id, bank_acc_no, ifsc_code, bank_name, bank_branch, whatsapp_no, upi_code, updated_by, updated_date_time) VALUES (%(party_id)s, %(active)s, %(created_date)s, %(created_by)s, %(gst_no)s, %(address)s, %(address_additional)s, %(zip_code)s, %(state_id)s, %(city_id)s, %(contact_no)s, %(contact_person)s, %(email_id)s, %(bank_acc_no)s, %(ifsc_code)s, %(bank_name)s, %(bank_branch)s, %(whatsapp_no)s, %(upi_code)s, %(updated_by)s, now())] [parameters: {'party_id': 100000034, 'active': 0, 'created_date': None, 'created_by': None, 'gst_no': None, 'address': 'Murshidabad', 'address_additional': None, 'zip_code': 700012, 'state_id': 1, 'city_id': None, 'contact_no': None, 'contact_person': 'Test Person', 'email_id': None, 'bank_acc_no': None, 'ifsc_code': None, 'bank_name': None, 'bank_branch': None, 'whatsapp_no': None, 'upi_code': None, 'updated_by': 1}] (Background on this error at: https://sqlalche.me/e/20/e3q8)"
+      - button "Close" [ref=f7e496] [cursor=pointer]

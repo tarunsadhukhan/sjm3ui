@@ -74,6 +74,12 @@ export type MRPartyOption = {
 	party_name: string | null;
 };
 
+// Mukam option type (MR Mukam dropdown, from /juteMukamMaster/get_jute_mukam_table)
+export type MRMukamOption = {
+	mukam_id: number;
+	mukam_name: string | null;
+};
+
 // Party branch option type
 export type PartyBranchOption = {
 	party_mst_branch_id: number;

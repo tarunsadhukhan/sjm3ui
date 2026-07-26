@@ -292,6 +292,13 @@ const apiRoutesPortalMasters = {
     TROLLY_CREATE: `${API_URL}/trollyMaster/trolly_create`,
     TROLLY_EDIT: `${API_URL}/trollyMaster/trolly_edit`,
 
+    // Selector Master endpoints
+    SELECTOR_TABLE: `${API_URL}/selectorMaster/selector_table`,
+    SELECTOR_CREATE_SETUP: `${API_URL}/selectorMaster/selector_create_setup`,
+    SELECTOR_EDIT_SETUP: `${API_URL}/selectorMaster/selector_edit_setup`,
+    SELECTOR_CREATE: `${API_URL}/selectorMaster/selector_create`,
+    SELECTOR_EDIT: `${API_URL}/selectorMaster/selector_edit`,
+
     // Machine SPG Details Master endpoints
     MACHINE_SPG_DETAILS_TABLE: `${API_URL}/machineSpgDetailsMaster/machine_spg_details_table`,
     MACHINE_SPG_DETAILS_CREATE_SETUP: `${API_URL}/machineSpgDetailsMaster/machine_spg_details_create_setup`,

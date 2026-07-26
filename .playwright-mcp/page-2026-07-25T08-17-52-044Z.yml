@@ -1,0 +1,753 @@
+- generic [ref=f8e1]:
+  - generic [ref=f8e2]:
+    - generic [ref=f8e5]:
+      - paragraph [ref=f8e11]
+      - generic [ref=f8e35]:
+        - link [ref=f8e521] [cursor=pointer]:
+          - /url: /dashboardportal/jutePurchase
+          - text: Jute Procurement
+        - link [ref=f8e522] [cursor=pointer]:
+          - /url: /dashboardportal/masters
+          - text: Masters
+        - link [ref=f8e523] [cursor=pointer]:
+          - /url: /dashboardportal/hrms
+          - text: HRMS
+        - link [ref=f8e524] [cursor=pointer]:
+          - /url: /dashboardportal/BomCosting
+          - text: BOM and Costing
+        - link [ref=f8e525] [cursor=pointer]:
+          - /url: /dashboardportal/hrmsmasters
+          - text: HRMS Master
+        - link [ref=f8e526] [cursor=pointer]:
+          - /url: /dashboardportal/hrmsreports
+          - text: HRMS Reports
+        - link [ref=f8e527] [cursor=pointer]:
+          - /url: /dashboardportal/production
+          - text: Production
+        - link [ref=f8e528] [cursor=pointer]:
+          - /url: /dashboardportal/productionMasters
+          - text: Production Master
+        - link [ref=f8e529] [cursor=pointer]:
+          - /url: /dashboardportal/productionReports
+          - text: Production Reports
+        - link [ref=f8e530] [cursor=pointer]:
+          - /url: /dashboardportal/MISEntries
+          - text: MIS Entries
+        - link [ref=f8e531] [cursor=pointer]:
+          - /url: /dashboardportal/MISReports
+          - text: MIS Reports
+        - link [ref=f8e532] [cursor=pointer]:
+          - /url: /dashboardportal/juteSQC
+          - text: Jute SQC
+    - main [ref=f8e21]:
+      - generic [ref=f8e109]:
+        - generic [ref=f8e112]:
+          - heading [level=1] [ref=f8e533]: "Material Receipt - MR #27825"
+          - generic [ref=f8e114]: Open
+        - generic [ref=f8e117]:
+          - generic [ref=f8e121]:
+            - heading [level=6] [ref=f8e534]: "Material Receipt - MR #27825"
+            - generic [ref=f8e123]:
+              - generic [ref=f8e125]:
+                - generic [ref=f8e126]: Branch
+                - generic [ref=f8e127]:
+                  - textbox [ref=f8e535]: FACTORY
+                  - group:
+                    - generic: Branch
+              - generic [ref=f8e130]:
+                - generic [ref=f8e131]: Supplier
+                - generic [ref=f8e132]:
+                  - combobox [ref=f8e536] [cursor=pointer]: A kothari
+                  - textbox: "2410"
+                  - group:
+                    - generic: Supplier
+              - generic [ref=f8e135]:
+                - generic [ref=f8e136]: Party
+                - generic [ref=f8e137]:
+                  - combobox [ref=f8e537] [cursor=pointer]: Kalipada Mondal
+                  - textbox: "100000034"
+                  - group:
+                    - generic: Party
+              - generic [ref=f8e140]:
+                - generic [ref=f8e141]: Party Branch
+                - generic [ref=f8e142]:
+                  - textbox [ref=f8e538]: Kalipada Mondal - Murshidabad
+                  - group:
+                    - generic: Party Branch
+              - generic [ref=f8e145]:
+                - generic: PO No
+                - generic [ref=f8e146]:
+                  - combobox [ref=f8e539] [cursor=pointer]
+                  - textbox
+                  - group:
+                    - generic: PO No
+              - generic [ref=f8e149]:
+                - generic: PO Date
+                - generic [ref=f8e150]:
+                  - textbox [ref=f8e540]
+                  - group:
+                    - generic: PO Date
+              - generic [ref=f8e153]:
+                - generic [ref=f8e154]: Challan No
+                - generic [ref=f8e155]:
+                  - textbox [ref=f8e541]: "4"
+                  - group:
+                    - generic: Challan No
+              - generic [ref=f8e158]:
+                - generic [ref=f8e159]: Challan Date
+                - generic [ref=f8e160]:
+                  - textbox [ref=f8e542]: 2026-07-25
+                  - group:
+                    - generic: Challan Date
+              - generic [ref=f8e163]:
+                - generic: MR No
+                - generic [ref=f8e164]:
+                  - textbox [ref=f8e543]
+                  - group:
+                    - generic: MR No
+              - generic [ref=f8e167]:
+                - generic: MR Date
+                - generic [ref=f8e168]:
+                  - textbox [ref=f8e544]
+                  - group:
+                    - generic: MR Date
+              - generic [ref=f8e171]:
+                - generic [ref=f8e545]: Mukam
+                - generic [ref=f8e172]:
+                  - combobox [expanded] [ref=f8e546] [cursor=pointer]
+                  - textbox
+                  - group:
+                    - generic: Mukam
+              - generic [ref=f8e175]:
+                - generic [ref=f8e176]: Vehicle No
+                - generic [ref=f8e177]:
+                  - textbox [ref=f8e547]: lachman
+                  - group:
+                    - generic: Vehicle No
+              - generic [ref=f8e180]:
+                - generic [ref=f8e181]: Unit Conversion
+                - generic [ref=f8e182]:
+                  - textbox [ref=f8e548]: LOOSE
+                  - group:
+                    - generic: Unit Conversion
+              - generic [ref=f8e185]:
+                - generic [ref=f8e186]: Actual Weight (Gate Entry)
+                - generic [ref=f8e187]:
+                  - spinbutton [ref=f8e549]: "6530"
+                  - group:
+                    - generic: Actual Weight (Gate Entry)
+                - paragraph [ref=f8e189]: Auto-distributed to line items by quantity
+              - generic [ref=f8e191]:
+                - generic [ref=f8e192]: MR Weight (Sum of Accepted)
+                - generic [ref=f8e193]:
+                  - spinbutton [ref=f8e550]: "6360.03"
+                  - group:
+                    - generic: MR Weight (Sum of Accepted)
+                - paragraph [ref=f8e195]: Auto-calculated from accepted weights
+              - generic [ref=f8e197]:
+                - generic [ref=f8e198]: Gate Entry Date
+                - generic [ref=f8e199]:
+                  - textbox [ref=f8e551]: 2026-07-25
+                  - group:
+                    - generic: Gate Entry Date
+              - generic [ref=f8e202]:
+                - generic [ref=f8e203]: Gate Entry No
+                - generic [ref=f8e204]:
+                  - textbox [ref=f8e552]: "4"
+                  - group:
+                    - generic: Gate Entry No
+              - generic [ref=f8e207]:
+                - generic: Less (%)
+                - generic [ref=f8e208]:
+                  - textbox [ref=f8e553]
+                  - group:
+                    - generic: Less (%)
+                - paragraph [ref=f8e210]: From the linked PO
+              - generic [ref=f8e212]:
+                - generic: Remarks
+                - generic [ref=f8e213]:
+                  - textbox [ref=f8e554]
+                  - group:
+                    - generic: Remarks
+          - generic [ref=f8e215]:
+            - generic [ref=f8e216]:
+              - generic [ref=f8e217]:
+                - paragraph [ref=f8e218]: Line Items
+                - paragraph [ref=f8e219]: "2 items | Total Accepted Weight: 6360.03"
+              - generic [ref=f8e220]:
+                - button [disabled]: Remove Selected
+            - generic [ref=f8e222]:
+              - generic [ref=f8e223]:
+                - checkbox [ref=f8e226] [cursor=pointer]
+                - generic [ref=f8e229]: Item
+                - generic [ref=f8e230]: Actual Quality
+                - generic [ref=f8e231]: UOM
+                - generic [ref=f8e232]: Qty(%)
+                - generic [ref=f8e233]: Actual Weight
+                - generic [ref=f8e234]: Allowable Moisture (%)
+                - generic [ref=f8e235]: Actual Moisture (%)
+                - generic [ref=f8e236]: Claim Dust (%)
+                - generic [ref=f8e237]: Shortage (kgs)
+                - generic [ref=f8e238]: Accepted Weight
+                - generic [ref=f8e239]: Rate
+                - generic [ref=f8e240]: Claim Rate
+                - generic [ref=f8e241]: Claim Quality
+                - generic [ref=f8e242]: Water Damage Amount
+                - generic [ref=f8e243]: Premium Amount
+                - generic [ref=f8e244]: Warehouse
+              - generic [ref=f8e245]:
+                - checkbox [ref=f8e248] [cursor=pointer]
+                - generic [ref=f8e251]: DESI
+                - generic [ref=f8e253]: D- TD5
+                - generic [ref=f8e255]: "-"
+                - generic [ref=f8e260]:
+                  - spinbutton [ref=f8e261]: "65"
+                  - group
+                - generic [ref=f8e265]:
+                  - spinbutton [ref=f8e266]: "4244.5"
+                  - group
+                - generic [ref=f8e270]:
+                  - spinbutton [ref=f8e271]: "20"
+                  - group
+                - generic [ref=f8e275]:
+                  - spinbutton [ref=f8e276]: "22.75"
+                  - group
+                - generic [ref=f8e280]:
+                  - spinbutton [ref=f8e281]
+                  - group
+                - generic [ref=f8e285]:
+                  - spinbutton [ref=f8e286]: "116.72"
+                  - group
+                - generic [ref=f8e287]: "4127.78"
+                - generic [ref=f8e292]:
+                  - spinbutton [ref=f8e293]
+                  - group
+                - generic [ref=f8e297]:
+                  - spinbutton [ref=f8e298]: "0"
+                  - group
+                - generic [ref=f8e302]:
+                  - textbox [ref=f8e566]:
+                    - /placeholder: Explanation of claim
+                  - group
+                - generic [ref=f8e307]:
+                  - spinbutton [ref=f8e308]: "0"
+                  - group
+                - generic [ref=f8e312]:
+                  - spinbutton [ref=f8e313]: "0"
+                  - group
+                - generic [ref=f8e318]:
+                  - combobox [ref=f8e569]
+                  - button [ref=f8e570] [cursor=pointer]
+                  - group
+              - generic [ref=f8e324]:
+                - checkbox [ref=f8e327] [cursor=pointer]
+                - generic [ref=f8e330]: DESI
+                - generic [ref=f8e332]: D- TD6
+                - generic [ref=f8e334]: "-"
+                - generic [ref=f8e339]:
+                  - spinbutton [ref=f8e340]: "35"
+                  - group
+                - generic [ref=f8e344]:
+                  - spinbutton [ref=f8e345]: "2285.5"
+                  - group
+                - generic [ref=f8e349]:
+                  - spinbutton [ref=f8e350]: "20"
+                  - group
+                - generic [ref=f8e354]:
+                  - spinbutton [ref=f8e355]: "22.33"
+                  - group
+                - generic [ref=f8e359]:
+                  - spinbutton [ref=f8e360]
+                  - group
+                - generic [ref=f8e364]:
+                  - spinbutton [ref=f8e365]: "53.25"
+                  - group
+                - generic [ref=f8e366]: "2232.25"
+                - generic [ref=f8e371]:
+                  - spinbutton [ref=f8e372]
+                  - group
+                - generic [ref=f8e376]:
+                  - spinbutton [ref=f8e377]: "0"
+                  - group
+                - generic [ref=f8e381]:
+                  - textbox [ref=f8e581]:
+                    - /placeholder: Explanation of claim
+                  - group
+                - generic [ref=f8e386]:
+                  - spinbutton [ref=f8e387]: "0"
+                  - group
+                - generic [ref=f8e391]:
+                  - spinbutton [ref=f8e392]: "0"
+                  - group
+                - generic [ref=f8e397]:
+                  - combobox [ref=f8e584]
+                  - button [ref=f8e585] [cursor=pointer]
+                  - group
+          - generic [ref=f8e403]:
+            - button [ref=f8e586]:
+              - generic [ref=f8e405]: Back
+            - button [ref=f8e587]:
+              - generic [ref=f8e408]: Save
+        - generic [ref=f8e410]:
+          - separator [ref=f8e411]
+          - generic [ref=f8e412]:
+            - button [ref=f8e588] [cursor=pointer]: Pending
+            - generic [ref=f8e414]:
+              - generic [ref=f8e415]: Open
+              - button [ref=f8e589]: Approve
+        - generic [ref=f8e419]:
+          - heading [level=6] [ref=f8e590]: Printable Preview
+          - separator [ref=f8e421]
+          - generic [ref=f8e422]:
+            - button [ref=f8e591]: Print Preview
+            - generic [ref=f8e425]:
+              - generic [ref=f8e426]:
+                - heading [level=6] [ref=f8e592]: Demo Company
+                - generic [ref=f8e428]: Kolkata
+                - generic [ref=f8e429]: "700001"
+                - generic [ref=f8e430]: "Phone: 987777 | Email: sjm@sjm.in"
+                - generic [ref=f8e431]: FACTORY
+                - heading [level=5] [ref=f8e593]: Material Receipt
+              - table [ref=f8e433]:
+                - rowgroup [ref=f8e434]:
+                  - row [ref=f8e594]:
+                    - cell [ref=f8e595]: MR NO
+                    - cell [ref=f8e596]: ":"
+                    - cell [ref=f8e597]: Draft
+                    - cell [ref=f8e598]: "MR DATE :"
+                    - cell [ref=f8e440]
+                  - row [ref=f8e599]:
+                    - cell [ref=f8e600]: M/S
+                    - cell [ref=f8e601]: ":"
+                    - cell [ref=f8e602]: Kalipada Mondal
+                  - row [ref=f8e603]:
+                    - cell [ref=f8e604]: PARTY ADDRESS
+                    - cell [ref=f8e605]: ":"
+                    - cell [ref=f8e606]: Murshidabad
+                  - row [ref=f8e607]:
+                    - cell [ref=f8e608]: PO NO
+                    - cell [ref=f8e609]: ":"
+                    - cell [ref=f8e610]: "-"
+                    - cell [ref=f8e611]: "PO DATE :"
+                    - cell [ref=f8e450]
+                  - row [ref=f8e612]:
+                    - cell [ref=f8e613]: CHALLAN NO
+                    - cell [ref=f8e614]: ":"
+                    - cell [ref=f8e615]: "4"
+                    - cell [ref=f8e616]: "CHALLAN DATE :"
+                    - cell [ref=f8e617]: 25/07/2026
+                  - row [ref=f8e618]:
+                    - cell [ref=f8e619]: LORRY NO
+                    - cell [ref=f8e620]: ":"
+                    - cell [ref=f8e621]: lachman
+              - separator [ref=f8e461]
+              - paragraph [ref=f8e462]: "Against the above we have received the consignment as follow:"
+              - table [ref=f8e463]:
+                - rowgroup [ref=f8e464]:
+                  - row [ref=f8e622]:
+                    - columnheader [ref=f8e623]: Bales/ drums
+                    - columnheader [ref=f8e624]: Marks & Quality
+                    - columnheader [ref=f8e625]: Advised weight in Kgs
+                    - columnheader [ref=f8e626]: Mill weight in Kgs
+                    - columnheader [ref=f8e627]: Claim in Kgs
+                    - columnheader [ref=f8e628]: Approved Weight
+                    - columnheader [ref=f8e629]: Rate per Qtls Rs
+                    - columnheader [ref=f8e630]: CLAIM FOR
+                  - row [ref=f8e631]:
+                    - columnheader [ref=f8e632]: QUALITY
+                    - columnheader [ref=f8e633]: CONDITION
+                - rowgroup [ref=f8e477]:
+                  - row [ref=f8e634]:
+                    - cell [ref=f8e635]: "65"
+                    - cell [ref=f8e636]:
+                      - text: DESI
+                      - generic [ref=f8e481]: D- TD5
+                    - cell [ref=f8e637]: 4,251.00
+                    - cell [ref=f8e638]: 4,244.50
+                    - cell [ref=f8e639]: "116.72"
+                    - cell [ref=f8e640]: 4,127.78
+                    - cell [ref=f8e486]
+                    - cell [ref=f8e487]
+                    - cell [ref=f8e641]: 22.8%(20%)
+                  - row [ref=f8e642]:
+                    - cell [ref=f8e643]: "35"
+                    - cell [ref=f8e644]:
+                      - text: DESI
+                      - generic [ref=f8e492]: D- TD6
+                    - cell [ref=f8e645]: 2,289.00
+                    - cell [ref=f8e646]: 2,285.50
+                    - cell [ref=f8e647]: "53.25"
+                    - cell [ref=f8e648]: 2,232.25
+                    - cell [ref=f8e497]
+                    - cell [ref=f8e498]
+                    - cell [ref=f8e649]: 22.3%(20%)
+                  - row [ref=f8e650]:
+                    - cell [ref=f8e651]:
+                      - strong [ref=f8e502]: "100.00"
+                    - cell [ref=f8e503]
+                    - cell [ref=f8e652]:
+                      - strong [ref=f8e505]: 6,540.00
+                    - cell [ref=f8e653]:
+                      - strong [ref=f8e507]: 6,530.00
+                    - cell [ref=f8e654]:
+                      - strong [ref=f8e509]: "169.97"
+                    - cell [ref=f8e655]:
+                      - strong [ref=f8e511]: 6,360.03
+                    - cell [ref=f8e512]
+                    - cell [ref=f8e513]
+                    - cell [ref=f8e514]
+              - generic [ref=f8e516]:
+                - text: "Status:"
+                - strong [ref=f8e517]: OPEN
+              - generic [ref=f8e518]: "Note*: This is a computer generated print, Signature is not required."
+  - list
+  - button "Open Next.js Dev Tools" [ref=f8e31] [cursor=pointer]
+  - alert [ref=f8e519]
+  - listbox "Mukam" [ref=f8e658]:
+    - option "test mukam" [active] [ref=f8e659] [cursor=pointer]
+    - option "Khidirpur" [ref=f8e660] [cursor=pointer]
+    - option "MAYAPUR" [ref=f8e661] [cursor=pointer]
+    - option "BAMANHAT" [ref=f8e662] [cursor=pointer]
+    - option "BALURGHAT" [ref=f8e663] [cursor=pointer]
+    - option "MRIJ" [ref=f8e664] [cursor=pointer]
+    - option "BALURGHAT (Trimohini)" [ref=f8e665] [cursor=pointer]
+    - option "NABADWIP" [ref=f8e666] [cursor=pointer]
+    - option "NA" [ref=f8e667] [cursor=pointer]
+    - option "DUTTAPUKUR" [ref=f8e668] [cursor=pointer]
+    - option "TEHATTA" [ref=f8e669] [cursor=pointer]
+    - option "MUSHIRABAD" [ref=f8e670] [cursor=pointer]
+    - option "MURUTIA" [ref=f8e671] [cursor=pointer]
+    - option "TEJPUR" [ref=f8e672] [cursor=pointer]
+    - option "TENTULIA" [ref=f8e673] [cursor=pointer]
+    - option "MYGD" [ref=f8e674] [cursor=pointer]
+    - option "PATIKABARI" [ref=f8e675] [cursor=pointer]
+    - option "MYUD" [ref=f8e676] [cursor=pointer]
+    - option "PLASSEY" [ref=f8e677] [cursor=pointer]
+    - option "MURLIGANJ" [ref=f8e678] [cursor=pointer]
+    - option "MURSHIDABAD" [ref=f8e679] [cursor=pointer]
+    - option "MAYNAGURI" [ref=f8e680] [cursor=pointer]
+    - option "PIRTALA" [ref=f8e681] [cursor=pointer]
+    - option "PATULI" [ref=f8e682] [cursor=pointer]
+    - option "MOIRABARI" [ref=f8e683] [cursor=pointer]
+    - option "MORAIBAI" [ref=f8e684] [cursor=pointer]
+    - option "MOYNA" [ref=f8e685] [cursor=pointer]
+    - option "Mukam" [ref=f8e686] [cursor=pointer]
+    - option "MATHURAPUR" [ref=f8e687] [cursor=pointer]
+    - option "BHURAGAAN" [ref=f8e688] [cursor=pointer]
+    - option "BHGJ" [ref=f8e689] [cursor=pointer]
+    - option "BELDANGA" [ref=f8e690] [cursor=pointer]
+    - option "BHAGWANGOLA." [ref=f8e691] [cursor=pointer]
+    - option "NARSHINGPUR" [ref=f8e692] [cursor=pointer]
+    - option "NAVDWIP" [ref=f8e693] [cursor=pointer]
+    - option "BHIMPUR" [ref=f8e694] [cursor=pointer]
+    - option "BHARATPUR" [ref=f8e695] [cursor=pointer]
+    - option "JAMALDA" [ref=f8e696] [cursor=pointer]
+    - option "JALANGII" [ref=f8e697] [cursor=pointer]
+    - option "BENGAL FIBER" [ref=f8e698] [cursor=pointer]
+    - option "JAMBURI" [ref=f8e699] [cursor=pointer]
+    - option "LATCHI RAJU PETA" [ref=f8e700] [cursor=pointer]
+    - option "BENGAL JHI" [ref=f8e701] [cursor=pointer]
+    - option "LISTDA" [ref=f8e702] [cursor=pointer]
+    - option "m1" [ref=f8e703] [cursor=pointer]
+    - option "CASSIMBAZAR" [ref=f8e704] [cursor=pointer]
+    - option "PRATAPGANJ" [ref=f8e705] [cursor=pointer]
+    - option "DUM DUMIA" [ref=f8e706] [cursor=pointer]
+    - option "SIVADA VALASA" [ref=f8e707] [cursor=pointer]
+    - option "SEORAFULLY" [ref=f8e708] [cursor=pointer]
+    - option "SRIGHAR" [ref=f8e709] [cursor=pointer]
+    - option "PURBACHAL" [ref=f8e710] [cursor=pointer]
+    - option "SAPTAGRAM" [ref=f8e711] [cursor=pointer]
+    - option "SRIPUR" [ref=f8e712] [cursor=pointer]
+    - option "SAMSI" [ref=f8e713] [cursor=pointer]
+    - option "DOMKAL" [ref=f8e714] [cursor=pointer]
+    - option "DUTTAPHULIA" [ref=f8e715] [cursor=pointer]
+    - option "GOPAL NAGAR" [ref=f8e716] [cursor=pointer]
+    - option "GOSSAIGAON" [ref=f8e717] [cursor=pointer]
+    - option "SHRIGHAR" [ref=f8e718] [cursor=pointer]
+    - option "JIYAGANJ" [ref=f8e719] [cursor=pointer]
+    - option "JIRAT" [ref=f8e720] [cursor=pointer]
+    - option "HABRA" [ref=f8e721] [cursor=pointer]
+    - option "SARBHOG" [ref=f8e722] [cursor=pointer]
+    - option "GUWAHATI" [ref=f8e723] [cursor=pointer]
+    - option "SINGUR" [ref=f8e724] [cursor=pointer]
+    - option "KRISHNAGARH" [ref=f8e725] [cursor=pointer]
+    - option "NOWGAON" [ref=f8e726] [cursor=pointer]
+    - option "KALIYAGANJ" [ref=f8e727] [cursor=pointer]
+    - option "PANJIPARA" [ref=f8e728] [cursor=pointer]
+    - option "BAROBISHA" [ref=f8e729] [cursor=pointer]
+    - option "PALASI" [ref=f8e730] [cursor=pointer]
+    - option "PALASHIPARA" [ref=f8e731] [cursor=pointer]
+    - option "PALANIPARA" [ref=f8e732] [cursor=pointer]
+    - option "BARIPURAM" [ref=f8e733] [cursor=pointer]
+    - option "KRISHNANAGAR" [ref=f8e734] [cursor=pointer]
+    - option "DLK" [ref=f8e735] [cursor=pointer]
+    - option "PARULIA" [ref=f8e736] [cursor=pointer]
+    - option "JELALGERH" [ref=f8e737] [cursor=pointer]
+    - option "CHAPADANGA" [ref=f8e738] [cursor=pointer]
+    - option "Parvathipuram" [ref=f8e739] [cursor=pointer]
+    - option "CHAKDAHA" [ref=f8e740] [cursor=pointer]
+    - option "KALIGANJ" [ref=f8e741] [cursor=pointer]
+    - option "CHANDITALA" [ref=f8e742] [cursor=pointer]
+    - option "GOURIPUR" [ref=f8e743] [cursor=pointer]
+    - option "KOLKATA" [ref=f8e744] [cursor=pointer]
+    - option "SONAPUR" [ref=f8e745] [cursor=pointer]
+    - option "JANGIPUR" [ref=f8e746] [cursor=pointer]
+    - option "CHANGRABANDHA" [ref=f8e747] [cursor=pointer]
+    - option "BAGLA H/J" [ref=f8e748] [cursor=pointer]
+    - option "BAGULA" [ref=f8e749] [cursor=pointer]
+    - option "BAGLA W CUTTING" [ref=f8e750] [cursor=pointer]
+    - option "KNE" [ref=f8e751] [cursor=pointer]
+    - option "KISHANGANJ" [ref=f8e752] [cursor=pointer]
+    - option "DHUPGURI" [ref=f8e753] [cursor=pointer]
+    - option "KHATAL BERIA" [ref=f8e754] [cursor=pointer]
+    - option "BELAKOBA" [ref=f8e755] [cursor=pointer]
+    - option "KALITALA" [ref=f8e756] [cursor=pointer]
+    - option "BASIRHAT" [ref=f8e757] [cursor=pointer]
+    - option "DEBAGRAM" [ref=f8e758] [cursor=pointer]
+    - option "DEBIPUR" [ref=f8e759] [cursor=pointer]
+    - option "RAHA" [ref=f8e760] [cursor=pointer]
+    - option "DEGANGA" [ref=f8e761] [cursor=pointer]
+    - option "DEWANHAT" [ref=f8e762] [cursor=pointer]
+    - option "DHUDHANI" [ref=f8e763] [cursor=pointer]
+    - option "DHANMANDAL" [ref=f8e764] [cursor=pointer]
+    - option "DHULIYAN" [ref=f8e765] [cursor=pointer]
+    - option "KOLAGHAT" [ref=f8e766] [cursor=pointer]
+    - option "KALNA" [ref=f8e767] [cursor=pointer]
+    - option "DHUBRI" [ref=f8e768] [cursor=pointer]
+    - option "BARPETA" [ref=f8e769] [cursor=pointer]
+    - option "KINNISON" [ref=f8e770] [cursor=pointer]
+    - option "BARANOGAR JUTE FACTORYPLC" [ref=f8e771] [cursor=pointer]
+    - option "NISCHINTAPUR" [ref=f8e772] [cursor=pointer]
+    - option "KRISHNAGANJ" [ref=f8e773] [cursor=pointer]
+    - option "NILGANJ" [ref=f8e774] [cursor=pointer]
+    - option "NAZIRPUR" [ref=f8e775] [cursor=pointer]
+    - option "SHANTI PUR" [ref=f8e776] [cursor=pointer]
+    - option "H.C.PUR" [ref=f8e777] [cursor=pointer]
+    - option "GASSINGAN" [ref=f8e778] [cursor=pointer]
+    - option "GANGARAMPUR" [ref=f8e779] [cursor=pointer]
+    - option "SARGACHI" [ref=f8e780] [cursor=pointer]
+    - option "PRNA" [ref=f8e781] [cursor=pointer]
+    - option "NIMTALA" [ref=f8e782] [cursor=pointer]
+    - option "ASSANAGAR" [ref=f8e783] [cursor=pointer]
+    - option "GUAHATI" [ref=f8e784] [cursor=pointer]
+    - option "GULABBAGH" [ref=f8e785] [cursor=pointer]
+    - option "B.L.NAHATA" [ref=f8e786] [cursor=pointer]
+    - option "NEPAL JUTE" [ref=f8e787] [cursor=pointer]
+    - option "SHAIKHPARA" [ref=f8e788] [cursor=pointer]
+    - option "KANAI KHALI" [ref=f8e789] [cursor=pointer]
+    - option "AURANGABAD" [ref=f8e790] [cursor=pointer]
+    - option "BADKULLA" [ref=f8e791] [cursor=pointer]
+    - option "SAHIBNAGAR" [ref=f8e792] [cursor=pointer]
+    - option "GANGNAPUR" [ref=f8e793] [cursor=pointer]
+    - option "GHATU" [ref=f8e794] [cursor=pointer]
+    - option "SILIGURI" [ref=f8e795] [cursor=pointer]
+    - option "BARNIA" [ref=f8e796] [cursor=pointer]
+    - option "NEW MUKAM" [ref=f8e797] [cursor=pointer]
+    - option "NOWDA" [ref=f8e798] [cursor=pointer]
+    - option "DHUBULIA" [ref=f8e799] [cursor=pointer]
+    - option "SAKTIPUR" [ref=f8e800] [cursor=pointer]
+    - option "GHUSKADANGA" [ref=f8e801] [cursor=pointer]
+    - option "NIMMADA" [ref=f8e802] [cursor=pointer]
+    - option "NORTHERN" [ref=f8e803] [cursor=pointer]
+    - option "BARANGAR" [ref=f8e804] [cursor=pointer]
+    - option "CHETA" [ref=f8e805] [cursor=pointer]
+    - option "CHAPRA KASIS" [ref=f8e806] [cursor=pointer]
+    - option "CHAPRA" [ref=f8e807] [cursor=pointer]
+    - option "GAURIPUR" [ref=f8e808] [cursor=pointer]
+    - option "APPENDTENTULIA" [ref=f8e809] [cursor=pointer]
+    - option "DEBNATHPUR" [ref=f8e810] [cursor=pointer]
+    - option "ASSAM" [ref=f8e811] [cursor=pointer]
+    - option "ARARIA" [ref=f8e812] [cursor=pointer]
+    - option "CHHATAPUR" [ref=f8e813] [cursor=pointer]
+    - option "KENJUHAR" [ref=f8e814] [cursor=pointer]
+    - option "KISHANGANG" [ref=f8e815] [cursor=pointer]
+    - option "PURNEA" [ref=f8e816] [cursor=pointer]
+    - option "KALIAGANJ" [ref=f8e817] [cursor=pointer]
+    - option "DINHATA" [ref=f8e818] [cursor=pointer]
+    - option "CHANDAMARI" [ref=f8e819] [cursor=pointer]
+    - option "ARANGHATA" [ref=f8e820] [cursor=pointer]
+    - option "jamugurihat" [ref=f8e821] [cursor=pointer]
+    - option "KHARUPRTIA" [ref=f8e822] [cursor=pointer]
+    - option "BARASAT" [ref=f8e823] [cursor=pointer]
+    - option "KHARUPETIA" [ref=f8e824] [cursor=pointer]
+    - option "KOU" [ref=f8e825] [cursor=pointer]
+    - option "PONDURU" [ref=f8e826] [cursor=pointer]
+    - option "PTG" [ref=f8e827] [cursor=pointer]
+    - option "CHANDPARA" [ref=f8e828] [cursor=pointer]
+    - option "CHAMPADANGA" [ref=f8e829] [cursor=pointer]
+    - option "BARANOGAR JUTE FACTORY PL" [ref=f8e830] [cursor=pointer]
+    - option "ASHA NAGAR" [ref=f8e831] [cursor=pointer]
+    - option "JUNGLI" [ref=f8e832] [cursor=pointer]
+    - option "JIAGANJ" [ref=f8e833] [cursor=pointer]
+    - option "JAMGURD" [ref=f8e834] [cursor=pointer]
+    - option "SIVADAVALASA" [ref=f8e835] [cursor=pointer]
+    - option "KAMAKHYAGURY" [ref=f8e836] [cursor=pointer]
+    - option "KALADANGA" [ref=f8e837] [cursor=pointer]
+    - option "KALYABI" [ref=f8e838] [cursor=pointer]
+    - option "KALYANI" [ref=f8e839] [cursor=pointer]
+    - option "HARINATHPUR" [ref=f8e840] [cursor=pointer]
+    - option "HANSPUKURIA" [ref=f8e841] [cursor=pointer]
+    - option "HARIHARPARA" [ref=f8e842] [cursor=pointer]
+    - option "HARINGHATA" [ref=f8e843] [cursor=pointer]
+    - option "HANSKHALI" [ref=f8e844] [cursor=pointer]
+    - option "HALDIBARI" [ref=f8e845] [cursor=pointer]
+    - option "BEHARAMPURE" [ref=f8e846] [cursor=pointer]
+    - option "CHATAR PUR" [ref=f8e847] [cursor=pointer]
+    - option "HARISH CHANDPUR" [ref=f8e848] [cursor=pointer]
+    - option "DALKH0LA" [ref=f8e849] [cursor=pointer]
+    - option "KSB" [ref=f8e850] [cursor=pointer]
+    - option "KRPA" [ref=f8e851] [cursor=pointer]
+    - option "ACHINTALLA" [ref=f8e852] [cursor=pointer]
+    - option "AMADALVALASA" [ref=f8e853] [cursor=pointer]
+    - option "ANDULIA" [ref=f8e854] [cursor=pointer]
+    - option "BIJINI" [ref=f8e855] [cursor=pointer]
+    - option "BOXIRHAT" [ref=f8e856] [cursor=pointer]
+    - option "BANMANKHIB" [ref=f8e857] [cursor=pointer]
+    - option "V K JAIN" [ref=f8e858] [cursor=pointer]
+    - option "RKTRADING" [ref=f8e859] [cursor=pointer]
+    - option "BARANDULIA" [ref=f8e860] [cursor=pointer]
+    - option "BIRNAGAR" [ref=f8e861] [cursor=pointer]
+    - option "RANAGHAT" [ref=f8e862] [cursor=pointer]
+    - option "CASIMBAZAR" [ref=f8e863] [cursor=pointer]
+    - option "KATWA" [ref=f8e864] [cursor=pointer]
+    - option "BANGLADESH" [ref=f8e865] [cursor=pointer]
+    - option "RAKECHA TRADING CO" [ref=f8e866] [cursor=pointer]
+    - option "ANANDANAGAR" [ref=f8e867] [cursor=pointer]
+    - option "ALLIANCE." [ref=f8e868] [cursor=pointer]
+    - option "VARIOUS" [ref=f8e869] [cursor=pointer]
+    - option "BUNIADPUR" [ref=f8e870] [cursor=pointer]
+    - option "RAJAM" [ref=f8e871] [cursor=pointer]
+    - option "AMDANGA" [ref=f8e872] [cursor=pointer]
+    - option "AGARPARA" [ref=f8e873] [cursor=pointer]
+    - option "ANAUAGAR" [ref=f8e874] [cursor=pointer]
+    - option "(R)" [ref=f8e875] [cursor=pointer]
+    - option "AMTALA" [ref=f8e876] [cursor=pointer]
+    - option "TARAPUR" [ref=f8e877] [cursor=pointer]
+    - option "KARI ALI" [ref=f8e878] [cursor=pointer]
+    - option "DAISEE" [ref=f8e879] [cursor=pointer]
+    - option "HUSWADANGA" [ref=f8e880] [cursor=pointer]
+    - option "BOBBILI" [ref=f8e881] [cursor=pointer]
+    - option "BONGAON" [ref=f8e882] [cursor=pointer]
+    - option "LANKA" [ref=f8e883] [cursor=pointer]
+    - option "GOBANDANGA" [ref=f8e884] [cursor=pointer]
+    - option "JAGATDAL" [ref=f8e885] [cursor=pointer]
+    - option "GOAS" [ref=f8e886] [cursor=pointer]
+    - option "REGINAGAR" [ref=f8e887] [cursor=pointer]
+    - option "BANGLA" [ref=f8e888] [cursor=pointer]
+    - option "BULBULCHANDI" [ref=f8e889] [cursor=pointer]
+    - option "KATIHAR" [ref=f8e890] [cursor=pointer]
+    - option "BANGLA TOSSA CUTTING-A" [ref=f8e891] [cursor=pointer]
+    - option "RAJAPUR" [ref=f8e892] [cursor=pointer]
+    - option "KANTHALIA" [ref=f8e893] [cursor=pointer]
+    - option "BTY" [ref=f8e894] [cursor=pointer]
+    - option "JALANGI" [ref=f8e895] [cursor=pointer]
+    - option "LAKHIPUR" [ref=f8e896] [cursor=pointer]
+    - option "KATHALTALA" [ref=f8e897] [cursor=pointer]
+    - option "RAMPUR" [ref=f8e898] [cursor=pointer]
+    - option "BARACHAPA" [ref=f8e899] [cursor=pointer]
+    - option "BIPRI" [ref=f8e900] [cursor=pointer]
+    - option "TUFANGANJ" [ref=f8e901] [cursor=pointer]
+    - option "TARABARI" [ref=f8e902] [cursor=pointer]
+    - option "SAHABNAGAR" [ref=f8e903] [cursor=pointer]
+    - option "MAINA" [ref=f8e904] [cursor=pointer]
+    - option "ISLAMPUR(SN)" [ref=f8e905] [cursor=pointer]
+    - option "HARIPAL" [ref=f8e906] [cursor=pointer]
+    - option "GAJAL" [ref=f8e907] [cursor=pointer]
+    - option "DAINHAT" [ref=f8e908] [cursor=pointer]
+    - option "BILARIPARA" [ref=f8e909] [cursor=pointer]
+    - option "BHADRAK" [ref=f8e910] [cursor=pointer]
+    - option "BARA ANDULIA" [ref=f8e911] [cursor=pointer]
+    - option "Bakshihat" [ref=f8e912] [cursor=pointer]
+    - option "VIZIANAGARAM" [ref=f8e913] [cursor=pointer]
+    - option "TULSHIHATA" [ref=f8e914] [cursor=pointer]
+    - option "SUJNI" [ref=f8e915] [cursor=pointer]
+    - option "SAGARPARA" [ref=f8e916] [cursor=pointer]
+    - option "MAJDIA" [ref=f8e917] [cursor=pointer]
+    - option "ISLAMPUR" [ref=f8e918] [cursor=pointer]
+    - option "HARIRAMPUR" [ref=f8e919] [cursor=pointer]
+    - option "GALAKGANG" [ref=f8e920] [cursor=pointer]
+    - option "COSSIBAZAR" [ref=f8e921] [cursor=pointer]
+    - option "BILASIPARA" [ref=f8e922] [cursor=pointer]
+    - option "BHADOHI" [ref=f8e923] [cursor=pointer]
+    - option "BANMANKI" [ref=f8e924] [cursor=pointer]
+    - option "BAKSHIRHAT" [ref=f8e925] [cursor=pointer]
+    - option "TITAGARH." [ref=f8e926] [cursor=pointer]
+    - option "SUPAUL" [ref=f8e927] [cursor=pointer]
+    - option "REJINAGAR" [ref=f8e928] [cursor=pointer]
+    - option "MAINAGURI" [ref=f8e929] [cursor=pointer]
+    - option "JAIPUR" [ref=f8e930] [cursor=pointer]
+    - option "HILI" [ref=f8e931] [cursor=pointer]
+    - option "GANGADHARI" [ref=f8e932] [cursor=pointer]
+    - option "CSZ" [ref=f8e933] [cursor=pointer]
+    - option "BIJNI" [ref=f8e934] [cursor=pointer]
+    - option "BHAGIRATHPUR" [ref=f8e935] [cursor=pointer]
+    - option "BANGLA TOSSA CUTTING-B" [ref=f8e936] [cursor=pointer]
+    - option "BALIAPARA" [ref=f8e937] [cursor=pointer]
+    - option "BAHARIHAT" [ref=f8e938] [cursor=pointer]
+    - option "DVC" [ref=f8e939] [cursor=pointer]
+    - option "GOLAKGANJ" [ref=f8e940] [cursor=pointer]
+    - option "NAVIPUR" [ref=f8e941] [cursor=pointer]
+    - option "FORBESHGANJ" [ref=f8e942] [cursor=pointer]
+    - option "TRBJ" [ref=f8e943] [cursor=pointer]
+    - option "BERHAMPORE" [ref=f8e944] [cursor=pointer]
+    - option "CHOUDHURYHAT" [ref=f8e945] [cursor=pointer]
+    - option "BETHUADAHARI" [ref=f8e946] [cursor=pointer]
+    - option "TARKESHWAR" [ref=f8e947] [cursor=pointer]
+    - option "MARSHAGHAI" [ref=f8e948] [cursor=pointer]
+    - option "NANDAKUTHI" [ref=f8e949] [cursor=pointer]
+    - option "NALIKUL" [ref=f8e950] [cursor=pointer]
+    - option "TUNIDIGHI" [ref=f8e951] [cursor=pointer]
+    - option "NAKURTALA" [ref=f8e952] [cursor=pointer]
+    - option "BAGJOLA" [ref=f8e953] [cursor=pointer]
+    - option "BADURIA" [ref=f8e954] [cursor=pointer]
+    - option "BANDAGHAT" [ref=f8e955] [cursor=pointer]
+    - option "MAIRABARI" [ref=f8e956] [cursor=pointer]
+    - option "GOLABARI" [ref=f8e957] [cursor=pointer]
+    - option "KANKI" [ref=f8e958] [cursor=pointer]
+    - option "NADIA" [ref=f8e959] [cursor=pointer]
+    - option "MADANLALBAUTHIA" [ref=f8e960] [cursor=pointer]
+    - option "MADHURAPUR" [ref=f8e961] [cursor=pointer]
+    - option "SAHARSA" [ref=f8e962] [cursor=pointer]
+    - option "LAKHIGANJ" [ref=f8e963] [cursor=pointer]
+    - option "HUSLU DANGA" [ref=f8e964] [cursor=pointer]
+    - option "SAHEBNAGAR" [ref=f8e965] [cursor=pointer]
+    - option "PARVATIPURAM" [ref=f8e966] [cursor=pointer]
+    - option "BALAGAR" [ref=f8e967] [cursor=pointer]
+    - option "TUNIDIGI" [ref=f8e968] [cursor=pointer]
+    - option "MATHABANGA" [ref=f8e969] [cursor=pointer]
+    - option "BETAI" [ref=f8e970] [cursor=pointer]
+    - option "NARASANNAPETA" [ref=f8e971] [cursor=pointer]
+    - option "COOCH BIHAR" [ref=f8e972] [cursor=pointer]
+    - option "KANDAHA" [ref=f8e973] [cursor=pointer]
+    - option "MADANPUR" [ref=f8e974] [cursor=pointer]
+    - option "FARAKKA" [ref=f8e975] [cursor=pointer]
+    - option "FBG" [ref=f8e976] [cursor=pointer]
+    - option "CHUNAKHALI" [ref=f8e977] [cursor=pointer]
+    - option "BANGALCHI" [ref=f8e978] [cursor=pointer]
+    - option "MADANLAL BAUTHI" [ref=f8e979] [cursor=pointer]
+    - option "BANGAON" [ref=f8e980] [cursor=pointer]
+    - option "NAKSHIPARA" [ref=f8e981] [cursor=pointer]
+    - option "LALGOLA" [ref=f8e982] [cursor=pointer]
+    - option "TAMARHAT" [ref=f8e983] [cursor=pointer]
+    - option "RATAN PUR" [ref=f8e984] [cursor=pointer]
+    - option "FBG-M" [ref=f8e985] [cursor=pointer]
+    - option "CUTTACK" [ref=f8e986] [cursor=pointer]
+    - option "BILASPUR" [ref=f8e987] [cursor=pointer]
+    - option "KENDUPATNA" [ref=f8e988] [cursor=pointer]
+    - option "BIHARIGANJ" [ref=f8e989] [cursor=pointer]
+    - option "MALDA" [ref=f8e990] [cursor=pointer]
+    - option "HOWLI" [ref=f8e991] [cursor=pointer]
+    - option "MAHESH ENTERPRISES" [ref=f8e992] [cursor=pointer]
+    - option "FORBESGANJ" [ref=f8e993] [cursor=pointer]
+    - option "BHABTA" [ref=f8e994] [cursor=pointer]
+    - option "RAIGANJ" [ref=f8e995] [cursor=pointer]
+    - option "COSSIMBAZAR" [ref=f8e996] [cursor=pointer]
+    - option "MATHABHANGA" [ref=f8e997] [cursor=pointer]
+    - option "KARIMPUR" [ref=f8e998] [cursor=pointer]
+    - option "BERHAMPUR" [ref=f8e999] [cursor=pointer]
+    - option "BALJIPETA" [ref=f8e1000] [cursor=pointer]
+    - option "TRIMOHINI" [ref=f8e1001] [cursor=pointer]
+    - option "TAPAN" [ref=f8e1002] [cursor=pointer]
+    - option "BANGLA TOSSA REJECTION" [ref=f8e1003] [cursor=pointer]
+    - option "JAJPUR" [ref=f8e1004] [cursor=pointer]
+    - option "BIR PUR" [ref=f8e1005] [cursor=pointer]

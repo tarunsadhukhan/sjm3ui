@@ -1,0 +1,10 @@
+- generic [active] [ref=f5e1]:
+  - generic [ref=f5e2]:
+    - button "Toggle menu" [ref=f5e4]
+    - generic [ref=f5e8]:
+      - img "Logo" [ref=f5e11]
+      - paragraph [ref=f5e14]
+    - main [ref=f5e23]:
+      - heading "Dashboard" [level=1] [ref=f5e25]
+  - region "Notifications (F8)":
+    - list
