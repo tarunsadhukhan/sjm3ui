@@ -35,6 +35,7 @@ jobs:
             NEXT_PUBLIC_BACKENDHOST=http://vowerp-backend:8000
             NEXT_PUBLIC_API_BASE_URL=/api
             USE_NEXT_PROXY=true
+            NEXT_PUBLIC_STATIC_SUBDOMAIN=sjm
           tags: |
             ghcr.io/tarunsadhukhan/sjm3ui:latest
             ghcr.io/tarunsadhukhan/sjm3ui:${{ github.sha }}
