@@ -27,6 +27,12 @@ export interface SpinningEmpBrkRow {
   eff_100: number;
   /** Actual efficiency % = doff_wt / eff_100 * 100. */
   actual_eff: number;
+  /** Running efficiency % = doff_wt / production at 100% during actual run mins. */
+  run_eff: number | null;
+  /** Weighted running eff % of this employee over [doff_date - 15d, doff_date]. */
+  emp_eff_15d: number | null;
+  /** Weighted running eff % of this frame over [doff_date - 15d, doff_date]. */
+  frame_eff_15d: number | null;
 }
 
 export interface SpinningEmpBrkReportApiResponse {

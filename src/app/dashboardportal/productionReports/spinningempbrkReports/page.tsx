@@ -220,6 +220,9 @@ export default function SpinningEmpBrkReportsPage() {
 			`<th rowspan="2">RPM</th>` +
 			`<th rowspan="2">Effcy 100%</th>` +
 			`<th rowspan="2">Actual Effcy</th>` +
+			`<th rowspan="2">Running Effcy</th>` +
+			`<th rowspan="2">Emp Eff (15D)</th>` +
+			`<th rowspan="2">Frame Eff (15D)</th>` +
 			`</tr>`;
 		body += `<tr><th>D</th><th>M</th><th>E</th><th>O</th><th>IDLE</th></tr>`;
 		body += `</thead><tbody>`;
@@ -246,6 +249,9 @@ export default function SpinningEmpBrkReportsPage() {
 				`<td>${fmtNum(r.rpm)}</td>` +
 				`<td>${fmtNum(r.eff_100)}</td>` +
 				`<td>${fmtNum(r.actual_eff)}</td>` +
+				`<td>${fmtNum(r.run_eff)}</td>` +
+				`<td>${fmtNum(r.emp_eff_15d)}</td>` +
+				`<td>${fmtNum(r.frame_eff_15d)}</td>` +
 				`</tr>`;
 		});
 		body += `</tbody></table>`;
@@ -286,6 +292,9 @@ export default function SpinningEmpBrkReportsPage() {
 			{ header: "RPM", key: "rpm", width: 9 },
 			{ header: "Effcy 100%", key: "eff_100", width: 11 },
 			{ header: "Actual Effcy", key: "actual_eff", fmt: "0.00", width: 11 },
+			{ header: "Running Effcy", key: "run_eff", fmt: "0.00", width: 12 },
+			{ header: "Emp Eff (15D)", key: "emp_eff_15d", fmt: "0.00", width: 12 },
+			{ header: "Frame Eff (15D)", key: "frame_eff_15d", fmt: "0.00", width: 13 },
 		];
 		const total = cols.length;
 
@@ -448,6 +457,9 @@ export default function SpinningEmpBrkReportsPage() {
 			num("rpm", "RPM", 80),
 			num("eff_100", "Effcy 100%", 95),
 			num("actual_eff", "Actual Effcy", 100),
+			num("run_eff", "Running Effcy", 105),
+			num("emp_eff_15d", "Emp Eff (15D)", 105),
+			num("frame_eff_15d", "Frame Eff (15D)", 115),
 		];
 	}, []);
 
