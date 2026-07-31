@@ -2,6 +2,7 @@ import * as React from "react";
 import { TextField } from "@mui/material";
 import type { TransactionLineColumn } from "@/components/ui/transaction";
 import { SearchableSelect } from "@/components/ui/transaction";
+import { useJuteRatePermission } from "@/hooks/useJuteRatePermission";
 import type { MRLineItem } from "../types/mrTypes";
 
 type WarehouseOption = { value: number; label: string };
@@ -20,8 +21,11 @@ export function useMRLineItems({
 	warehouseOptions,
 	lessPc = null,
 }: UseMRLineItemsParams): TransactionLineColumn<MRLineItem>[] {
-	return React.useMemo(
-		(): TransactionLineColumn<MRLineItem>[] => [
+	// Rate / Claim Rate columns are permission-gated per user
+	const { canViewRates, canEditRates } = useJuteRatePermission("mr");
+
+	return React.useMemo((): TransactionLineColumn<MRLineItem>[] => {
+		const columns: TransactionLineColumn<MRLineItem>[] = [
 			{
 				id: "actualItemName",
 				header: "Item",
@@ -285,7 +289,7 @@ export function useMRLineItems({
 				width: "0.9fr",
 				minWidth: "90px",
 				renderCell: ({ item }) => {
-					if (!canEdit) {
+					if (!canEdit || !canEditRates) {
 						return (
 							<span className="text-xs">
 								{item.rate != null ? item.rate.toFixed(2) : "-"}
@@ -319,7 +323,7 @@ export function useMRLineItems({
 				width: "1fr",
 				minWidth: "110px",
 				renderCell: ({ item }) => {
-					if (!canEdit) {
+					if (!canEdit || !canEditRates) {
 						return (
 							<span className="text-xs">
 								{item.claimRate != null ? item.claimRate.toFixed(2) : "-"}
@@ -467,7 +471,11 @@ export function useMRLineItems({
 				},
 				getTooltip: ({ item }) => item.warehousePath || undefined,
 			},
-		],
-		[canEdit, handleLineFieldChange, warehouseOptions, lessPc]
-	);
+		];
+
+		// Users without rate permission never see the Rate / Claim Rate columns
+		return canViewRates
+			? columns
+			: columns.filter((col) => col.id !== "rate" && col.id !== "claimRate");
+	}, [canEdit, canEditRates, canViewRates, handleLineFieldChange, warehouseOptions, lessPc]);
 }

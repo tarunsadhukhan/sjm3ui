@@ -16,7 +16,7 @@ type UseGateEntryFormSchemasParams = {
 	partyOptions: Option[];
 	poOptions: Option[];
 	uomOptions: Option[];
-	hasSupplierSelected: boolean;
+	hasBranchSelected: boolean;
 	isSingleBranch: boolean;
 	isEditMode: boolean;
 };
@@ -29,7 +29,7 @@ export function useGateEntryFormSchemas({
 	partyOptions,
 	poOptions,
 	uomOptions,
-	hasSupplierSelected,
+	hasBranchSelected,
 	isSingleBranch,
 	isEditMode,
 }: UseGateEntryFormSchemasParams) {
@@ -101,7 +101,7 @@ export function useGateEntryFormSchemas({
 					grid: { xs: 12, md: 4 },
 				},
 
-				// Row 4: PO Number (optional), Supplier (auto-filled from PO), Party
+				// Row 4: PO Number (optional), Party (branch-gated), Supplier (readonly, derived from Party)
 				{
 					name: "poId",
 					label: "PO Number",
@@ -113,23 +113,23 @@ export function useGateEntryFormSchemas({
 					placeholder: "Select PO (Optional)",
 				},
 				{
-					name: "supplier",
-					label: "Supplier",
-					type: "select" as const,
-					required: false,
-					options: supplierOptions,
-					disabled: isViewMode,
-					grid: { xs: 12, md: 4 },
-				},
-				{
 					name: "party",
 					label: "Party",
 					type: "select" as const,
 					required: false,
 					options: partyOptions,
-					disabled: isViewMode || !hasSupplierSelected,
+					disabled: isViewMode || !hasBranchSelected,
 					grid: { xs: 12, md: 4 },
-					placeholder: hasSupplierSelected ? "Select Party" : "Select Supplier first",
+					placeholder: hasBranchSelected ? "Select Party" : "Select Branch first",
+				},
+				{
+					name: "supplier",
+					label: "Supplier",
+					type: "select" as const,
+					required: false,
+					options: supplierOptions,
+					disabled: true, // Readonly - auto-filled from the selected Party's supplier mapping
+					grid: { xs: 12, md: 4 },
 				},
 
 				// Row 5: Jute UOM, Mukam, Marketing Slip
@@ -273,7 +273,7 @@ export function useGateEntryFormSchemas({
 			partyOptions,
 			poOptions,
 			uomOptions,
-			hasSupplierSelected,
+			hasBranchSelected,
 			isSingleBranch,
 			isViewMode,
 		]

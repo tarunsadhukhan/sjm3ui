@@ -28,7 +28,6 @@ import type {
 	GateEntryLineItem,
 	GateEntrySetupData,
 	GateEntryDetails,
-	Option,
 	JuteQualityRecord,
 	PODetailsForGateEntry,
 } from "./types/MaterialInspectionTypes";
@@ -44,6 +43,7 @@ import {
 	mapGateEntrySetupResponse,
 	buildBranchOptions,
 	buildSupplierOptions,
+	buildPartyOptions,
 	buildMukamOptions,
 	buildPOOptions,
 	extractFormValuesFromDetails,
@@ -88,7 +88,6 @@ function JuteGateEntryCreatePageContent() {
 	const [details, setDetails] = React.useState<GateEntryDetails | null>(null);
 
 	// Cascading dropdown state
-	const [parties, setParties] = React.useState<Option[]>([]);
 	const [qualitiesByItem, setQualitiesByItem] = React.useState<Record<string, JuteQualityRecord[]>>({});
 
 	// Derived options
@@ -102,6 +101,20 @@ function JuteGateEntryCreatePageContent() {
 		() => (setupData ? buildSupplierOptions(setupData.suppliers) : []),
 		[setupData]
 	);
+
+	const partyOptions = React.useMemo(
+		() => (setupData ? buildPartyOptions(setupData.parties) : []),
+		[setupData]
+	);
+
+	// party_id -> mapped supplier_id, used to auto-fill the readonly Supplier field
+	const partySupplierMap = React.useMemo(() => {
+		const map: Record<string, string> = {};
+		for (const p of setupData?.parties ?? []) {
+			if (p.jute_supplier_id != null) map[String(p.party_id)] = String(p.jute_supplier_id);
+		}
+		return map;
+	}, [setupData]);
 
 	const mukamOptions = React.useMemo(
 		() => (setupData ? buildMukamOptions(setupData.mukams) : []),
@@ -220,10 +233,10 @@ function JuteGateEntryCreatePageContent() {
 		branchOptions,
 		mukamOptions,
 		supplierOptions,
-		partyOptions: parties,
+		partyOptions,
 		poOptions,
 		uomOptions: UOM_OPTIONS,
-		hasSupplierSelected: Boolean(formValues.supplier),
+		hasBranchSelected: Boolean(formValues.branch),
 		isSingleBranch,
 		isEditMode: Boolean(isEditMode),
 	});
@@ -277,69 +290,27 @@ function JuteGateEntryCreatePageContent() {
 	React.useEffect(() => {
 		if (mode === "create" && isSingleBranch && !formValues.branch && branchOptions[0]) {
 			setFormValues((prev) => ({ ...prev, branch: branchOptions[0].value }));
+			// Also push into the live form - MuiForm re-emits its internal values via
+			// onValuesChange, which would otherwise wipe the page-state-only branch
+			formRef.current?.setValue("branch", branchOptions[0].value);
 		}
-	}, [mode, isSingleBranch, formValues.branch, branchOptions, setFormValues]);
+	}, [mode, isSingleBranch, formValues.branch, branchOptions, setFormValues, formRef]);
 
-	// Flag to track when we're filling from PO selection (prevents supplier change from clearing party)
-	const isFillingFromPORef = React.useRef(false);
-	// Store pending party from PO selection to set after parties are loaded
-	const pendingPartyFromPORef = React.useRef<string | null>(null);
-
-	// Fetch parties when supplier changes
-	const prevSupplierRef = React.useRef<string>("");
+	// Auto-fill the readonly Supplier field from the selected Party's supplier mapping
+	const prevPartyRef = React.useRef<string>("");
 	React.useEffect(() => {
-		const supplierId = formValues.supplier;
-		if (supplierId === prevSupplierRef.current) return;
-		prevSupplierRef.current = supplierId;
+		const partyId = formValues.party;
+		if (partyId === prevPartyRef.current) return;
+		prevPartyRef.current = partyId;
 
-		// Only clear party if NOT coming from a PO selection
-		// When PO is selected, party is set together with supplier
-		if (!isFillingFromPORef.current) {
-			setFormValues((prev) => ({ ...prev, party: "" }));
-		}
+		const supplierId = partyId ? partySupplierMap[partyId] ?? "" : "";
+		if (formValues.supplier === supplierId) return;
 
-		if (!supplierId || !coId) {
-			setParties([]);
-			return;
-		}
-
-		const fetchParties = async () => {
-			try {
-				const url = `${apiRoutesPortalMasters.JUTE_GATE_ENTRY_PARTIES_BY_SUPPLIER}/${supplierId}?co_id=${coId}`;
-				const { data, error } = await fetchWithCookie(url, "GET");
-				if (error) {
-					console.error("Error fetching parties:", error);
-					return;
-				}
-				const result = data as Record<string, unknown>;
-				const partyList = (result.parties as Array<Record<string, unknown>>) ?? [];
-				setParties(
-					partyList.map((p) => ({
-						label: String(p.party_name ?? ""),
-						value: String(p.party_id ?? ""),
-					}))
-				);
-
-				// If there's a pending party from PO selection, set it now that parties are loaded
-				if (pendingPartyFromPORef.current) {
-					const pendingParty = pendingPartyFromPORef.current;
-					// Check if the party exists in the fetched list
-					const partyExists = partyList.some((p) => String(p.party_id) === pendingParty);
-					if (partyExists) {
-						setFormValues((prev) => ({ ...prev, party: pendingParty }));
-						setInitialValues((prev) => ({ ...prev, party: pendingParty }));
-						bumpFormKey();
-					}
-					pendingPartyFromPORef.current = null;
-					isFillingFromPORef.current = false;
-				}
-			} catch (err) {
-				console.error("Error fetching parties:", err);
-			}
-		};
-
-		void fetchParties();
-	}, [formValues.supplier, coId, setFormValues, setInitialValues, bumpFormKey]);
+		// Update the live form via setValue - remounting (bumpFormKey) would reset
+		// the form to initialValues and wipe the just-selected party
+		setFormValues((prev) => ({ ...prev, supplier: supplierId }));
+		formRef.current?.setValue("supplier", supplierId);
+	}, [formValues.party, formValues.supplier, partySupplierMap, setFormValues, formRef]);
 
 	// Fetch qualities when item is selected in line items
 	const fetchQualitiesForItem = React.useCallback(
@@ -401,22 +372,17 @@ function JuteGateEntryCreatePageContent() {
 				}
 				const poData = data as PODetailsForGateEntry;
 
-				// Set flag before updating to prevent supplier useEffect from clearing party
-				isFillingFromPORef.current = true;
-				
-				// Store the party from PO to set after parties are loaded
-				if (poData.party_id) {
-					pendingPartyFromPORef.current = String(poData.party_id);
-				}
-
-				// Auto-fill supplier, mukam, and uom from PO
-				// Party will be set after parties dropdown is loaded (handled in fetchParties)
+				// Auto-fill party, supplier, mukam, and uom from PO
 				const newValues = {
+					party: poData.party_id ? String(poData.party_id) : "",
 					supplier: String(poData.supplier_id ?? ""),
 					mukam: poData.mukam_id ? String(poData.mukam_id) : "",
 					juteUom: poData.jute_uom ?? "",
 				};
-				
+
+				// Sync ref so the party->supplier effect doesn't overwrite the PO's supplier
+				prevPartyRef.current = newValues.party;
+
 				setFormValues((prev) => ({ ...prev, ...newValues }));
 				setInitialValues((prev) => ({ ...prev, ...newValues }));
 				bumpFormKey();

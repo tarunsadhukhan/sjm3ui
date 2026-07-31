@@ -154,6 +154,7 @@ export type JutePOSetupData = {
   vehicle_types: VehicleTypeRecord[];
   jute_items: JuteItemRecord[];
   suppliers: JuteSupplierRecord[]; // All suppliers for the company
+  parties: JutePartyRecord[]; // All mapped parties with their supplier (party-first flow)
   brokers: JuteBrokerRecord[]; // All brokers (parties) for the company
   company: CompanyLetterhead | null; // Letterhead for the printable preview
   channel_options: ChannelOption[];

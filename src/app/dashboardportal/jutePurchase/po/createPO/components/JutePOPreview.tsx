@@ -11,6 +11,7 @@ import * as React from "react";
 import { Dialog, DialogTitle, DialogContent, IconButton, Box, Divider, Typography } from "@mui/material";
 import { X, Printer, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useJuteRatePermission } from "@/hooks/useJuteRatePermission";
 import type {
   JutePOFormValues,
   JutePOLineItem,
@@ -64,6 +65,7 @@ export function JutePOPreview({
   company,
   branchInfo,
 }: JutePOPreviewProps) {
+  const { canViewRates } = useJuteRatePermission("po");
   const printRef = React.useRef<HTMLDivElement>(null);
   const [downloading, setDownloading] = React.useState(false);
 
@@ -299,9 +301,9 @@ export function JutePOPreview({
                 <th style={thStyle}>Crop Year</th>
                 <th style={thStyle}>Marka</th>
                 <th style={thRight}>Weight in<br />Qtls</th>
-                <th style={thRight}>Rate per<br />Qtls Rs</th>
+                {canViewRates && <th style={thRight}>Rate per<br />Qtls Rs</th>}
                 <th style={thRight}>Moisture %</th>
-                <th style={thRight}>Amount Rs</th>
+                {canViewRates && <th style={thRight}>Amount Rs</th>}
               </tr>
             </thead>
             <tbody>
@@ -312,9 +314,9 @@ export function JutePOPreview({
                   <td style={tdCenter}>{line.cropYear || "-"}</td>
                   <td style={tdCenter}>{line.marka || "-"}</td>
                   <td style={tdRight}>{formatWeight(parseFloat(line.weight) || 0)}</td>
-                  <td style={tdRight}>{formatAmount(parseFloat(line.rate) || 0)}</td>
+                  {canViewRates && <td style={tdRight}>{formatAmount(parseFloat(line.rate) || 0)}</td>}
                   <td style={tdRight}>{line.allowableMoisture || "-"}</td>
-                  <td style={tdRight}>{formatAmount(parseFloat(line.amount) || 0)}</td>
+                  {canViewRates && <td style={tdRight}>{formatAmount(parseFloat(line.amount) || 0)}</td>}
                 </tr>
               ))}
               {/* Totals row */}
@@ -324,9 +326,9 @@ export function JutePOPreview({
                 <td style={tdStyle} />
                 <td style={tdStyle} />
                 <td style={tdRight}><strong>{formatWeight(totalWeight)}</strong></td>
+                {canViewRates && <td style={tdStyle} />}
                 <td style={tdStyle} />
-                <td style={tdStyle} />
-                <td style={tdRight}><strong>{formatAmount(totalAmount)}</strong></td>
+                {canViewRates && <td style={tdRight}><strong>{formatAmount(totalAmount)}</strong></td>}
               </tr>
             </tbody>
           </Box>

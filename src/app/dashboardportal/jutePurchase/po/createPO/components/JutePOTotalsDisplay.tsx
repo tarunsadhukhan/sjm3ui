@@ -6,6 +6,7 @@
  */
 
 import * as React from "react";
+import { useJuteRatePermission } from "@/hooks/useJuteRatePermission";
 import { formatWeight, formatAmount } from "../utils/jutePOCalculations";
 
 type JutePOTotalsDisplayProps = {
@@ -19,11 +20,13 @@ export function JutePOTotalsDisplay({
   totalAmount,
   lineCount,
 }: JutePOTotalsDisplayProps) {
+  const { canViewRates } = useJuteRatePermission("po");
+
   return (
     <div className="flex flex-col gap-2 p-4 bg-gray-50 rounded-lg border">
       <h4 className="text-sm font-semibold text-gray-700 mb-2">Order Summary</h4>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className={canViewRates ? "grid grid-cols-3 gap-4" : "grid grid-cols-2 gap-4"}>
         {/* Line Count */}
         <div className="flex flex-col">
           <span className="text-xs text-gray-500">Line Items</span>
@@ -36,11 +39,13 @@ export function JutePOTotalsDisplay({
           <span className="text-lg font-medium text-gray-900">{formatWeight(totalWeight)} Qtl</span>
         </div>
 
-        {/* Total Amount */}
-        <div className="flex flex-col">
-          <span className="text-xs text-gray-500">Total Amount</span>
-          <span className="text-lg font-semibold text-green-700">₹ {formatAmount(totalAmount)}</span>
-        </div>
+        {/* Total Amount - permission-gated */}
+        {canViewRates && (
+          <div className="flex flex-col">
+            <span className="text-xs text-gray-500">Total Amount</span>
+            <span className="text-lg font-semibold text-green-700">₹ {formatAmount(totalAmount)}</span>
+          </div>
+        )}
       </div>
     </div>
   );

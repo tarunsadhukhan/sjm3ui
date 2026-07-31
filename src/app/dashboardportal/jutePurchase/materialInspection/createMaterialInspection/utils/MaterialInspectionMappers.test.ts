@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 import { describe, it, expect } from "vitest";
-import { mapLineItemsFromAPI } from "./MaterialInspectionMappers";
+import { mapLineItemsFromAPI, mapParties } from "./MaterialInspectionMappers";
 import type { GateEntryLineItemAPI } from "../types/MaterialInspectionTypes";
 
 /**
@@ -47,5 +47,17 @@ describe("mapLineItemsFromAPI", () => {
 	it("still maps the challan quality from challan_item_id", () => {
 		const [line] = mapLineItemsFromAPI([apiRow({ challan_item_id: 88 })]);
 		expect(line.challanQuality).toBe("88");
+	});
+});
+
+describe("mapParties", () => {
+	it("maps party rows with their mapped supplier id", () => {
+		const [party] = mapParties([{ party_id: 5, party_name: "XYZ Traders", jute_supplier_id: 10 }]);
+		expect(party).toEqual({ party_id: 5, party_name: "XYZ Traders", jute_supplier_id: 10 });
+	});
+
+	it("keeps jute_supplier_id null when the party has no supplier mapping", () => {
+		const [party] = mapParties([{ party_id: 5, party_name: "XYZ Traders", jute_supplier_id: null }]);
+		expect(party.jute_supplier_id).toBeNull();
 	});
 });

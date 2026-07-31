@@ -12,6 +12,7 @@ import * as React from "react";
 import { Plus, X } from "lucide-react";
 import { Autocomplete, TextField, Typography } from "@mui/material";
 import { Button } from "@/components/ui/button";
+import { useJuteRatePermission } from "@/hooks/useJuteRatePermission";
 import type { JutePOLineItem, Option } from "../types/jutePOTypes";
 import { CROP_YEAR_OPTIONS } from "../utils/jutePOConstants";
 import { calculateAmount, formatAmount } from "../utils/jutePOCalculations";
@@ -68,6 +69,7 @@ export function JutePOLineEntryForm({
   onUpdate,
   onCancelEdit,
 }: JutePOLineEntryFormProps) {
+  const { canViewRates, canEditRates } = useJuteRatePermission("po");
   const [draft, setDraft] = React.useState<JutePOLineDraft>(BLANK_DRAFT);
 
   // Load the row being edited into the entry fields; reset when editing ends
@@ -189,16 +191,19 @@ export function JutePOLineEntryForm({
           fullWidth
           size="small"
         />
-        <TextField
-          label="Rate (per Qtl)"
-          type="number"
-          required
-          value={draft.rate}
-          onChange={(e) => setDraft((prev) => ({ ...prev, rate: e.target.value }))}
-          disabled={disabled}
-          fullWidth
-          size="small"
-        />
+        {/* Rate is permission-gated: hidden without view access, read-only without edit access */}
+        {canViewRates && (
+          <TextField
+            label="Rate (per Qtl)"
+            type="number"
+            required
+            value={draft.rate}
+            onChange={(e) => setDraft((prev) => ({ ...prev, rate: e.target.value }))}
+            disabled={disabled || !canEditRates}
+            fullWidth
+            size="small"
+          />
+        )}
         <TextField
           label="Moisture %"
           type="number"
@@ -209,13 +214,15 @@ export function JutePOLineEntryForm({
           fullWidth
           size="small"
         />
-        <TextField
-          label="Amount"
-          value={formatAmount(amount)}
-          fullWidth
-          size="small"
-          InputProps={{ readOnly: true }}
-        />
+        {canViewRates && (
+          <TextField
+            label="Amount"
+            value={formatAmount(amount)}
+            fullWidth
+            size="small"
+            InputProps={{ readOnly: true }}
+          />
+        )}
       </div>
       <div className="flex justify-end gap-2">
         {editingLine && (

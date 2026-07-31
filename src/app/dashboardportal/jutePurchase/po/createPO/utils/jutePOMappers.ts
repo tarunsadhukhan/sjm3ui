@@ -93,7 +93,7 @@ export const mapJutePartyRecords = (records: unknown[]): JutePartyRecord[] =>
       if (!id) return null;
       return {
         party_map_id: Number(data?.party_map_id ?? id),
-        supplier_id: Number(data?.supplier_id ?? 0),
+        supplier_id: Number(data?.supplier_id ?? data?.jute_supplier_id ?? 0),
         party_id: Number(data?.party_id ?? id),
         party_name: String(data?.party_name ?? id),
       } satisfies JutePartyRecord;
@@ -158,6 +158,7 @@ export const mapJutePOSetupResponse = (response: unknown): JutePOSetupData => {
     vehicle_types: mapVehicleTypeRecords((data?.vehicle_types as unknown[]) ?? []),
     jute_items: mapJuteItemRecords((data?.jute_groups as unknown[]) ?? (data?.jute_items as unknown[]) ?? []),
     suppliers: mapJuteSupplierRecords((data?.suppliers as unknown[]) ?? []),
+    parties: mapJutePartyRecords((data?.parties as unknown[]) ?? []),
     brokers: mapJuteBrokerRecords((data?.brokers as unknown[]) ?? []),
     company: (data?.company as JutePOSetupData["company"]) ?? null,
     channel_options: (data?.channel_options as JutePOSetupData["channel_options"]) ?? [],

@@ -18,7 +18,6 @@ type JutePOHeaderFormProps = {
   formRef: React.RefObject<{ submit: () => Promise<void>; isDirty: () => boolean; setValue: (name: string, value: unknown) => void } | null>;
   onSubmit: (values: Record<string, unknown>) => Promise<void>;
   onValuesChange: (values: Record<string, unknown>) => void;
-  onSupplierChange?: (supplierId: string) => void;
 };
 
 export function JutePOHeaderForm({
@@ -29,22 +28,7 @@ export function JutePOHeaderForm({
   formRef,
   onSubmit,
   onValuesChange,
-  onSupplierChange,
 }: JutePOHeaderFormProps) {
-  // Track field value changes to handle cascading
-  const handleValuesChange = React.useCallback(
-    (values: Record<string, unknown>, changedFieldName?: string) => {
-      onValuesChange(values);
-
-      // Handle cascading when supplier changes
-      if (changedFieldName === "supplier" && onSupplierChange) {
-        const supplierId = values.supplier as string;
-        onSupplierChange(supplierId);
-      }
-    },
-    [onValuesChange, onSupplierChange]
-  );
-
   return (
     <MuiForm
       key={formKey}
@@ -53,7 +37,7 @@ export function JutePOHeaderForm({
       initialValues={initialValues as Record<string, unknown>}
       mode={mode}
       onSubmit={onSubmit}
-      onValuesChange={handleValuesChange}
+      onValuesChange={onValuesChange}
       hideModeToggle
       hideSubmit
     />

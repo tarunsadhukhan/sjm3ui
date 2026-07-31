@@ -43,6 +43,7 @@ import { calculateTotals } from "./utils/jutePOCalculations";
 import {
   mapJutePOSetupResponse,
   mapJutePODetailsResponse,
+  buildPartyOptions,
   mapLineItemsFromAPI,
   mapFormToCreatePayload,
   mapFormToUpdatePayload,
@@ -96,8 +97,7 @@ function JutePOCreatePageContent() {
   const [setupData, setSetupData] = React.useState<JutePOSetupData | null>(null);
   const [details, setDetails] = React.useState<JutePODetails | null>(null);
 
-  // Cascading dropdown state - parties only (suppliers come from setupData)
-  const [parties, setParties] = React.useState<Option[]>([]);
+  // Cascading dropdown state
   const [qualitiesByItem, setQualitiesByItem] = React.useState<Record<string, Option[]>>({});
 
   // Branch options: only show branches selected in the sidebar context
@@ -112,6 +112,21 @@ function JutePOCreatePageContent() {
       })),
     [setupData]
   );
+
+  // Derived party options from setup data (all mapped parties for the company)
+  const partyOptions = React.useMemo(
+    () => buildPartyOptions(setupData?.parties ?? []),
+    [setupData]
+  );
+
+  // party_id -> mapped supplier_id, used to auto-fill the readonly Supplier field
+  const partySupplierMap = React.useMemo(() => {
+    const map: Record<string, string> = {};
+    for (const p of setupData?.parties ?? []) {
+      if (p.supplier_id) map[String(p.party_id)] = String(p.supplier_id);
+    }
+    return map;
+  }, [setupData]);
 
   // Derived broker options from setup data (brokers are parties from party_mst)
   const brokerOptions = React.useMemo(
@@ -216,7 +231,7 @@ function JutePOCreatePageContent() {
     vehicleTypes: setupData?.vehicle_types ?? [],
     juteItems: setupData?.jute_items ?? [],
     suppliers: setupData?.suppliers ?? [],
-    parties,
+    parties: partyOptions,
     brokers: brokerOptions,
     qualitiesByItem,
   });
@@ -227,7 +242,7 @@ function JutePOCreatePageContent() {
     branchOptions,
     mukamOptions: (setupData?.mukams ?? []).map((m) => ({ label: m.mukam_name, value: String(m.mukam_id) })),
     supplierOptions,
-    partyOptions: parties,
+    partyOptions,
     brokerOptions,
     payToOptions: brokerOptions,
     vehicleTypeOptions: (setupData?.vehicle_types ?? []).map((v) => ({
@@ -236,7 +251,6 @@ function JutePOCreatePageContent() {
     })),
     channelOptions: CHANNEL_OPTIONS,
     unitOptions: UNIT_OPTIONS,
-    hasSupplierSelected: Boolean(formValues.supplier),
   });
 
   // Approval hook
@@ -337,11 +351,6 @@ function JutePOCreatePageContent() {
           setFormValues(formVals);
           bumpFormKey();
 
-          // Fetch parties for the supplier (suppliers come from setupData now)
-          if (formVals.supplier) {
-            await handleSupplierChange(formVals.supplier);
-          }
-
           // Map line items from the same response with weight calculation params
           if (mappedDetails.line_items && mappedDetails.line_items.length > 0) {
             const calcParams = {
@@ -373,56 +382,23 @@ function JutePOCreatePageContent() {
 
   // ========== Cascading Handlers ==========
 
-  // Suppliers now come from setupData, so no handleMukamChange needed.
-  // Only parties are fetched when supplier changes.
-
-  const handleSupplierChange = React.useCallback(
-    async (supplierId: string) => {
-      // Clear party when supplier changes
-      setParties([]);
-      setFormValues((prev) => ({ ...prev, partyName: "" }));
-
-      if (!supplierId || !coId) return;
-
-      try {
-        const response = await fetchWithCookie(
-          `${apiRoutesPortalMasters.JUTE_PO_PARTIES_BY_SUPPLIER}/${supplierId}?co_id=${coId}`,
-          "GET"
-        );
-        if (response?.data?.parties) {
-          const mapped = (response.data.parties as Array<{ party_id: number; party_name: string }>).map(
-            (p) => ({
-              label: p.party_name ?? String(p.party_id),
-              value: String(p.party_id),
-            })
-          );
-          setParties(mapped);
-        }
-      } catch (error) {
-        console.error("Error fetching parties:", error);
-      }
-    },
-    [coId, setFormValues]
-  );
-
-  // Track previous supplier to detect changes and fetch parties
-  const prevSupplierRef = React.useRef<string | null>(null);
+  // Auto-fill the readonly Supplier field from the selected Party's supplier mapping
+  const prevPartyRef = React.useRef<string>("");
   React.useEffect(() => {
-    const currentSupplier = formValues.supplier;
-    
-    // Only call API if supplier actually changed (not on initial mount with empty value)
-    if (currentSupplier !== prevSupplierRef.current) {
-      prevSupplierRef.current = currentSupplier;
-      
-      // Fetch parties when supplier changes to a valid value
-      if (currentSupplier) {
-        void handleSupplierChange(currentSupplier);
-      } else {
-        // Clear parties if supplier is cleared
-        setParties([]);
-      }
-    }
-  }, [formValues.supplier, handleSupplierChange]);
+    // Wait for setup data - details can load first, and an empty map would clear the saved supplier
+    if (!setupData) return;
+    const partyId = formValues.partyName;
+    if (partyId === prevPartyRef.current) return;
+    prevPartyRef.current = partyId;
+
+    const supplierId = partyId ? partySupplierMap[partyId] ?? "" : "";
+    if (formValues.supplier === supplierId) return;
+
+    // Update the live form via setValue - remounting (bumpFormKey) would reset
+    // the form to initialValues and wipe the just-selected party
+    setFormValues((prev) => ({ ...prev, supplier: supplierId }));
+    formRef.current?.setValue("supplier", supplierId);
+  }, [setupData, formValues.partyName, formValues.supplier, partySupplierMap, setFormValues, formRef]);
 
   const fetchQualitiesForItem = React.useCallback(
     async (itemId: string) => {
@@ -686,7 +662,6 @@ function JutePOCreatePageContent() {
               formRef={formRef}
               onSubmit={handleFormSubmit}
               onValuesChange={(values) => setFormValues(values as unknown as JutePOFormValues)}
-              onSupplierChange={handleSupplierChange}
             />
             {effectiveModeForHooks !== "view" && (
               <JutePOLineEntryForm

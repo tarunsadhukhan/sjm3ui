@@ -35,7 +35,6 @@ type UseJutePOFormSchemasParams = {
   payToOptions: Option[];
   channelOptions: Option[];
   unitOptions: Option[];
-  hasSupplierSelected: boolean;
 };
 
 export function useJutePOFormSchemas({
@@ -49,7 +48,6 @@ export function useJutePOFormSchemas({
   payToOptions,
   channelOptions,
   unitOptions,
-  hasSupplierSelected,
 }: UseJutePOFormSchemasParams): Schema {
   const isViewMode = mode === "view";
   const isEditMode = mode === "edit";
@@ -114,22 +112,22 @@ export function useJutePOFormSchemas({
         grid: { xs: 12, sm: 6, md: 3 },
       },
       {
+        name: "partyName",
+        label: "Party Name",
+        type: "select",
+        disabled: isViewMode,
+        options: partyOptions,
+        grid: { xs: 12, sm: 6, md: 3 },
+        placeholder: "Select party",
+      },
+      {
         name: "supplier",
         label: "Supplier",
         type: "select",
         required: true,
-        disabled: isViewMode,
+        disabled: true, // Readonly - auto-filled from the selected Party's supplier mapping
         options: supplierOptions,
         grid: { xs: 12, sm: 6, md: 3 },
-      },
-      {
-        name: "partyName",
-        label: "Party Name",
-        type: "select",
-        disabled: isViewMode || !hasSupplierSelected, // Disabled until supplier is selected
-        options: partyOptions,
-        grid: { xs: 12, sm: 6, md: 3 },
-        placeholder: hasSupplierSelected ? "Select party" : "Select supplier first",
       },
       {
         name: "brokerName",
@@ -249,6 +247,5 @@ export function useJutePOFormSchemas({
     payToOptions,
     channelOptions,
     unitOptions,
-    hasSupplierSelected,
   ]);
 }

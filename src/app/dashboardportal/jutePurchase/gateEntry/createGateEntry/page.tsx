@@ -14,7 +14,7 @@
  * - Challan Date (date picker)
  * - Vehicle No (required, text input)
  * - Driver Name (required, text input)
- * - Transporter (optional, text input)
+ * - Party Name (optional, dropdown; supplier saved automatically from the party mapping)
  *
  * Section below (disabled before IN, except Remarks):
  * - Tare Weight (Kg)
@@ -31,6 +31,7 @@ import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   Alert,
+  Autocomplete,
   Box,
   Button,
   Card,
@@ -68,8 +69,16 @@ type BranchRecord = {
   branch_name: string;
 };
 
+type PartyRecord = {
+  party_id: number;
+  party_name: string;
+  /** Supplier mapped to this party (jute_supp_party_map) — saved along with the party */
+  jute_supplier_id: number | null;
+};
+
 type SetupData = {
   branches: BranchRecord[];
+  parties: PartyRecord[];
 };
 
 type GateEntryFormValues = {
@@ -82,7 +91,7 @@ type GateEntryFormValues = {
   challanDate: string;
   vehicleNo: string;
   driverName: string;
-  transporter: string;
+  party: string;
   challanWeight: string;
   grossWeight: string;
   tareWeight: string;
@@ -107,6 +116,7 @@ type GateEntryDetails = {
   vehicle_no: string | null;
   driver_name: string | null;
   transporter: string | null;
+  party_id: number | string | null;
   challan_weight: number | null;
   gross_weight: number | null;
   tare_weight: number | null;
@@ -143,7 +153,7 @@ const buildDefaultFormValues = (): GateEntryFormValues => {
     challanDate: dateStr,
     vehicleNo: "",
     driverName: "",
-    transporter: "",
+    party: "",
     challanWeight: "",
     grossWeight: "",
     tareWeight: "",
@@ -203,7 +213,7 @@ const mapDetailsToFormValues = (details: GateEntryDetails): GateEntryFormValues 
     challanDate: parseDateToInputFormat(details.challan_date),
     vehicleNo: details.vehicle_no ?? "",
     driverName: details.driver_name ?? "",
-    transporter: details.transporter ?? "",
+    party: details.party_id != null ? String(details.party_id) : "",
     challanWeight: details.challan_weight != null ? String(details.challan_weight) : "",
     grossWeight: details.gross_weight != null ? String(details.gross_weight) : "",
     tareWeight: details.tare_weight != null ? String(details.tare_weight) : "",
@@ -258,6 +268,8 @@ function JuteGateEntryCreatePageContent() {
   const isOutComplete = Boolean(details?.out_time);
   // QC checkpoint: qc_check=1 means QC is complete
   const isQcComplete = details?.qc_check === 1;
+  // OUT is allowed once a tare weight has been entered
+  const hasTareWeight = (parseFloat(formValues.tareWeight) || 0) > 0;
   // PO-driven shortage: when a PO is linked and it carries a "Less (%)" (dalta_pc),
   // Variable Shortage is auto-derived from Net Weight instead of being entered manually.
   const poDaltaPc = details?.po_dalta_pc ?? 0;
@@ -270,6 +282,24 @@ function JuteGateEntryCreatePageContent() {
       label: b.branch_name,
       value: String(b.branch_id),
     }));
+  }, [setupData]);
+
+  // Build party options (all mapped parties for the company)
+  const partyOptions = React.useMemo<Option[]>(() => {
+    if (!setupData?.parties) return [];
+    return setupData.parties.map((p) => ({
+      label: p.party_name,
+      value: String(p.party_id),
+    }));
+  }, [setupData]);
+
+  // party_id -> mapped supplier_id, saved alongside the party on submit
+  const partySupplierMap = React.useMemo(() => {
+    const map: Record<string, number> = {};
+    for (const p of setupData?.parties ?? []) {
+      if (p.jute_supplier_id != null) map[String(p.party_id)] = p.jute_supplier_id;
+    }
+    return map;
   }, [setupData]);
 
   // Default the branch (create mode only) to the sidebar-selected branch.
@@ -344,6 +374,7 @@ function JuteGateEntryCreatePageContent() {
         if (setupResponse?.data) {
           setSetupData({
             branches: setupResponse.data.branches ?? [],
+            parties: setupResponse.data.parties ?? [],
           });
         } else if (setupResponse?.error) {
           setPageError(setupResponse.error);
@@ -420,7 +451,7 @@ function JuteGateEntryCreatePageContent() {
   // Build payload from form values
   const buildPayload = React.useCallback(() => {
     // QC checkpoint: zero out fields that require QC completion when QC is not done
-    const tareWeightNum = isQcComplete ? (parseFloat(formValues.tareWeight) || 0) : 0;
+    const tareWeightNum = parseFloat(formValues.tareWeight) || 0;
     const variableShortageNum = isQcComplete ? (parseFloat(formValues.variableShortage) || 0) : 0;
     
     const payload: any = {
@@ -433,13 +464,15 @@ function JuteGateEntryCreatePageContent() {
       challan_weight: parseFloat(formValues.challanWeight) || 0,
       vehicle_no: formValues.vehicleNo,
       driver_name: formValues.driverName,
-      transporter: formValues.transporter,
+      party_id: formValues.party ? parseInt(formValues.party, 10) : null,
+      // Supplier is saved automatically from the selected party's mapping
+      jute_supplier_id: formValues.party ? partySupplierMap[formValues.party] ?? null : null,
       gross_weight: parseFloat(formValues.grossWeight) || 0,
       tare_weight: tareWeightNum,
       variable_shortage: variableShortageNum,
       remarks: formValues.remarks || null,
-      out_date: isQcComplete ? (formValues.outDate || null) : null,
-      out_time: isQcComplete ? (formValues.outTime || null) : null,
+      out_date: tareWeightNum > 0 ? (formValues.outDate || null) : null,
+      out_time: tareWeightNum > 0 ? (formValues.outTime || null) : null,
     };
 
     // net_weight should not be sent if no tare weight is entered
@@ -448,7 +481,7 @@ function JuteGateEntryCreatePageContent() {
     }
 
     return payload;
-  }, [coId, formValues, isQcComplete]);
+  }, [coId, formValues, isQcComplete, partySupplierMap]);
 
   // Handle IN submission (Create new entry)
   const handleSubmitIN = React.useCallback(async () => {
@@ -541,9 +574,9 @@ function JuteGateEntryCreatePageContent() {
       return;
     }
 
-    // QC checkpoint - prevent OUT if QC is not complete
-    if (!isQcComplete) {
-      setPageError("Vehicle cannot be marked as OUT until Quality Check (QC / Material Inspection) is completed.");
+    // Tare weight is required before the vehicle can be marked OUT
+    if (!hasTareWeight) {
+      setPageError("Tare Weight must be entered before the vehicle can be marked as OUT.");
       return;
     }
 
@@ -590,7 +623,7 @@ function JuteGateEntryCreatePageContent() {
     } finally {
       setSaving(false);
     }
-  }, [coId, entryId, buildPayload, validateForm, router, formValues.outDate, formValues.outTime, isQcComplete]);
+  }, [coId, entryId, buildPayload, validateForm, router, formValues.outDate, formValues.outTime, hasTareWeight]);
 
   // Handle back navigation
   const handleBack = React.useCallback(() => {
@@ -750,7 +783,7 @@ function JuteGateEntryCreatePageContent() {
             />
           </Box>
 
-          {/* Row 3: Driver Name, Transporter */}
+          {/* Row 3: Driver Name, Party Name */}
           <Box
             sx={{
               display: "grid",
@@ -771,15 +804,15 @@ function JuteGateEntryCreatePageContent() {
               disabled={isViewMode}
             />
 
-            {/* Transporter */}
-            <TextField
-              label="Transporter"
-              fullWidth
-              value={formValues.transporter}
-              onChange={(e) => handleFieldChange("transporter", e.target.value)}
-              error={Boolean(errors.transporter)}
-              helperText={errors.transporter}
+            {/* Party Name (searchable) - supplier is saved automatically from the party's mapping */}
+            <Autocomplete
+              options={partyOptions}
+              getOptionLabel={(o) => o.label}
+              isOptionEqualToValue={(o, v) => o.value === v.value}
+              value={partyOptions.find((o) => o.value === formValues.party) ?? null}
+              onChange={(_, v) => handleFieldChange("party", v ? v.value : "")}
               disabled={isViewMode}
+              renderInput={(params) => <TextField {...params} label="Party Name" />}
             />
           </Box>
 
@@ -793,7 +826,7 @@ function JuteGateEntryCreatePageContent() {
           {/* QC checkpoint alert - show in edit mode when QC is not complete */}
           {isEditMode && isStatusIN && !isQcComplete && (
             <Alert severity="info" sx={{ mb: 2 }}>
-              Tare Weight, Variable Shortage, and Out Time are locked until the Quality Check (QC / Material Inspection) is completed for this entry.
+              Variable Shortage is locked until the Quality Check (QC / Material Inspection) is completed for this entry.
             </Alert>
           )}
 
@@ -839,7 +872,6 @@ function JuteGateEntryCreatePageContent() {
               mb: 3,
             }}
           >
-            {/* Tare Weight - locked until QC is complete */}
             <TextField
               label="Tare Weight (Qtl)"
               type="number"
@@ -847,8 +879,7 @@ function JuteGateEntryCreatePageContent() {
               value={formValues.tareWeight}
               onChange={(e) => handleFieldChange("tareWeight", e.target.value)}
               InputProps={{ inputProps: { min: 0, step: 0.01 } }}
-              disabled={isViewMode || (isEditMode && !isQcComplete)}
-              helperText={isEditMode && !isQcComplete && !isViewMode ? "QC must be completed first" : undefined}
+              disabled={isViewMode}
             />
 
             {/* Net Weight - Calculated/Disabled */}
@@ -890,8 +921,8 @@ function JuteGateEntryCreatePageContent() {
             />
           </Box>
 
-          {/* Row 6: Out Date and Out Time - Only visible after QC is complete */}
-          {isQcComplete && (
+          {/* Row 6: Out Date and Out Time - Only visible once tare weight is entered */}
+          {hasTareWeight && (
             <Box
               sx={{
                 display: "grid",
@@ -981,8 +1012,14 @@ function JuteGateEntryCreatePageContent() {
               color="warning"
               endIcon={<LogOut size={18} />}
               onClick={handleSubmitOUT}
-              disabled={saving || !isQcComplete}
-              title={!isQcComplete ? "Quality Check must be completed before recording OUT" : undefined}
+              disabled={saving || !hasTareWeight || !formValues.outDate || !formValues.outTime}
+              title={
+                !hasTareWeight
+                  ? "Tare Weight must be entered before recording OUT"
+                  : !formValues.outDate || !formValues.outTime
+                    ? "Out Date and Out Time must be entered before recording OUT"
+                    : undefined
+              }
             >
               {saving ? "Saving..." : "OUT"}
             </Button>

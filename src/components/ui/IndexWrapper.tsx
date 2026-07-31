@@ -260,6 +260,7 @@ function IndexWrapper<RowType extends GridValidRowModel & { id?: string | number
             <Box className="flex flex-col gap-3 sm:flex-row sm:items-center">
               {search ? (
                 <TextField
+                  id="index-wrapper-search"
                   size="small"
                   value={searchInput}
                   onChange={handleSearchInputChange}

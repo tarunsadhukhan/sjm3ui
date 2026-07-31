@@ -28,6 +28,8 @@ export type SupplierRecord = {
 export type PartyRecord = {
 	party_id: number;
 	party_name: string;
+	/** Supplier mapped to this party (jute_supp_party_map) — drives the readonly Supplier field */
+	jute_supplier_id: number | null;
 };
 
 export type MukamRecord = {
@@ -74,6 +76,7 @@ export type GateEntrySetupData = {
 	branches: BranchRecord[];
 	mukams: MukamRecord[];
 	suppliers: SupplierRecord[];
+	parties: PartyRecord[];
 	jute_items: JuteItemRecord[];
 	open_pos: OpenPORecord[];
 	uom_options: Option[];

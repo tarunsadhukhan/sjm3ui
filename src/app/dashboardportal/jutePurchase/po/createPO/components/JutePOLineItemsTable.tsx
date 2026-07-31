@@ -11,6 +11,7 @@ import * as React from "react";
 import { Pencil, Trash2 } from "lucide-react";
 import { TransactionLineColumn } from "@/components/ui/transaction";
 import { Button } from "@/components/ui/button";
+import { useJuteRatePermission } from "@/hooks/useJuteRatePermission";
 import type { JutePOLineItem, JutePOLabelResolvers } from "../types/jutePOTypes";
 import { formatAmount } from "../utils/jutePOCalculations";
 
@@ -30,6 +31,8 @@ export function useJutePOLineItemColumns({
   onEditLine,
   onDeleteLine,
 }: UseJutePOLineItemColumnsParams): TransactionLineColumn<JutePOLineItem>[] {
+  const { canViewRates } = useJuteRatePermission("po");
+
   return React.useMemo<TransactionLineColumn<JutePOLineItem>[]>(() => {
     const columns: TransactionLineColumn<JutePOLineItem>[] = [
       {
@@ -78,14 +81,19 @@ export function useJutePOLineItemColumns({
           <span className="text-xs text-right font-medium">{item.weight || "-"}</span>
         ),
       },
-      {
-        id: "rate",
-        header: "Rate (per Qtl)",
-        width: "0.8fr",
-        renderCell: ({ item }: { item: JutePOLineItem }) => (
-          <span className="text-xs text-right">{formatAmount(parseFloat(item.rate) || 0)}</span>
-        ),
-      },
+      // Rate/Amount columns are permission-gated (Amount = weight x rate would leak the rate)
+      ...(canViewRates
+        ? ([
+            {
+              id: "rate",
+              header: "Rate (per Qtl)",
+              width: "0.8fr",
+              renderCell: ({ item }: { item: JutePOLineItem }) => (
+                <span className="text-xs text-right">{formatAmount(parseFloat(item.rate) || 0)}</span>
+              ),
+            },
+          ] satisfies TransactionLineColumn<JutePOLineItem>[])
+        : []),
       {
         id: "allowableMoisture",
         header: "Moisture %",
@@ -94,18 +102,22 @@ export function useJutePOLineItemColumns({
           <span className="text-xs text-right">{item.allowableMoisture || "-"}</span>
         ),
       },
-      {
-        id: "amount",
-        header: "Amount",
-        width: "1fr",
-        renderCell: ({ item }: { item: JutePOLineItem }) => (
-          <span className="text-xs text-right font-medium">
-            {formatAmount(parseFloat(item.amount) || 0)}
-          </span>
-        ),
-        getTooltip: ({ item }: { item: JutePOLineItem }) =>
-          `Line total: ${formatAmount(parseFloat(item.amount) || 0)}`,
-      },
+      ...(canViewRates
+        ? ([
+            {
+              id: "amount",
+              header: "Amount",
+              width: "1fr",
+              renderCell: ({ item }: { item: JutePOLineItem }) => (
+                <span className="text-xs text-right font-medium">
+                  {formatAmount(parseFloat(item.amount) || 0)}
+                </span>
+              ),
+              getTooltip: ({ item }: { item: JutePOLineItem }) =>
+                `Line total: ${formatAmount(parseFloat(item.amount) || 0)}`,
+            },
+          ] satisfies TransactionLineColumn<JutePOLineItem>[])
+        : []),
     ];
 
     if (canEdit) {
@@ -142,7 +154,7 @@ export function useJutePOLineItemColumns({
     }
 
     return columns;
-  }, [canEdit, labelResolvers, editingLineId, onEditLine, onDeleteLine]);
+  }, [canEdit, canViewRates, labelResolvers, editingLineId, onEditLine, onDeleteLine]);
 }
 
 export default useJutePOLineItemColumns;

@@ -12,6 +12,7 @@ import type {
 	Option,
 	BranchRecord,
 	SupplierRecord,
+	PartyRecord,
 	MukamRecord,
 	JuteItemRecord,
 	OpenPORecord,
@@ -38,6 +39,16 @@ export const mapSuppliers = (raw: unknown[]): SupplierRecord[] =>
 		return {
 			supplier_id: Number(data.supplier_id ?? 0),
 			supplier_name: String(data.supplier_name ?? ""),
+		};
+	});
+
+export const mapParties = (raw: unknown[]): PartyRecord[] =>
+	raw.map((r) => {
+		const data = r as Record<string, unknown>;
+		return {
+			party_id: Number(data.party_id ?? 0),
+			party_name: String(data.party_name ?? ""),
+			jute_supplier_id: data.jute_supplier_id != null ? Number(data.jute_supplier_id) : null,
 		};
 	});
 
@@ -93,6 +104,7 @@ export const mapGateEntrySetupResponse = (response: unknown): GateEntrySetupData
 		branches: mapBranches((data.branches as unknown[]) ?? []),
 		mukams: mapMukams((data.mukams as unknown[]) ?? []),
 		suppliers: mapSuppliers((data.suppliers as unknown[]) ?? []),
+		parties: mapParties((data.parties as unknown[]) ?? []),
 		jute_items: mapJuteItems((data.jute_groups as unknown[]) ?? (data.jute_items as unknown[]) ?? []),
 		open_pos: mapOpenPOs((data.open_pos as unknown[]) ?? []),
 		uom_options: ((data.uom_options as unknown[]) ?? []).map((o) => {
@@ -117,6 +129,12 @@ export const buildSupplierOptions = (suppliers: SupplierRecord[]): Option[] =>
 	suppliers.map((s) => ({
 		label: s.supplier_name,
 		value: String(s.supplier_id),
+	}));
+
+export const buildPartyOptions = (parties: PartyRecord[]): Option[] =>
+	parties.map((p) => ({
+		label: p.party_name,
+		value: String(p.party_id),
 	}));
 
 export const buildMukamOptions = (mukams: MukamRecord[]): Option[] =>

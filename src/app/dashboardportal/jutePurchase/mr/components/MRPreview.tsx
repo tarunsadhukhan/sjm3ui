@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Box, Divider, Stack, Typography } from "@mui/material";
 import { Button } from "@/components/ui/button";
+import { useJuteRatePermission } from "@/hooks/useJuteRatePermission";
 import type { JuteMRHeader, MRLineItem } from "../types/mrTypes";
 
 // ── Helpers ──
@@ -79,6 +80,7 @@ type MRPreviewProps = {
  * Bales/Marks/Advised Wt/Mill Wt/Claim Kgs/Approved Wt/Rate/Claim columns.
  */
 export const MRPreview: React.FC<MRPreviewProps> = ({ header, lineItems, totalAcceptedWeight }) => {
+	const { canViewRates } = useJuteRatePermission("mr");
 	const previewRef = React.useRef<HTMLDivElement>(null);
 
 	const handlePrint = () => {
@@ -280,7 +282,7 @@ export const MRPreview: React.FC<MRPreviewProps> = ({ header, lineItems, totalAc
 							<th style={thRight} rowSpan={2}>Mill<br/>weight in<br/>Kgs</th>
 							<th style={thRight} rowSpan={2}>Claim in<br/>Kgs</th>
 							<th style={thRight} rowSpan={2}>Approved<br/>Weight</th>
-							<th style={thRight} rowSpan={2}>Rate per<br/>Qtls Rs</th>
+							{canViewRates && <th style={thRight} rowSpan={2}>Rate per<br/>Qtls Rs</th>}
 							<th style={{ ...thStyle, textAlign: "center" }} colSpan={2}>CLAIM FOR</th>
 						</tr>
 						<tr>
@@ -302,8 +304,10 @@ export const MRPreview: React.FC<MRPreviewProps> = ({ header, lineItems, totalAc
 								<td style={tdRight}>{fmt(li.actualWeight, 2)}</td>
 								<td style={tdRight}>{li.shortageKgs ? fmt(li.shortageKgs, 2) : ""}</td>
 								<td style={tdRight}>{fmt(li.acceptedWeight, 2)}</td>
-								<td style={tdRight}>{fmt(li.rate, 2)}</td>
-								<td style={tdStyle}>{formatClaimQuality(li.claimQuality, li.claimRate, li.claimDust)}</td>
+								{canViewRates && <td style={tdRight}>{fmt(li.rate, 2)}</td>}
+								<td style={tdStyle}>
+									{formatClaimQuality(li.claimQuality, canViewRates ? li.claimRate : null, li.claimDust)}
+								</td>
 								<td style={tdStyle}>
 									{formatMoistureCondition(li.actualMoisture, li.allowableMoisture)}
 								</td>
@@ -317,7 +321,7 @@ export const MRPreview: React.FC<MRPreviewProps> = ({ header, lineItems, totalAc
 							<td style={tdRight}><strong>{fmt(totals.mill, 2)}</strong></td>
 							<td style={tdRight}><strong>{totals.claimKgs ? fmt(totals.claimKgs, 2) : ""}</strong></td>
 							<td style={tdRight}><strong>{fmt(totals.approved, 2)}</strong></td>
-							<td style={tdRight} />
+							{canViewRates && <td style={tdRight} />}
 							<td style={tdStyle} />
 							<td style={tdStyle} />
 						</tr>
