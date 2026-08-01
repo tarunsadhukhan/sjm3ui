@@ -292,6 +292,13 @@ const apiRoutesPortalMasters = {
     TROLLY_CREATE: `${API_URL}/trollyMaster/trolly_create`,
     TROLLY_EDIT: `${API_URL}/trollyMaster/trolly_edit`,
 
+    // Frame Details Master endpoints
+    FRAME_TABLE: `${API_URL}/frameMaster/frame_table`,
+    FRAME_CREATE_SETUP: `${API_URL}/frameMaster/frame_create_setup`,
+    FRAME_EDIT_SETUP: `${API_URL}/frameMaster/frame_edit_setup`,
+    FRAME_CREATE: `${API_URL}/frameMaster/frame_create`,
+    FRAME_EDIT: `${API_URL}/frameMaster/frame_edit`,
+
     // Utilities
     DB_BACKUP_DOWNLOAD: `${API_URL}/utilities/backup_download`,
 
