@@ -299,6 +299,13 @@ const apiRoutesPortalMasters = {
     FRAME_CREATE: `${API_URL}/frameMaster/frame_create`,
     FRAME_EDIT: `${API_URL}/frameMaster/frame_edit`,
 
+    // Drawing Master endpoints
+    DRAWING_TABLE: `${API_URL}/drawingMaster/drawing_table`,
+    DRAWING_CREATE_SETUP: `${API_URL}/drawingMaster/drawing_create_setup`,
+    DRAWING_EDIT_SETUP: `${API_URL}/drawingMaster/drawing_edit_setup`,
+    DRAWING_CREATE: `${API_URL}/drawingMaster/drawing_create`,
+    DRAWING_EDIT: `${API_URL}/drawingMaster/drawing_edit`,
+
     // Utilities
     DB_BACKUP_DOWNLOAD: `${API_URL}/utilities/backup_download`,
 
