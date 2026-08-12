@@ -488,6 +488,9 @@ const apiRoutesPortalMasters = {
     // Bales (Production) Reports
     BALES_REPORT_ENTRIES: `${API_URL}/balesReports/entries`,
 
+    // Assorting (Production) Reports
+    ASSORTING_REPORT_ENTRIES: `${API_URL}/assortingReports/entries`,
+
     // Jute SQC - Morrah Weight QC
     MORRAH_WT_TABLE: `${API_URL}/juteSQC/get_morrah_wt_table`,
     MORRAH_WT_BY_ID: `${API_URL}/juteSQC/get_morrah_wt_by_id`,
