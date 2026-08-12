@@ -16,6 +16,10 @@ import type {
 	SpinningEmpBrkRow,
 	ShiftOption,
 } from "./types/spinningEmpBrkReportTypes";
+import {
+	exportReportExcel,
+	type ExcelReportCol,
+} from "@/utils/excelReportExport";
 import SpinningEmpBrkFilterDialog, {
 	type SpinningEmpBrkFilterValues,
 	getDefaultFromDate,
@@ -259,136 +263,64 @@ export default function SpinningEmpBrkReportsPage() {
 	}, [rows, branchLabel, shiftLabel, filter.fromDate, filter.toDate]);
 
 	const handleExportExcel = useCallback(async () => {
-		if (rows.length === 0) return;
-		const ExcelJS = (await import("exceljs")).default;
-		const { saveAs } = await import("file-saver");
-
-		type Col = {
-			header: string;
-			key: keyof Row;
-			text?: boolean;
-			fmt?: string;
-			width: number;
-			group?: string;
-		};
-		const cols: Col[] = [
-			{ header: "Date", key: "report_date", text: true, width: 12 },
-			{ header: "Shift", key: "shift_name", text: true, width: 9 },
-			{ header: "Emp Id", key: "emp_code", text: true, width: 10 },
-			{ header: "Employee's Name", key: "emp_name", text: true, width: 24 },
-			{ header: "Frame No", key: "frame_no", text: true, width: 11 },
-			{ header: "Count", key: "count", fmt: "0.00", width: 9 },
-			{ header: "W. Hours", key: "power_min", width: 10 },
-			{ header: "As per VVFD Hrs", key: "As_per_VVfd", width: 12 },
-			{ header: "D", key: "loss_d", width: 7, group: "Loss Min" },
-			{ header: "M", key: "loss_m", width: 7, group: "Loss Min" },
-			{ header: "E", key: "loss_e", width: 7, group: "Loss Min" },
-			{ header: "O", key: "loss_i", width: 7, group: "Loss Min" },
-			{ header: "IDLE", key: "loss_idle", width: 8, group: "Loss Min" },
-			{ header: "Total Loss Hrs", key: "total_loss", width: 13 },
-			{ header: "Actual Run Hrs", key: "actual_run", width: 13 },
-			{ header: "No of Doff", key: "machine_doff", width: 12 },
-			{ header: "Doff Wt", key: "doff_wt", fmt: "0.00", width: 10 },
-			{ header: "RPM", key: "rpm", width: 9 },
-			{ header: "Effcy 100%", key: "eff_100", width: 11 },
-			{ header: "Actual Effcy", key: "actual_eff", fmt: "0.00", width: 11 },
-			{ header: "Running Effcy", key: "run_eff", fmt: "0.00", width: 12 },
-			{ header: "Emp Eff (15D)", key: "emp_eff_15d", fmt: "0.00", width: 12 },
-			{ header: "Frame Eff (15D)", key: "frame_eff_15d", fmt: "0.00", width: 13 },
+		const num =
+			(key: keyof Row) =>
+			(r: Row): unknown =>
+				r[key];
+		const cols: Array<ExcelReportCol<Row>> = [
+			{ header: "Date", value: (r) => r.report_date, text: true, width: 12 },
+			{ header: "Shift", value: (r) => r.shift_name, text: true, width: 9 },
+			{ header: "Emp Id", value: (r) => r.emp_code ?? NA, text: true, width: 10 },
+			{ header: "Employee's Name", value: (r) => r.emp_name, text: true, width: 24 },
+			{ header: "Frame No", value: (r) => r.frame_no, text: true, width: 11 },
+			{ header: "Count", value: num("count"), fmt: "0.00", width: 9 },
+			{ header: "W. Hours", value: num("power_min"), width: 10 },
+			{ header: "As per VVFD Hrs", value: num("As_per_VVfd"), width: 12 },
+			{ header: "D", value: num("loss_d"), width: 7, group: "Loss Min" },
+			{ header: "M", value: num("loss_m"), width: 7, group: "Loss Min" },
+			{ header: "E", value: num("loss_e"), width: 7, group: "Loss Min" },
+			{ header: "O", value: num("loss_i"), width: 7, group: "Loss Min" },
+			{ header: "IDLE", value: num("loss_idle"), width: 8, group: "Loss Min" },
+			{ header: "Total Loss Hrs", value: num("total_loss"), width: 13 },
+			{ header: "Actual Run Hrs", value: num("actual_run"), width: 13 },
+			{ header: "No of Doff", value: num("machine_doff"), width: 12 },
+			{ header: "Doff Wt", value: num("doff_wt"), fmt: "0.00", width: 10 },
+			{ header: "RPM", value: num("rpm"), width: 9 },
+			{ header: "Effcy 100%", value: num("eff_100"), width: 11 },
+			{ header: "Actual Effcy", value: num("actual_eff"), fmt: "0.00", width: 11 },
+			{ header: "Running Effcy", value: num("run_eff"), fmt: "0.00", width: 12 },
+			{ header: "Emp Eff (15D)", value: num("emp_eff_15d"), fmt: "0.00", width: 12 },
+			{
+				header: "Frame Eff (15D)",
+				value: num("frame_eff_15d"),
+				fmt: "0.00",
+				width: 13,
+			},
 		];
-		const total = cols.length;
 
-		const wb = new ExcelJS.Workbook();
-		const ws = wb.addWorksheet("Spinning Eff");
+		// Shift-major: one section per shift name in A, B1, B2, C order.
+		const shiftKey = (r: Row) => r.shift_name ?? String(r.spell_id ?? "");
+		const exportRows = [...rows].sort(
+			(a, b) =>
+				shiftKey(a).localeCompare(shiftKey(b), undefined, { numeric: true }) ||
+				a.report_date.localeCompare(b.report_date) ||
+				(a.frame_no ?? "").localeCompare(b.frame_no ?? "", undefined, {
+					numeric: true,
+				}),
+		);
 
-		const thinBorder = {
-			top: { style: "thin" as const },
-			left: { style: "thin" as const },
-			bottom: { style: "thin" as const },
-			right: { style: "thin" as const },
-		};
-		const styleHeader = (cell: ReturnType<typeof ws.getCell>) => {
-			cell.font = { bold: true, color: { argb: "FFFFFFFF" } };
-			cell.fill = {
-				type: "pattern",
-				pattern: "solid",
-				fgColor: { argb: "FF3EA6DA" },
-			};
-			cell.alignment = { horizontal: "center", vertical: "middle" };
-			cell.border = thinBorder;
-		};
-
-		// Title row
-		ws.mergeCells(1, 1, 1, total);
-		const titleCell = ws.getCell(1, 1);
 		const branchPart = branchLabel ? `Branch: ${branchLabel} | ` : "";
-		titleCell.value = `${TITLE} — ${branchPart}Shift: ${shiftLabel} | ${filter.fromDate} to ${filter.toDate}`;
-		titleCell.font = { bold: true, size: 13, color: { argb: "FF0C3C60" } };
-		titleCell.alignment = { horizontal: "center", vertical: "middle" };
-		ws.getRow(1).height = 22;
-
-		// Header rows 2 (group) + 3 (sub). Non-group columns span both rows.
-		cols.forEach((c, i) => {
-			if (c.group) return;
-			const col = i + 1;
-			ws.mergeCells(2, col, 3, col);
-			const cell = ws.getCell(2, col);
-			cell.value = c.header;
-			styleHeader(cell);
+		await exportReportExcel<Row>({
+			// Each repeated header names its own section's shift.
+			title: (r) =>
+				`${TITLE} — ${branchPart}Shift: ${r.shift_name ?? shiftLabel} | ${filter.fromDate} to ${filter.toDate}`,
+			sheetName: "Spinning Eff",
+			fileName: `SpinningEff_${filter.fromDate}_to_${filter.toDate}.xlsx`,
+			cols,
+			rows: exportRows,
+			// New section (3 blank rows + repeated header) on each shift change.
+			groupBy: shiftKey,
 		});
-		// Contiguous group columns -> merged group header + per-column sub header.
-		let gi = 0;
-		while (gi < cols.length) {
-			const g = cols[gi].group;
-			if (g) {
-				let gj = gi;
-				while (gj < cols.length && cols[gj].group === g) gj++;
-				ws.mergeCells(2, gi + 1, 2, gj);
-				const gcell = ws.getCell(2, gi + 1);
-				gcell.value = g;
-				styleHeader(gcell);
-				for (let k = gi; k < gj; k++) {
-					const sc = ws.getCell(3, k + 1);
-					sc.value = cols[k].header;
-					styleHeader(sc);
-				}
-				gi = gj;
-			} else {
-				gi++;
-			}
-		}
-		ws.getRow(2).height = 20;
-		ws.getRow(3).height = 18;
-
-		// Data rows
-		for (const r of rows) {
-			const rowVals = cols.map((c) => {
-				const v = r[c.key];
-				if (c.key === "emp_code") return v == null ? "#N/A" : String(v);
-				if (c.text) return v == null ? "" : String(v);
-				return v == null ? null : Number(v);
-			});
-			const row = ws.addRow(rowVals);
-			row.eachCell({ includeEmpty: true }, (cell, colNumber) => {
-				cell.border = thinBorder;
-				const c = cols[colNumber - 1];
-				if (c && !c.text) {
-					cell.alignment = { horizontal: "right" };
-					if (c.fmt) cell.numFmt = c.fmt;
-				}
-			});
-		}
-
-		cols.forEach((c, idx) => {
-			ws.getColumn(idx + 1).width = c.width;
-		});
-		ws.views = [{ state: "frozen", xSplit: 0, ySplit: 3 }];
-
-		const buf = await wb.xlsx.writeBuffer();
-		const blob = new Blob([buf], {
-			type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-		});
-		saveAs(blob, `SpinningEff_${filter.fromDate}_to_${filter.toDate}.xlsx`);
 	}, [rows, branchLabel, shiftLabel, filter.fromDate, filter.toDate]);
 
 	const columns = useMemo<GridColDef<Row>[]>(() => {

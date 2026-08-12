@@ -16,7 +16,12 @@ import {
 	GridPaginationModel,
 } from "@mui/x-data-grid";
 import IndexWrapper from "@/components/ui/IndexWrapper";
+import MachineDateHeatmapDialog from "@/components/ui/MachineDateHeatmapDialog";
 import { useSidebarContextSafe } from "@/components/dashboard/sidebarContext";
+import {
+	exportReportExcel,
+	type ExcelReportCol,
+} from "@/utils/excelReportExport";
 import {
 	fetchWindingDayWise,
 	fetchWindingFnWise,
@@ -394,6 +399,9 @@ export default function WindingReportsPage() {
 	const [periods, setPeriods] = useState<PeriodInfo[]>([]);
 	const [empRows, setEmpRows] = useState<EmpRow[]>([]);
 	const [dailyRows, setDailyRows] = useState<DailyWindingRow[]>([]);
+	const [chartOpen, setChartOpen] = useState(false);
+	// Employee drilled into from the heatmap (dbl-click) — null = full heatmap
+	const [chartEmployee, setChartEmployee] = useState<string | null>(null);
 
 	const [loading, setLoading] = useState(false);
 	const [filter, setFilter] = useState<WindingFilterValues>(() => ({
@@ -574,6 +582,83 @@ export default function WindingReportsPage() {
 		openPrintWindow(title, body);
 	}, [view, periods, empRows, dailyRows, buildMetaHtml]);
 
+	const handleExportExcel = useCallback(() => {
+		const title = `${VIEW_TITLES[view]} — ${branchLabel ? `Branch: ${branchLabel} | ` : ""}${filter.fromDate} to ${filter.toDate}`;
+		const fileName = `${VIEW_TITLES[view].replace(/[^\w]+/g, "_")}_${filter.fromDate}_to_${filter.toDate}.xlsx`;
+
+		if (view === "daily") {
+			const num = (
+				header: string,
+				key: keyof DailyWindingRow,
+				group: string | undefined,
+				fmt = "0.00",
+				width = 10,
+			): ExcelReportCol<DailyWindingRow> => ({
+				header,
+				width,
+				group,
+				fmt,
+				value: (r) => r[key],
+			});
+			exportReportExcel<DailyWindingRow>({
+				title,
+				sheetName: "Daily Winding",
+				fileName,
+				rows: dailyRows,
+				rowKind: (r) => (r.isDateTotal ? "total" : "normal"),
+				cols: [
+					{ header: "Date", width: 12, text: true, value: (r) => r.report_date },
+					{ header: "Quality", width: 24, text: true, value: (r) => r.quality_name },
+					num("A", "A_winders", "No of Winders", "0", 8),
+					num("B", "B_winders", "No of Winders", "0", 8),
+					num("C", "C_winders", "No of Winders", "0", 8),
+					num("Total", "winders_total", "No of Winders", "0"),
+					num("A", "A_prod", "Production"),
+					num("B", "B_prod", "Production"),
+					num("C", "C_prod", "Production"),
+					num("Total", "prod_total", "Production", "0.00", 11),
+					num("Avg Prod/8 Hrs", "avg_per_8h", undefined, "0.00", 14),
+				],
+			});
+			return;
+		}
+
+		exportReportExcel<EmpRow>({
+			title,
+			sheetName: VIEW_TITLES[view].slice(0, 31),
+			fileName,
+			rows: empRows,
+			rowKind: (r) => (r.isGrandTotal ? "grand" : "normal"),
+			cols: [
+				{ header: "Emp Code", width: 12, text: true, value: (r) => r.emp_code },
+				{ header: "Name", width: 26, text: true, value: (r) => r.emp_name },
+				...periods.map(
+					(p, idx): ExcelReportCol<EmpRow> => ({
+						header: p.label,
+						width: 12,
+						group: "Production",
+						fmt: "0.00",
+						value: (r) => r[`p${idx}_prod`],
+					}),
+				),
+				{
+					header: "Prod",
+					width: 12,
+					group: "Total",
+					fmt: "0.00",
+					value: (r) => r.total_prod,
+				},
+				{
+					header: "Avg Prod/8 Hrs",
+					width: 14,
+					group: "Total",
+					fmt: "0.00",
+					value: (r) => r.avg_per_8h,
+				},
+			],
+		});
+	}, [view, branchLabel, filter.fromDate, filter.toDate, dailyRows, empRows, periods]);
+
 	const columns = useMemo<GridColDef<EmpRow>[]>(() => {
 		const num = (
 			field: string,
@@ -705,6 +790,19 @@ export default function WindingReportsPage() {
 		];
 	}, [periods]);
 
+	// Employee × period heatmap data (Prod). Grand-Total row excluded. Emp code
+	// is prefixed so same-named employees stay distinct for the drill lookup.
+	const empHeatmapRows = useMemo(
+		() =>
+			empRows
+				.filter((r) => !r.isGrandTotal)
+				.map((r) => ({
+					name: r.emp_code ? `${r.emp_code} — ${r.emp_name}` : r.emp_name,
+					values: periods.map((_, idx) => Number(r[`p${idx}_prod`]) || 0),
+				})),
+		[empRows, periods],
+	);
+
 	const subtitle = !mounted
 		? " "
 		: branchId
@@ -720,6 +818,16 @@ export default function WindingReportsPage() {
 	const printButton = (
 		<Button variant="outlined" onClick={handlePrint}>
 			Print
+		</Button>
+	);
+
+	const excelButton = (
+		<Button
+			variant="outlined"
+			onClick={handleExportExcel}
+			disabled={view === "daily" ? dailyRows.length === 0 : empRows.length === 0}
+		>
+			Excel
 		</Button>
 	);
 
@@ -777,6 +885,7 @@ export default function WindingReportsPage() {
 				toolbarContent={viewSelect}
 				extraActions={
 					<>
+						{excelButton}
 						{printButton}
 						{filterButton}
 					</>
@@ -795,6 +904,36 @@ export default function WindingReportsPage() {
 		);
 	}
 
+	const chartButton = (
+		<Button
+			variant="outlined"
+			color="primary"
+			onClick={() => setChartOpen(true)}
+			disabled={periods.length === 0}
+		>
+			Heat Map
+		</Button>
+	);
+
+	const chartDialog = (
+		<MachineDateHeatmapDialog
+			open={chartOpen}
+			onClose={() => {
+				setChartOpen(false);
+				setChartEmployee(null);
+			}}
+			title={`${VIEW_TITLES[view]} — Prod (Employee × Period)`}
+			dates={periods.map((p) => p.label)}
+			rows={empHeatmapRows}
+			metricLabel="Prod"
+			yLabel="Kg"
+			unitSuffix="kg"
+			entityLabel="Employee"
+			drilledName={chartEmployee}
+			onDrilledChange={setChartEmployee}
+		/>
+	);
+
 	return (
 		<IndexWrapper
 			title={VIEW_TITLES[view]}
@@ -809,16 +948,24 @@ export default function WindingReportsPage() {
 			toolbarContent={viewSelect}
 			extraActions={
 				<>
+					{chartButton}
+					{excelButton}
 					{printButton}
 					{filterButton}
 				</>
 			}
 			columnGroupingModel={groupingModel}
+			onRowDoubleClick={(row) => {
+				if (row.isGrandTotal) return;
+				setChartEmployee(row.emp_code ? `${row.emp_code} — ${row.emp_name}` : row.emp_name);
+				setChartOpen(true);
+			}}
 			getRowClassName={(params) =>
 				(params.row as EmpRow).isGrandTotal ? "winding-row-grand-total" : ""
 			}
 			extraSx={totalRowSx}
 		>
+			{chartDialog}
 			{filterDialog}
 			{snackbarEl}
 		</IndexWrapper>

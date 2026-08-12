@@ -25,6 +25,7 @@ import { fetchWithCookie } from "@/utils/apiClient2";
 import { apiRoutesPortalMasters } from "@/utils/api";
 import { sampleStdDev } from "@/app/dashboardportal/juteProduction/spinning/utils/spinningCalc";
 import type { BagWeightSetup } from "../types";
+import { BagWeightSummary, SHEET_COLUMNS, fmt } from "./BagWeightSheet";
 
 type Props = {
 	coId: string;
@@ -34,14 +35,43 @@ type Props = {
 	onSaved: () => void;
 };
 
-type RowInput = { mr: string; obs: string };
+/** Every cell is a free-text box; values are parsed on save (blank = not measured). */
+type RowInput = Record<(typeof SHEET_COLUMNS)[number]["key"], string> & { remarks: string };
 
-const START_ROWS = 5;
+/** A row that carries the two fields every stat needs; the rest ride along as recorded. */
+type CompleteRow = {
+	mr: number;
+	obs: number;
+	length: number | null;
+	width: number | null;
+	ends: number | null;
+	picks: number | null;
+	stitch: number | null;
+	remarks: string | null;
+};
 
-const emptyRows = (): RowInput[] => Array.from({ length: START_ROWS }, () => ({ mr: "", obs: "" }));
+/** The paper sheet is punched 20 bags at a time. */
+const START_ROWS = 20;
 
-function fmt(value: number | null | undefined, digits = 2): string {
-	return value != null ? Number(value).toFixed(digits) : "—";
+const blankRow = (): RowInput => ({
+	length: "",
+	width: "",
+	ends: "",
+	picks: "",
+	stitch: "",
+	obs: "",
+	mr: "",
+	remarks: "",
+});
+
+const emptyRows = (): RowInput[] => Array.from({ length: START_ROWS }, blankRow);
+
+/** "" / garbage -> null, so blank optional cells are simply not recorded. */
+function num(value: string): number | null {
+	const trimmed = value.trim();
+	if (trimmed === "") return null;
+	const n = Number(trimmed);
+	return Number.isFinite(n) ? n : null;
 }
 
 /** MR-corrected weight: obs × (100 + std MR%) / (100 + row MR%). Mirrors the server. */
@@ -52,8 +82,11 @@ function rowCorr(obs: number, mr: number, stdMr: number): number {
 export default function BagWeightForm({ coId, branchId, entryDate, setup, onSaved }: Props) {
 	const [itemId, setItemId] = React.useState<number | "">("");
 	const [bagTypeLabel, setBagTypeLabel] = React.useState("");
+	const [stdLength, setStdLength] = React.useState("");
+	const [stdWidth, setStdWidth] = React.useState("");
 	const [stdBagWeight, setStdBagWeight] = React.useState("");
 	const [stdMrPct, setStdMrPct] = React.useState(String(setup.default_std_mr_pct));
+	const [aboveWtGm, setAboveWtGm] = React.useState("");
 	const [rows, setRows] = React.useState<RowInput[]>(emptyRows);
 	const [saving, setSaving] = React.useState(false);
 	const [error, setError] = React.useState<string | null>(null);
@@ -63,31 +96,48 @@ export default function BagWeightForm({ coId, branchId, entryDate, setup, onSave
 		setRows((prev) => prev.map((r, idx) => (idx === i ? { ...r, [field]: value } : r)));
 
 	const addRow = () =>
-		setRows((prev) => (prev.length < setup.max_rows ? [...prev, { mr: "", obs: "" }] : prev));
+		setRows((prev) => (prev.length < setup.max_rows ? [...prev, blankRow()] : prev));
 
 	const removeRow = (i: number) => setRows((prev) => prev.filter((_, idx) => idx !== i));
 
-	// Rows the operator actually touched (either field non-empty).
-	const filledRows = React.useMemo(() => rows.filter((r) => r.mr !== "" || r.obs !== ""), [rows]);
+	// Rows the operator actually touched (any cell non-empty).
+	const filledRows = React.useMemo(
+		() => rows.filter((r) => Object.values(r).some((v) => v.trim() !== "")),
+		[rows]
+	);
 
-	const stdMrNum = stdMrPct === "" ? null : Number(stdMrPct);
-	const stdWtNum = stdBagWeight === "" ? null : Number(stdBagWeight);
+	const stdMrNum = num(stdMrPct);
+	const stdWtNum = num(stdBagWeight);
+	const aboveNum = num(aboveWtGm);
 
 	// Live preview — the server recomputes all block stats at save and is authoritative.
-	const completeRows = React.useMemo(
-		() =>
-			filledRows
-				.map((r) => ({ mr: Number(r.mr), obs: Number(r.obs) }))
-				.filter((r) => Number.isFinite(r.mr) && r.mr > 0 && Number.isFinite(r.obs) && r.obs > 0),
-		[filledRows]
-	);
+	const completeRows = React.useMemo<CompleteRow[]>(() => {
+		const out: CompleteRow[] = [];
+		for (const r of filledRows) {
+			const mr = num(r.mr);
+			const obs = num(r.obs);
+			if (mr == null || mr <= 0 || obs == null || obs <= 0) continue;
+			out.push({
+				mr,
+				obs,
+				length: num(r.length),
+				width: num(r.width),
+				ends: num(r.ends),
+				picks: num(r.picks),
+				stitch: num(r.stitch),
+				remarks: r.remarks.trim() || null,
+			});
+		}
+		return out;
+	}, [filledRows]);
 	const n = completeRows.length;
 	const avgMr = n > 0 ? completeRows.reduce((a, r) => a + r.mr, 0) / n : null;
 	const avgObs = n > 0 ? completeRows.reduce((a, r) => a + r.obs, 0) / n : null;
-	const avgCorr =
-		n > 0 && stdMrNum != null
-			? completeRows.reduce((a, r) => a + rowCorr(r.obs, r.mr, stdMrNum), 0) / n
-			: null;
+	const corrs = React.useMemo(
+		() => (stdMrNum != null ? completeRows.map((r) => rowCorr(r.obs, r.mr, stdMrNum)) : []),
+		[completeRows, stdMrNum]
+	);
+	const avgCorr = corrs.length > 0 ? corrs.reduce((a, c) => a + c, 0) / corrs.length : null;
 	const obsStdev = sampleStdDev(completeRows.map((r) => r.obs));
 	const obsCv = obsStdev != null && avgObs != null && avgObs > 0 ? (obsStdev / avgObs) * 100 : null;
 	const obsHyLt =
@@ -98,22 +148,28 @@ export default function BagWeightForm({ coId, branchId, entryDate, setup, onSave
 		avgCorr != null && stdWtNum != null && stdWtNum > 0
 			? ((avgCorr - stdWtNum) / stdWtNum) * 100
 			: null;
+	// Sheet's "Above 585 gm = …%": share of CORRECTED weights strictly above the threshold,
+	// compared as displayed (whole gm) so it agrees with the Corrd. Wt. column.
+	const abovePct =
+		aboveNum != null && aboveNum > 0 && corrs.length > 0
+			? (corrs.filter((c) => Math.round(c) > aboveNum).length / corrs.length) * 100
+			: null;
 
 	const handleSave = async () => {
-		if (stdWtNum == null || !Number.isFinite(stdWtNum) || stdWtNum <= 0) {
+		if (stdWtNum == null || stdWtNum <= 0) {
 			setError("Std bag weight must be a positive number.");
 			return;
 		}
-		if (stdMrNum == null || !Number.isFinite(stdMrNum) || stdMrNum <= 0) {
+		if (stdMrNum == null || stdMrNum <= 0) {
 			setError("Std MR% must be a positive number.");
 			return;
 		}
 		if (filledRows.length === 0) {
-			setError("Enter at least one reading row (MR% + observed weight).");
+			setError("Enter at least one bag row (bag weight + MR%).");
 			return;
 		}
 		if (filledRows.length !== completeRows.length) {
-			setError("Every filled row needs both MR% and observed weight as positive numbers.");
+			setError("Every filled row needs both bag weight and MR% as positive numbers.");
 			return;
 		}
 		setSaving(true);
@@ -127,8 +183,11 @@ export default function BagWeightForm({ coId, branchId, entryDate, setup, onSave
 				entry_date: entryDate,
 				item_id: itemId === "" ? null : Number(itemId),
 				bag_type_label: bagTypeLabel || null,
+				std_length_cm: num(stdLength),
+				std_width_cm: num(stdWidth),
 				std_bag_weight: stdWtNum,
 				std_mr_pct: stdMrNum,
+				above_wt_gm: aboveNum,
 				readings: completeRows,
 			}
 		);
@@ -137,15 +196,19 @@ export default function BagWeightForm({ coId, branchId, entryDate, setup, onSave
 			setError(err);
 			return;
 		}
-		setSnack("Bag weight block saved.");
-		// Keep bag type + standards so the inspector can punch many blocks quickly.
+		setSnack("Bag weight sheet saved.");
+		// Keep bag type + standards so the inspector can punch many sheets quickly.
 		setRows(emptyRows());
 		onSaved();
 	};
 
 	return (
-		<Paper variant="outlined" sx={{ p: 2, display: "flex", flexDirection: "column", gap: 2 }}>
-			<Typography variant="subtitle2">New bag-weight block</Typography>
+		<Paper
+			variant="outlined"
+			sx={{ p: { xs: 1.5, md: 2 }, display: "flex", flexDirection: "column", gap: 2 }}
+		>
+			<Typography variant="subtitle2">New bag-weight sheet</Typography>
+
 			<Box
 				sx={{
 					display: "grid",
@@ -170,77 +233,115 @@ export default function BagWeightForm({ coId, branchId, entryDate, setup, onSave
 					isOptionEqualToValue={(opt, val) => opt.item_id === val.item_id}
 				/>
 				<TextField
-					label="Bag type label"
+					label="Description / quality"
+					placeholder="B.Twill Bags Branded (C.G.) HD/H.S."
 					value={bagTypeLabel}
 					onChange={(e) => setBagTypeLabel(e.target.value)}
 					size="small"
 					fullWidth
 				/>
 				<TextField
-					type="number"
+					label="Length (cm)"
+					value={stdLength}
+					onChange={(e) => setStdLength(e.target.value)}
+					size="small"
+					fullWidth
+					inputProps={{ inputMode: "decimal" }}
+				/>
+				<TextField
+					label="Width (cm)"
+					value={stdWidth}
+					onChange={(e) => setStdWidth(e.target.value)}
+					size="small"
+					fullWidth
+					inputProps={{ inputMode: "decimal" }}
+				/>
+				<TextField
 					label="Std bag weight (gm)"
 					value={stdBagWeight}
 					onChange={(e) => setStdBagWeight(e.target.value)}
 					size="small"
 					fullWidth
-					inputProps={{ step: "any", min: 0 }}
+					inputProps={{ inputMode: "decimal" }}
 				/>
 				<TextField
-					type="number"
-					label="Std MR %"
+					label="Std M.R. %"
 					value={stdMrPct}
 					onChange={(e) => setStdMrPct(e.target.value)}
 					size="small"
 					fullWidth
-					inputProps={{ step: "any", min: 0 }}
+					inputProps={{ inputMode: "decimal" }}
+				/>
+				<TextField
+					label="Above (gm)"
+					value={aboveWtGm}
+					onChange={(e) => setAboveWtGm(e.target.value)}
+					size="small"
+					fullWidth
+					inputProps={{ inputMode: "decimal" }}
+					helperText="% of corrected wt. above this"
 				/>
 			</Box>
 
 			<Divider />
 
-			<TableContainer sx={{ maxWidth: 640 }}>
-				<Table size="small">
+			{/* Paper-sheet column order; scrolls sideways on phones rather than reflowing. */}
+			<TableContainer sx={{ overflowX: "auto" }}>
+				<Table
+					size="small"
+					sx={{
+						minWidth: 900,
+						"& td, & th": { px: 0.5, whiteSpace: "nowrap" },
+						"& .MuiInputBase-input": { px: 1, py: 0.75 },
+					}}
+				>
 					<TableHead>
 						<TableRow>
-							<TableCell sx={{ width: 50 }}>Sl</TableCell>
-							<TableCell>MR %</TableCell>
-							<TableCell>Obs wt (gm)</TableCell>
-							<TableCell align="right">Corr wt (gm)</TableCell>
-							<TableCell sx={{ width: 50 }} />
+							<TableCell sx={{ width: 48, fontWeight: 600 }}>Sl.</TableCell>
+							{SHEET_COLUMNS.map((c) => (
+								<TableCell key={c.key} sx={{ width: 92, fontWeight: 600 }}>
+									{c.label}
+								</TableCell>
+							))}
+							<TableCell align="right" sx={{ width: 92, fontWeight: 600 }}>
+								Corrd. Wt.
+							</TableCell>
+							<TableCell sx={{ minWidth: 160, fontWeight: 600 }}>Remarks</TableCell>
+							<TableCell sx={{ width: 44 }} />
 						</TableRow>
 					</TableHead>
 					<TableBody>
 						{rows.map((r, i) => {
-							const mr = Number(r.mr);
-							const obs = Number(r.obs);
+							const mr = num(r.mr);
+							const obs = num(r.obs);
 							const corr =
-								r.mr !== "" && r.obs !== "" && stdMrNum != null && mr > 0 && obs > 0
+								mr != null && mr > 0 && obs != null && obs > 0 && stdMrNum != null
 									? rowCorr(obs, mr, stdMrNum)
 									: null;
 							return (
 								<TableRow key={i}>
 									<TableCell>{i + 1}</TableCell>
+									{SHEET_COLUMNS.map((c) => (
+										<TableCell key={c.key}>
+											<TextField
+												value={r[c.key]}
+												onChange={(e) => setRow(i, c.key, e.target.value)}
+												size="small"
+												fullWidth
+												inputProps={{ inputMode: "decimal", "aria-label": `${c.label} row ${i + 1}` }}
+											/>
+										</TableCell>
+									))}
+									<TableCell align="right">{fmt(corr, 0)}</TableCell>
 									<TableCell>
 										<TextField
-											type="number"
-											value={r.mr}
-											onChange={(e) => setRow(i, "mr", e.target.value)}
+											value={r.remarks}
+											onChange={(e) => setRow(i, "remarks", e.target.value)}
 											size="small"
 											fullWidth
-											inputProps={{ step: "any", min: 0 }}
+											inputProps={{ maxLength: 40, "aria-label": `Remarks row ${i + 1}` }}
 										/>
 									</TableCell>
-									<TableCell>
-										<TextField
-											type="number"
-											value={r.obs}
-											onChange={(e) => setRow(i, "obs", e.target.value)}
-											size="small"
-											fullWidth
-											inputProps={{ step: "any", min: 0 }}
-										/>
-									</TableCell>
-									<TableCell align="right">{fmt(corr)}</TableCell>
 									<TableCell>
 										<Tooltip title="Remove row">
 											<IconButton size="small" onClick={() => removeRow(i)}>
@@ -268,37 +369,19 @@ export default function BagWeightForm({ coId, branchId, entryDate, setup, onSave
 			<Divider />
 
 			{/* Live preview — server recomputes on save and is authoritative. */}
-			<Box
-				sx={{
-					display: "grid",
-					gap: 2,
-					gridTemplateColumns: {
-						xs: "repeat(2, minmax(0, 1fr))",
-						sm: "repeat(4, minmax(0, 1fr))",
-						md: "repeat(7, minmax(0, 1fr))",
-					},
+			<BagWeightSummary
+				stats={{
+					avg_mr: avgMr,
+					avg_obs: avgObs,
+					avg_corr: avgCorr,
+					obs_stdev: obsStdev,
+					obs_cv_pct: obsCv,
+					obs_hy_lt_pct: obsHyLt,
+					corr_hy_lt_pct: corrHyLt,
+					above_wt_gm: aboveNum,
+					above_pct: abovePct,
 				}}
-			>
-				<TextField label="Avg MR %" value={fmt(avgMr)} size="small" InputProps={{ readOnly: true }} />
-				<TextField label="Avg obs wt" value={fmt(avgObs)} size="small" InputProps={{ readOnly: true }} />
-				<TextField label="Avg corr wt" value={fmt(avgCorr)} size="small" InputProps={{ readOnly: true }} />
-				<TextField label="Obs std dev" value={fmt(obsStdev, 3)} size="small" InputProps={{ readOnly: true }} />
-				<TextField label="Obs CV %" value={fmt(obsCv)} size="small" InputProps={{ readOnly: true }} />
-				<TextField
-					label="Obs HY/LT %"
-					value={fmt(obsHyLt)}
-					size="small"
-					InputProps={{ readOnly: true }}
-					helperText="+heavy / −light"
-				/>
-				<TextField
-					label="Corr HY/LT %"
-					value={fmt(corrHyLt)}
-					size="small"
-					InputProps={{ readOnly: true }}
-					helperText="+heavy / −light"
-				/>
-			</Box>
+			/>
 
 			{error ? (
 				<Alert severity="error" onClose={() => setError(null)}>

@@ -7,14 +7,7 @@ import {
 	CircularProgress,
 	IconButton,
 	MenuItem,
-	Paper,
 	Snackbar,
-	Table,
-	TableBody,
-	TableCell,
-	TableContainer,
-	TableHead,
-	TableRow,
 	TextField,
 	Tooltip,
 	Typography,
@@ -27,32 +20,8 @@ import { fetchWithCookie } from "@/utils/apiClient2";
 import { apiRoutesPortalMasters } from "@/utils/api";
 import { todayISO } from "@/app/dashboardportal/juteProduction/spinning/utils/spinningCalc";
 import BagWeightForm from "./_components/BagWeightForm";
+import BagWeightSheet, { bagTypeLabelOf, fmt } from "./_components/BagWeightSheet";
 import type { BagWeightBlock, BagWeightSetup, BagWeightTableRow } from "./types";
-
-function fmt(value: number | null | undefined, digits = 2): string {
-	return value != null ? Number(value).toFixed(digits) : "—";
-}
-
-function bagTypeLabelOf(row: {
-	item_name?: string | null;
-	item_code?: string | null;
-	bag_type_label?: string | null;
-}): string {
-	return row.item_name ?? row.bag_type_label ?? row.item_code ?? "—";
-}
-
-function Stat({ label, value }: { label: string; value: string }) {
-	return (
-		<Box>
-			<Typography variant="caption" color="text.secondary">
-				{label}
-			</Typography>
-			<Typography variant="body2" fontWeight="bold">
-				{value}
-			</Typography>
-		</Box>
-	);
-}
 
 // ─── Page ───────────────────────────────────────────────────────────────────
 
@@ -198,7 +167,7 @@ export default function BagWeightSqcPage() {
 	// ── Delete (POST endpoint with JSON body) ──
 	const handleDelete = React.useCallback(
 		async (id: number) => {
-			if (!window.confirm(`Delete bag weight block #${id}?`)) return;
+			if (!window.confirm(`Delete bag weight sheet #${id}?`)) return;
 			const { error } = await fetchWithCookie<{ message: string }>(
 				apiRoutesPortalMasters.BAG_WEIGHT_DELETE,
 				"POST",
@@ -208,7 +177,7 @@ export default function BagWeightSqcPage() {
 				setSnack(error);
 				return;
 			}
-			setSnack(`Deleted bag weight block #${id}.`);
+			setSnack(`Deleted bag weight sheet #${id}.`);
 			refreshData();
 		},
 		[coId, refreshData]
@@ -231,6 +200,16 @@ export default function BagWeightSqcPage() {
 				valueGetter: (_value, row) => bagTypeLabelOf(row),
 			},
 			{
+				field: "size",
+				headerName: "Size (cm)",
+				width: 110,
+				sortable: false,
+				valueGetter: (_value, row) =>
+					row.std_length_cm != null && row.std_width_cm != null
+						? `${fmt(row.std_length_cm, 0)} × ${fmt(row.std_width_cm, 0)}`
+						: "—",
+			},
+			{
 				field: "std_bag_weight",
 				headerName: "Std wt (gm)",
 				width: 110,
@@ -239,29 +218,29 @@ export default function BagWeightSqcPage() {
 			},
 			{
 				field: "avg_mr",
-				headerName: "Avg MR %",
-				width: 100,
+				headerName: "Actual M.R. %",
+				width: 115,
 				type: "number",
 				valueFormatter: (value) => fmt(value as number | null),
 			},
 			{
 				field: "avg_obs",
-				headerName: "Avg obs wt",
-				width: 110,
+				headerName: "Actual bag wt",
+				width: 120,
 				type: "number",
 				valueFormatter: (value) => fmt(value as number | null),
 			},
 			{
 				field: "avg_corr",
-				headerName: "Avg corr wt",
-				width: 110,
+				headerName: "Correct bag wt",
+				width: 125,
 				type: "number",
 				valueFormatter: (value) => fmt(value as number | null),
 			},
 			{
 				field: "obs_cv_pct",
-				headerName: "Obs CV %",
-				width: 100,
+				headerName: "C.V. %",
+				width: 90,
 				type: "number",
 				valueFormatter: (value) => fmt(value as number | null),
 			},
@@ -278,6 +257,18 @@ export default function BagWeightSqcPage() {
 				width: 115,
 				type: "number",
 				valueFormatter: (value) => fmt(value as number | null),
+			},
+			{
+				field: "above_pct",
+				headerName: "Above %",
+				width: 110,
+				type: "number",
+				valueFormatter: (value) => fmt(value as number | null),
+				renderHeader: () => (
+					<Tooltip title="% of corrected weights above the sheet's threshold">
+						<span className="MuiDataGrid-columnHeaderTitle">Above %</span>
+					</Tooltip>
+				),
 			},
 			{
 				field: "actions",
@@ -325,9 +316,10 @@ export default function BagWeightSqcPage() {
 				Bag Weight SQC
 			</Typography>
 			<Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-				R-08-23 — finished-bag weight control. One save = one (date, bag type) block of MR% +
-				observed weight rows; the server computes MR-corrected weights, averages, CV% and the
-				heavy/light percents vs the standard bag weight.
+				R-08-23 — finished-bag weight control. One save = one dated sheet: per-bag length, width,
+				ends, picks, stitch, bag weight and M.R.%; the server computes the MR-corrected weights,
+				the actual/correct bag-weight averages with their heavy-light percents, C.V.% and the
+				share above the threshold weight.
 			</Typography>
 
 			{sidebarBranchIds.length > 1 ? (
@@ -337,7 +329,7 @@ export default function BagWeightSqcPage() {
 					label="Branch"
 					value={pageBranchId}
 					onChange={(e) => setPageBranchId(e.target.value === "" ? "" : Number(e.target.value))}
-					sx={{ mb: 2, minWidth: 240 }}
+					sx={{ mb: 2, width: { xs: "100%", sm: 240 } }}
 				>
 					{branchOptions.map((b) => (
 						<MenuItem key={b.branch_id} value={Number(b.branch_id)}>
@@ -385,7 +377,7 @@ export default function BagWeightSqcPage() {
 					{/* ── By-date blocks ── */}
 					<Box>
 						<Typography variant="subtitle2" sx={{ mb: 1 }}>
-							Blocks on {entryDate}
+							Sheets on {entryDate}
 						</Typography>
 						{blocksLoading ? (
 							<Box sx={{ display: "flex", justifyContent: "center", py: 3 }}>
@@ -393,28 +385,17 @@ export default function BagWeightSqcPage() {
 							</Box>
 						) : blocks.length === 0 ? (
 							<Typography variant="body2" color="text.secondary">
-								No bag-weight blocks for this date.
+								No bag-weight sheets for this date.
 							</Typography>
 						) : (
 							<Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
 								{blocks.map((block) => (
-									<Paper key={block.bag_weight_id} variant="outlined" sx={{ p: 2 }}>
-										<Box
-											sx={{
-												display: "flex",
-												alignItems: "center",
-												gap: 2,
-												flexWrap: "wrap",
-												mb: 1,
-											}}
-										>
-											<Typography variant="subtitle2">{bagTypeLabelOf(block)}</Typography>
-											<Typography variant="caption" color="text.secondary">
-												Std wt: {fmt(block.std_bag_weight, 0)} gm · Std MR:{" "}
-												{fmt(block.std_mr_pct, 1)}%
-											</Typography>
-											<Box sx={{ flexGrow: 1 }} />
-											<Tooltip title="Delete block">
+									<BagWeightSheet
+										key={block.bag_weight_id}
+										block={block}
+										entryDate={entryDate}
+										actions={
+											<Tooltip title="Delete sheet">
 												<IconButton
 													size="small"
 													color="error"
@@ -423,39 +404,8 @@ export default function BagWeightSqcPage() {
 													<DeleteIcon size={16} />
 												</IconButton>
 											</Tooltip>
-										</Box>
-										<TableContainer sx={{ maxWidth: 520, mb: 1 }}>
-											<Table size="small">
-												<TableHead>
-													<TableRow>
-														<TableCell>Sl</TableCell>
-														<TableCell align="right">MR %</TableCell>
-														<TableCell align="right">Obs wt (gm)</TableCell>
-														<TableCell align="right">Corr wt (gm)</TableCell>
-													</TableRow>
-												</TableHead>
-												<TableBody>
-													{(block.readings ?? []).map((r, i) => (
-														<TableRow key={i}>
-															<TableCell>{i + 1}</TableCell>
-															<TableCell align="right">{fmt(r.mr)}</TableCell>
-															<TableCell align="right">{fmt(r.obs)}</TableCell>
-															<TableCell align="right">{fmt(r.corr)}</TableCell>
-														</TableRow>
-													))}
-												</TableBody>
-											</Table>
-										</TableContainer>
-										<Box sx={{ display: "flex", gap: 3, flexWrap: "wrap" }}>
-											<Stat label="Avg MR %" value={fmt(block.avg_mr)} />
-											<Stat label="Avg obs wt" value={fmt(block.avg_obs)} />
-											<Stat label="Avg corr wt" value={fmt(block.avg_corr)} />
-											<Stat label="Obs std dev" value={fmt(block.obs_stdev, 3)} />
-											<Stat label="Obs CV %" value={fmt(block.obs_cv_pct)} />
-											<Stat label="Obs HY/LT %" value={fmt(block.obs_hy_lt_pct)} />
-											<Stat label="Corr HY/LT %" value={fmt(block.corr_hy_lt_pct)} />
-										</Box>
-									</Paper>
+										}
+									/>
 								))}
 							</Box>
 						)}
@@ -473,7 +423,7 @@ export default function BagWeightSqcPage() {
 									setSearch(e.target.value);
 									setPaginationModel((prev) => ({ ...prev, page: 0 }));
 								}}
-								sx={{ minWidth: 260 }}
+								sx={{ width: { xs: "100%", sm: 260 } }}
 							/>
 						</Box>
 						<Box sx={{ width: "100%", overflowX: "auto" }}>
@@ -490,7 +440,7 @@ export default function BagWeightSqcPage() {
 								pageSizeOptions={[10, 25, 50]}
 								disableRowSelectionOnClick
 								density="compact"
-								sx={{ minWidth: 1000 }}
+								sx={{ minWidth: 1200 }}
 							/>
 						</Box>
 					</Box>

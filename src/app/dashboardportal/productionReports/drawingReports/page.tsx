@@ -12,13 +12,7 @@ import {
 	MenuItem,
 	Select,
 	type SelectChangeEvent,
-	Dialog,
-	DialogTitle,
-	DialogContent,
-	DialogActions,
-	Typography,
 } from "@mui/material";
-import { BarChart } from "@mui/x-charts/BarChart";
 import {
 	DataGrid,
 	GridColDef,
@@ -27,6 +21,7 @@ import {
 	type GridValidRowModel,
 } from "@mui/x-data-grid";
 import IndexWrapper from "@/components/ui/IndexWrapper";
+import MachineDateHeatmapDialog from "@/components/ui/MachineDateHeatmapDialog";
 import { useSidebarContextSafe } from "@/components/dashboard/sidebarContext";
 import {
 	fetchDrawingSummaryReport,
@@ -88,10 +83,10 @@ type ViewKey =
 
 const VIEW_TITLES: Record<ViewKey, string> = {
 	shiftMatrix: "Drawing Efficiency Report",
-	summary: "Summary Report",
-	dateProduction: "Details Report",
-	dateIssue: "Date Wise Output",
-	qualityDayWise: "Machine Day Wise Report",
+	summary: "Drawing Summary Report",
+	dateProduction: "Drawing Details Report",
+	dateIssue: "Drawing Date Wise Output",
+	qualityDayWise: "Drawing Machine Day Wise Report",
 };
 
 /**
@@ -682,6 +677,8 @@ export default function DrawingReportsPage() {
 	const [qualityDayWiseDates, setQualityDayWiseDates] = useState<string[]>([]);
 	const [qualityDayWiseRows, setQualityDayWiseRows] = useState<QualityDayWiseRow[]>([]);
 	const [chartOpen, setChartOpen] = useState(false);
+	// Machine drilled into from the heatmap (dbl-click) — null = full heatmap
+	const [chartMachine, setChartMachine] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
 	const [filter, setFilter] = useState<DrawingFilterValues>(() => ({
 		fromDate: getDefaultFromDate(),
@@ -933,18 +930,42 @@ export default function DrawingReportsPage() {
 		};
 	}, [summaryRows]);
 
-	// Sum of Unit across all machines per date — used by the Machine Day Wise
-	// bar chart. Skips the Grand-Total pivot row.
-	const qualityDayWiseChartTotals = useMemo(() => {
-		const unit: number[] = qualityDayWiseDates.map(() => 0);
-		qualityDayWiseRows.forEach((row) => {
-			if (row.isGrandTotal) return;
-			qualityDayWiseDates.forEach((_, idx) => {
-				unit[idx] += Number(row[`d${idx}_unit`]) || 0;
-			});
-		});
-		return { unit };
-	}, [qualityDayWiseDates, qualityDayWiseRows]);
+	// Heatmap data for the Date Wise Output chart — machines × dates plus the
+	// matrix max for the sequential color scale. Grand-Total row excluded.
+	// Heatmap over multi-line: 10-20 machines is past the ~8-series ceiling
+	// where per-series colors stay distinguishable.
+	const pivotHeatmap = useMemo(
+		() =>
+			pivotRows
+				.filter((r) => !r.isGrandTotal)
+				.map((r) => ({
+					name: r.quality_name,
+					values: pivotDates.map((_, idx) => Number(r[`d${idx}`]) || 0),
+				})),
+		[pivotRows, pivotDates],
+	);
+
+	// Chart metric for Machine Day Wise: Eff% whenever it's selected in the
+	// Columns filter (including "both"), Unit only when it's the sole selection.
+	const dayWiseChartMetric = visibleMetricKeys.includes("eff")
+		? ("eff" as const)
+		: visibleMetricKeys.includes("unit")
+			? ("unit" as const)
+			: null;
+
+	// Machine × date heatmap data for the Machine Day Wise chart, on the
+	// selected metric. Grand-Total row excluded.
+	const dayWiseHeatmap = useMemo(() => {
+		const metric = dayWiseChartMetric ?? "eff";
+		return qualityDayWiseRows
+			.filter((r) => !r.isGrandTotal)
+			.map((r) => ({
+				name: r.quality_name,
+				values: qualityDayWiseDates.map(
+					(_, idx) => Number(r[`d${idx}_${metric}`]) || 0,
+				),
+			}));
+	}, [qualityDayWiseRows, qualityDayWiseDates, dayWiseChartMetric]);
 
 	const handlePrint = useCallback(() => {
 		const title = VIEW_TITLES[view];
@@ -1368,6 +1389,13 @@ export default function DrawingReportsPage() {
 		</Snackbar>
 	);
 
+	// ─── Shared machine × date heatmap dialog (dbl-click drills to a line) ──
+
+	const closeChart = () => {
+		setChartOpen(false);
+		setChartMachine(null);
+	};
+
 	if (view === "shiftMatrix") {
 		return (
 			<IndexWrapper
@@ -1481,54 +1509,31 @@ export default function DrawingReportsPage() {
 	}
 
 	if (view === "qualityDayWise") {
+		const metricLabel = dayWiseChartMetric === "unit" ? "Unit" : "Eff%";
 		const chartButton = (
 			<Button
 				variant="outlined"
 				color="primary"
 				onClick={() => setChartOpen(true)}
-				disabled={qualityDayWiseDates.length === 0}
+				disabled={qualityDayWiseDates.length === 0 || !dayWiseChartMetric}
 			>
-				Bar Chart
+				Heat Map
 			</Button>
 		);
 
 		const chartDialog = (
-			<Dialog open={chartOpen} onClose={() => setChartOpen(false)} maxWidth="lg" fullWidth>
-				<DialogTitle>Drawing Day-wise — Unit</DialogTitle>
-				<DialogContent dividers>
-					{qualityDayWiseDates.length === 0 ? (
-						<Typography color="text.secondary" sx={{ p: 4, textAlign: "center" }}>
-							No data to chart for the selected range.
-						</Typography>
-					) : (
-						<Box sx={{ width: "100%" }}>
-							<BarChart
-								xAxis={[
-									{
-										data: qualityDayWiseDates,
-										scaleType: "band",
-										label: "Date",
-									},
-								]}
-								yAxis={[{ label: "Meters" }]}
-								series={[
-									{
-										data: qualityDayWiseChartTotals.unit,
-										label: "Unit",
-										color: "#1976d2",
-										valueFormatter: (v) => (v == null ? "" : fmtNum(v)),
-									},
-								]}
-								height={420}
-								margin={{ top: 30, right: 30, left: 70, bottom: 60 }}
-							/>
-						</Box>
-					)}
-				</DialogContent>
-				<DialogActions>
-					<Button onClick={() => setChartOpen(false)}>Close</Button>
-				</DialogActions>
-			</Dialog>
+			<MachineDateHeatmapDialog
+				open={chartOpen}
+				onClose={closeChart}
+				title={`Drawing Machine Day Wise — ${metricLabel} (Machine × Date)`}
+				dates={qualityDayWiseDates}
+				rows={dayWiseHeatmap}
+				metricLabel={metricLabel}
+				yLabel={dayWiseChartMetric === "unit" ? "Meters" : "Eff %"}
+				unitSuffix={dayWiseChartMetric === "unit" ? "m" : "%"}
+				drilledName={chartMachine}
+				onDrilledChange={setChartMachine}
+			/>
 		);
 
 		return (
@@ -1551,6 +1556,11 @@ export default function DrawingReportsPage() {
 					</>
 				}
 				columnGroupingModel={filterGrouping(qualityDayWiseGroupingModel)}
+				onRowDoubleClick={(row) => {
+					if (row.isGrandTotal) return;
+					setChartMachine(row.quality_name);
+					setChartOpen(true);
+				}}
 				getRowClassName={(params) =>
 					(params.row as QualityDayWiseRow).isGrandTotal ? "drawing-row-total" : ""
 				}
@@ -1606,6 +1616,32 @@ export default function DrawingReportsPage() {
 	}
 
 	// dateIssue — pivoted grid
+	const dateIssueChartButton = (
+		<Button
+			variant="outlined"
+			color="primary"
+			onClick={() => setChartOpen(true)}
+			disabled={pivotDates.length === 0}
+		>
+			Heat Map
+		</Button>
+	);
+
+	const dateIssueChartDialog = (
+		<MachineDateHeatmapDialog
+			open={chartOpen}
+			onClose={closeChart}
+			title="Drawing Date Wise Output — Machine × Date"
+			dates={pivotDates}
+			rows={pivotHeatmap}
+			metricLabel="Output"
+			yLabel="Meters"
+			unitSuffix="m"
+			drilledName={chartMachine}
+			onDrilledChange={setChartMachine}
+		/>
+	);
+
 	return (
 		<IndexWrapper
 			title={VIEW_TITLES[view]}
@@ -1620,11 +1656,17 @@ export default function DrawingReportsPage() {
 			toolbarContent={viewSelect}
 			extraActions={
 				<>
+					{dateIssueChartButton}
 					{printButton}
 					{filterButton}
 				</>
 			}
 			columnGroupingModel={filterGrouping(pivotGroupingModel)}
+			onRowDoubleClick={(row) => {
+				if (row.isGrandTotal) return;
+				setChartMachine(row.quality_name);
+				setChartOpen(true);
+			}}
 			getRowClassName={(params) =>
 				(params.row as PivotRow).isGrandTotal ? "drawing-row-total" : ""
 			}
@@ -1636,6 +1678,7 @@ export default function DrawingReportsPage() {
 				"& .drawing-row-total:hover": { bgcolor: "#bbdefb" },
 			}}
 		>
+			{dateIssueChartDialog}
 			{filterDialog}
 			{snackbarEl}
 		</IndexWrapper>

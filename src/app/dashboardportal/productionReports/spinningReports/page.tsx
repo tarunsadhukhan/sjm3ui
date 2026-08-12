@@ -20,6 +20,7 @@ import {
 	type GridValidRowModel,
 } from "@mui/x-data-grid";
 import IndexWrapper from "@/components/ui/IndexWrapper";
+import MachineDateHeatmapDialog from "@/components/ui/MachineDateHeatmapDialog";
 import { useSidebarContextSafe } from "@/components/dashboard/sidebarContext";
 import {
 	fetchSpinningProductionEff,
@@ -823,6 +824,9 @@ export default function SpinningReportsPage() {
 	const [rhEffDates, setRhEffDates] = useState<string[]>([]);
 	const [rhEffRows, setRhEffRows] = useState<RunningHoursEffRow[]>([]);
 
+	const [chartOpen, setChartOpen] = useState(false);
+	// Machine drilled into from the heatmap (dbl-click) — null = full heatmap
+	const [chartMachine, setChartMachine] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
 	const [filter, setFilter] = useState<SpinningFilterValues>(() => ({
 		fromDate: getDefaultFromDate(),
@@ -985,6 +989,84 @@ export default function SpinningReportsPage() {
 		() => metricDefs.filter((m) => !hiddenMetrics.includes(m.key)).map((m) => m.key),
 		[metricDefs, hiddenMetrics],
 	);
+
+	// Chart metric for Mc-wise Date-wise: Eff% whenever it's selected in the
+	// Columns filter, then Prod, then Avg/Frame (mirrors the drawing report).
+	const mcChartMetric = visibleMetricKeys.includes("eff")
+		? ("eff" as const)
+		: visibleMetricKeys.includes("prod")
+			? ("prod" as const)
+			: visibleMetricKeys.includes("avg")
+				? ("avg" as const)
+				: null;
+
+	// Machine × date heatmap data for the Mc-wise Date-wise chart, on the
+	// selected metric. Grand-Total row excluded.
+	const mcHeatmapRows = useMemo(() => {
+		const metric = mcChartMetric ?? "eff";
+		return mcRows
+			.filter((r) => !r.isGrandTotal)
+			.map((r) => ({
+				name: r.mc_name,
+				values: mcDates.map((_, idx) => Number(r[`d${idx}_${metric}`]) || 0),
+			}));
+	}, [mcRows, mcDates, mcChartMetric]);
+
+	// Chart metric for Employee-wise Date-wise: Eff% whenever selected, else Prod.
+	const empChartMetric = visibleMetricKeys.includes("eff")
+		? ("eff" as const)
+		: visibleMetricKeys.includes("prod")
+			? ("prod" as const)
+			: null;
+
+	// Employee × date heatmap data. Grand-Total row excluded.
+	const empHeatmapRows = useMemo(() => {
+		const metric = empChartMetric ?? "eff";
+		return empRows
+			.filter((r) => !r.isGrandTotal)
+			.map((r) => ({
+				name: r.entity_name,
+				values: empDates.map((_, idx) => Number(r[`d${idx}_${metric}`]) || 0),
+			}));
+	}, [empRows, empDates, empChartMetric]);
+
+	// Chart metric for Frame-wise Running: Eff% whenever selected, else Hrs.
+	const frameChartMetric = visibleMetricKeys.includes("eff")
+		? ("eff" as const)
+		: visibleMetricKeys.includes("hrs")
+			? ("hrs" as const)
+			: null;
+
+	// Machine × date heatmap data for Frame-wise Running. Total row excluded.
+	const frameHeatmapRows = useMemo(() => {
+		const metric = frameChartMetric ?? "eff";
+		return frameRows
+			.filter((r) => !r.isTotal)
+			.map((r) => ({
+				name: r.mc_name,
+				values: frameDates.map((_, idx) => Number(r[`d${idx}_${metric}`]) || 0),
+			}));
+	}, [frameRows, frameDates, frameChartMetric]);
+
+	// Chart metric for Running-Hours-basis Eff: Eff% → Prod → Hrs.
+	const rhEffChartMetric = visibleMetricKeys.includes("eff")
+		? ("eff" as const)
+		: visibleMetricKeys.includes("prod")
+			? ("prod" as const)
+			: visibleMetricKeys.includes("hrs")
+				? ("hrs" as const)
+				: null;
+
+	// (Machine — Quality) × date heatmap data. Grand-Total row excluded.
+	const rhEffHeatmapRows = useMemo(() => {
+		const metric = rhEffChartMetric ?? "eff";
+		return rhEffRows
+			.filter((r) => !r.isGrandTotal)
+			.map((r) => ({
+				name: `${r.mc_name} — ${r.quality_name}`,
+				values: rhEffDates.map((_, idx) => Number(r[`d${idx}_${metric}`]) || 0),
+			}));
+	}, [rhEffRows, rhEffDates, rhEffChartMetric]);
 
 	const viewSelect = (
 		<Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
@@ -1639,6 +1721,39 @@ export default function SpinningReportsPage() {
 	}
 
 	if (view === "mcDate") {
+		const metricLabel =
+			mcChartMetric === "prod"
+				? "Prod"
+				: mcChartMetric === "avg"
+					? "Avg/Frame"
+					: "Eff%";
+		const chartButton = (
+			<Button
+				variant="outlined"
+				color="primary"
+				onClick={() => setChartOpen(true)}
+				disabled={mcDates.length === 0 || !mcChartMetric}
+			>
+				Heat Map
+			</Button>
+		);
+		const chartDialog = (
+			<MachineDateHeatmapDialog
+				open={chartOpen}
+				onClose={() => {
+					setChartOpen(false);
+					setChartMachine(null);
+				}}
+				title={`Spinning Mc-wise Date-wise — ${metricLabel} (Machine × Date)`}
+				dates={mcDates}
+				rows={mcHeatmapRows}
+				metricLabel={metricLabel}
+				yLabel={mcChartMetric === "eff" ? "Eff %" : "Kg"}
+				unitSuffix={mcChartMetric === "eff" ? "%" : "kg"}
+				drilledName={chartMachine}
+				onDrilledChange={setChartMachine}
+			/>
+		);
 		return (
 			<IndexWrapper
 				title={VIEW_TITLES[view]}
@@ -1653,11 +1768,17 @@ export default function SpinningReportsPage() {
 				toolbarContent={viewSelect}
 				extraActions={
 					<>
+						{chartButton}
 						{printButton}
 						{filterButton}
 					</>
 				}
 				columnGroupingModel={filterGrouping(mcGrouping)}
+				onRowDoubleClick={(row) => {
+					if (row.isGrandTotal) return;
+					setChartMachine(row.mc_name);
+					setChartOpen(true);
+				}}
 				getRowClassName={(params) =>
 					(params.row as McDateRow).isGrandTotal
 						? "spinning-row-grand-total"
@@ -1665,6 +1786,7 @@ export default function SpinningReportsPage() {
 				}
 				extraSx={totalRowSx}
 			>
+				{chartDialog}
 				{filterDialog}
 				{snackbarEl}
 			</IndexWrapper>
@@ -1672,6 +1794,35 @@ export default function SpinningReportsPage() {
 	}
 
 	if (view === "empDate") {
+		const metricLabel = empChartMetric === "prod" ? "Prod" : "Eff%";
+		const chartButton = (
+			<Button
+				variant="outlined"
+				color="primary"
+				onClick={() => setChartOpen(true)}
+				disabled={empDates.length === 0 || !empChartMetric}
+			>
+				Heat Map
+			</Button>
+		);
+		const chartDialog = (
+			<MachineDateHeatmapDialog
+				open={chartOpen}
+				onClose={() => {
+					setChartOpen(false);
+					setChartMachine(null);
+				}}
+				title={`Spinning Employee-wise Date-wise — ${metricLabel} (Employee × Date)`}
+				dates={empDates}
+				rows={empHeatmapRows}
+				metricLabel={metricLabel}
+				yLabel={empChartMetric === "prod" ? "Kg" : "Eff %"}
+				unitSuffix={empChartMetric === "prod" ? "kg" : "%"}
+				entityLabel="Employee"
+				drilledName={chartMachine}
+				onDrilledChange={setChartMachine}
+			/>
+		);
 		return (
 			<IndexWrapper
 				title={VIEW_TITLES[view]}
@@ -1686,11 +1837,17 @@ export default function SpinningReportsPage() {
 				toolbarContent={viewSelect}
 				extraActions={
 					<>
+						{chartButton}
 						{printButton}
 						{filterButton}
 					</>
 				}
 				columnGroupingModel={filterGrouping(empGrouping)}
+				onRowDoubleClick={(row) => {
+					if (row.isGrandTotal) return;
+					setChartMachine(row.entity_name);
+					setChartOpen(true);
+				}}
 				getRowClassName={(params) =>
 					(params.row as EntityDateRow).isGrandTotal
 						? "spinning-row-grand-total"
@@ -1698,6 +1855,7 @@ export default function SpinningReportsPage() {
 				}
 				extraSx={totalRowSx}
 			>
+				{chartDialog}
 				{filterDialog}
 				{snackbarEl}
 			</IndexWrapper>
@@ -1705,6 +1863,34 @@ export default function SpinningReportsPage() {
 	}
 
 	if (view === "frameRunning") {
+		const metricLabel = frameChartMetric === "hrs" ? "Hrs" : "Eff%";
+		const chartButton = (
+			<Button
+				variant="outlined"
+				color="primary"
+				onClick={() => setChartOpen(true)}
+				disabled={frameDates.length === 0 || !frameChartMetric}
+			>
+				Heat Map
+			</Button>
+		);
+		const chartDialog = (
+			<MachineDateHeatmapDialog
+				open={chartOpen}
+				onClose={() => {
+					setChartOpen(false);
+					setChartMachine(null);
+				}}
+				title={`Spinning Frame-wise Running — ${metricLabel} (Machine × Date)`}
+				dates={frameDates}
+				rows={frameHeatmapRows}
+				metricLabel={metricLabel}
+				yLabel={frameChartMetric === "hrs" ? "Hours" : "Eff %"}
+				unitSuffix={frameChartMetric === "hrs" ? "hrs" : "%"}
+				drilledName={chartMachine}
+				onDrilledChange={setChartMachine}
+			/>
+		);
 		return (
 			<IndexWrapper
 				title={VIEW_TITLES[view]}
@@ -1719,11 +1905,17 @@ export default function SpinningReportsPage() {
 				toolbarContent={viewSelect}
 				extraActions={
 					<>
+						{chartButton}
 						{printButton}
 						{filterButton}
 					</>
 				}
 				columnGroupingModel={filterGrouping(frameGrouping)}
+				onRowDoubleClick={(row) => {
+					if (row.isTotal) return;
+					setChartMachine(row.mc_name);
+					setChartOpen(true);
+				}}
 				getRowClassName={(params) =>
 					(params.row as FrameRunningRow).isTotal
 						? "spinning-row-grand-total"
@@ -1731,6 +1923,7 @@ export default function SpinningReportsPage() {
 				}
 				extraSx={totalRowSx}
 			>
+				{chartDialog}
 				{filterDialog}
 				{snackbarEl}
 			</IndexWrapper>
@@ -1738,6 +1931,52 @@ export default function SpinningReportsPage() {
 	}
 
 	// runningHoursEff
+	const rhEffMetricLabel =
+		rhEffChartMetric === "prod"
+			? "Prod"
+			: rhEffChartMetric === "hrs"
+				? "Hrs"
+				: "Eff%";
+	const rhEffChartButton = (
+		<Button
+			variant="outlined"
+			color="primary"
+			onClick={() => setChartOpen(true)}
+			disabled={rhEffDates.length === 0 || !rhEffChartMetric}
+		>
+			Heat Map
+		</Button>
+	);
+	const rhEffChartDialog = (
+		<MachineDateHeatmapDialog
+			open={chartOpen}
+			onClose={() => {
+				setChartOpen(false);
+				setChartMachine(null);
+			}}
+			title={`Spinning Production Eff (Running Hours) — ${rhEffMetricLabel} (Machine × Date)`}
+			dates={rhEffDates}
+			rows={rhEffHeatmapRows}
+			metricLabel={rhEffMetricLabel}
+			yLabel={
+				rhEffChartMetric === "prod"
+					? "Kg"
+					: rhEffChartMetric === "hrs"
+						? "Hours"
+						: "Eff %"
+			}
+			unitSuffix={
+				rhEffChartMetric === "prod"
+					? "kg"
+					: rhEffChartMetric === "hrs"
+						? "hrs"
+						: "%"
+			}
+			entityLabel="Machine / Quality"
+			drilledName={chartMachine}
+			onDrilledChange={setChartMachine}
+		/>
+	);
 	return (
 		<IndexWrapper
 			title={VIEW_TITLES[view]}
@@ -1753,10 +1992,16 @@ export default function SpinningReportsPage() {
 			toolbarContent={viewSelect}
 			extraActions={
 				<>
+					{rhEffChartButton}
 					{printButton}
 					{filterButton}
 				</>
 			}
+			onRowDoubleClick={(row) => {
+				if (row.isGrandTotal) return;
+				setChartMachine(`${row.mc_name} — ${row.quality_name}`);
+				setChartOpen(true);
+			}}
 			getRowClassName={(params) =>
 				(params.row as RunningHoursEffRow).isGrandTotal
 					? "spinning-row-grand-total"
@@ -1764,6 +2009,7 @@ export default function SpinningReportsPage() {
 			}
 			extraSx={totalRowSx}
 		>
+			{rhEffChartDialog}
 			{filterDialog}
 			{snackbarEl}
 		</IndexWrapper>

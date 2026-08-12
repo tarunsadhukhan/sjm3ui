@@ -61,6 +61,8 @@ type IndexWrapperProps<RowType extends GridValidRowModel & { id?: string | numbe
   filterMode?: "client" | "server";
   filterModel?: GridFilterModel;
   onFilterModelChange?: (model: GridFilterModel) => void;
+  /** Row double-click handler — receives the clicked row. */
+  onRowDoubleClick?: (row: RowType) => void;
   /** Optional row class resolver (e.g. for row tinting). */
   getRowClassName?: (params: GridRowClassNameParams) => string;
   /** Optional extra sx merged into the underlying DataGrid. */
@@ -94,6 +96,7 @@ function IndexWrapper<RowType extends GridValidRowModel & { id?: string | number
   filterMode,
   filterModel,
   onFilterModelChange,
+  onRowDoubleClick,
   getRowClassName,
   extraSx,
   columnGroupingModel,
@@ -290,6 +293,11 @@ function IndexWrapper<RowType extends GridValidRowModel & { id?: string | number
           filterMode={filterMode}
           filterModel={filterModel}
           onFilterModelChange={onFilterModelChange}
+          onRowDoubleClick={
+            onRowDoubleClick
+              ? (params) => onRowDoubleClick(params.row as RowType)
+              : undefined
+          }
           getRowClassName={getRowClassName}
           extraSx={extraSx}
           columnGroupingModel={columnGroupingModel}

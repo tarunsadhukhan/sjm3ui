@@ -7,6 +7,7 @@ import {
   GridFilterModel,
   GridSortModel,
   GridRowClassNameParams,
+  GridEventListener,
 } from '@mui/x-data-grid';
 import { Box, SxProps, Theme } from '@mui/material';
 import React, { useState, useEffect } from 'react';
@@ -35,6 +36,8 @@ interface MuiDataGridProps {
   disableColumnSelector?: boolean;
   disableDensitySelector?: boolean;
   disableExport?: boolean;
+  // Row interaction
+  onRowDoubleClick?: GridEventListener<'rowDoubleClick'>;
   // Row styling
   getRowClassName?: (params: GridRowClassNameParams) => string;
   extraSx?: SxProps<Theme>;
@@ -66,6 +69,7 @@ const MuiDataGrid: React.FC<MuiDataGridProps> = ({
   disableColumnSelector = false,
   disableDensitySelector = false,
   disableExport = false,
+  onRowDoubleClick,
   getRowClassName,
   extraSx,
   columnGroupingModel,
@@ -134,6 +138,7 @@ const MuiDataGrid: React.FC<MuiDataGridProps> = ({
         disableColumnFilter={disableColumnFilter}
         disableColumnSelector={disableColumnSelector}
         disableDensitySelector={disableDensitySelector}
+        onRowDoubleClick={onRowDoubleClick}
         getRowClassName={getRowClassName}
         columnGroupingModel={columnGroupingModel}
         sx={{
