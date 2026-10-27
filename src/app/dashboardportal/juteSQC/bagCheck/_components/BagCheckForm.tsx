@@ -79,18 +79,27 @@ function bagCorr(wt: number, mr: number, stdMr: number): number {
 	return (wt * (100 + stdMr)) / (100 + mr);
 }
 
+// SJM's regular bag (QC register: "94 cm x 57 cm – 580 gm/bag HD/HS, B.Twill", stitch std 10).
+// Ends/picks follow the register's circled-below values (60 ends / 25 picks flagged). All editable.
+const DEFAULT_BAG_LABEL = "B.Twill Bags 94 x 57 cm 580 gm HD/HS";
+const DEFAULT_STDS: Omit<Record<StdKey, string>, "std_mr_pct"> = {
+	std_bag_weight: "580",
+	std_length: "94",
+	std_width: "57",
+	std_ends: "61",
+	std_picks: "26",
+	std_stitch: "10",
+};
+
 export default function BagCheckForm({ coId, branchId, entryDate, setup, onSaved }: Props) {
-	const [itemId, setItemId] = React.useState<number | "">("");
-	const [bagTypeLabel, setBagTypeLabel] = React.useState("");
+	// Pre-select the B.Twill item once it exists in the Sacking group (falls back to the label only).
+	const defaultBagType = setup.bag_types.find((b) => /b\.?\s*twill/i.test(b.item_name ?? ""));
+	const [itemId, setItemId] = React.useState<number | "">(defaultBagType?.item_id ?? "");
+	const [bagTypeLabel, setBagTypeLabel] = React.useState(defaultBagType?.item_name ?? DEFAULT_BAG_LABEL);
 	const [vendorName, setVendorName] = React.useState("");
 	const [idCode, setIdCode] = React.useState("");
 	const [stds, setStds] = React.useState<Record<StdKey, string>>({
-		std_bag_weight: "",
-		std_length: "",
-		std_width: "",
-		std_ends: "",
-		std_picks: "",
-		std_stitch: "",
+		...DEFAULT_STDS,
 		std_mr_pct: String(setup.default_std_mr_pct),
 	});
 	const [bags, setBags] = React.useState<BagInput[]>(emptyBags);

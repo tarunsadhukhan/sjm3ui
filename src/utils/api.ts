@@ -618,6 +618,8 @@ const apiRoutesPortalMasters = {
     BAG_CHECK_BY_DATE: `${API_URL}/juteSQC/get_bag_check_by_date`,
     BAG_CHECK_TABLE: `${API_URL}/juteSQC/get_bag_check_table`,
     BAG_CHECK_DELETE: `${API_URL}/juteSQC/delete_bag_check`,
+    // SQC Reports
+    SQC_REPORT_SLIVER_WEIGHT: `${API_URL}/juteSQC/sqc_report_sliver_weight`,
     // Jute SQC - Packing MR%
     PACKING_MR_CREATE_SETUP: `${API_URL}/juteSQC/packing_mr_create_setup`,
     PACKING_MR_CREATE: `${API_URL}/juteSQC/create_packing_mr`,
